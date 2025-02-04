@@ -1,0 +1,35 @@
+header {
+    background-color: $main-bg-color;
+
+    .header-logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 100px;
+        }
+    }
+
+    .header-title {
+        display: flex;
+        align-items: center;
+
+        h1 {
+            font-size: 2rem;
+        }
+    }
+
+    .header-profil {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        a {
+            color: $light-text-color;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    }
+
+}

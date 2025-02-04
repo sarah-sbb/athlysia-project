@@ -1,0 +1,59 @@
+.group-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 1px solid $second-bg-color;
+}
+
+.group-table th, .group-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.group-table th {
+    background-color: $main-bg-color;
+    color: $light-text-color;
+}
+
+.group-row {
+    color: $main-text-color;
+}
+
+.group-table .group-row:nth-child(odd) {
+    background-color: $light-text-color;
+}
+
+.group-table .group-row:nth-child(even) {
+    background-color: $second-bg-color;
+}
+
+.group-table td input[type="checkbox"] {
+    margin: 0;
+}
+
+/* Flèches de tri */
+.sort-arrow {
+    margin-left: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Boutons Modifier et Supprimer */
+.edit-btn, .delete-btn {
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+    border: none;
+    background-color: $main-bg-color;
+    color: $light-text-color;
+    font-weight: bold;
+}
+
+.edit-btn:hover, .delete-btn:hover {
+    background-color:$main-bg-color;
+}
+
+/* Style pour la case à cocher sélectionnant toute la ligne */
+.select-all {
+    margin: 0;
+}

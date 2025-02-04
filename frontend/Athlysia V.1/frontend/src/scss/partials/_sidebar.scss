@@ -1,0 +1,71 @@
+.sidebar {
+    background-color: $second-bg-color;
+  }
+    
+  .navbar { 
+      padding: 20px 0;
+  }
+
+  /* ACCORDION */
+  .accordion-container {
+      width: 100%;
+      overflow: hidden;
+      color: $main-text-color;
+  }
+  
+  .accordion-header {
+      cursor: pointer;
+      padding: 15px 0 15px 25px;
+      width: 100%;
+      text-align: left;
+      font-size: 16px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      transition: background 0.3s ease;
+  }
+  
+  .accordion-item {
+      box-sizing: border-box;
+  }
+  
+  .accordion-item.active .accordion-header {
+      background-color: $main-bg-color;
+      color: white;
+  }
+  
+  .accordion-header:hover {
+      background-color: $main-bg-color;
+      color: white;
+  }
+  .accordion-content {
+      background-color: #ffffff;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      padding: 0;
+  }
+  
+  .sub-item {
+      display: block;
+      padding: 12px 20px;
+      font-size: 14px;
+      color: $main-text-color;
+      text-decoration: none;
+      border-bottom: 1px solid $second-bg-color;
+      transition: background-color 0.3s ease;
+  }
+  
+  .sub-item:hover {
+      background-color: #f0f0f0;
+  }
+  
+  .sub-item.active-sub-item {
+      font-weight: bold;
+  }
+  
+  /* Effet d'ouverture */
+  .accordion-item.active .accordion-header i {
+      transform: rotate(90deg);
+  }
+  
