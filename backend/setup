@@ -1,0 +1,29 @@
+Configuration
+Installation de Next.js côté frontend = template de La Capsule
+Installation d’Express côté backend = template Express
+Création des routes : admins, events, groups et participants
+Installation du module CORS
+Modification du fichier app.js :
+Utilisation de la fonction require & exécution du module CORS avec app.use()
+Exécution des modules avec app.use()
+Ajout du fichier de configuration à la racine du backend
+Installation du module dotenv pour lire le fichier .env
+Modification du fichier app.js :
+Création d’un fichier .env + ajout de la connection string :
+perl
+Copier
+Modifier
+mongodb+srv://sarah:BonjourMongo!@cluster0.imu9d.mongodb.net/CheckToPic
+ATTENTION : La connexion ne doit pas être visible sur Git, sinon cela signifie que le fichier .env n’est pas bien configuré.
+Installation du module Mongoose
+Création d’un dossier models et des fichiers schémas
+Configuration du fichier connection.js
+Utilisation de la fonction require pour initialiser la connexion dans app.js
+Test du backend, frontend et connexion à la BDD : OK
+Création d’un fichier config qui répertorie toute notre installation de base
+Ajout des fichiers CSS et HTML de Sarah dans un dossier Athlysia V.1
+Ce qu'il reste à faire dans le backend pour la configuration :
+Installer les différents modules d’authentification comme uid2
+Configurer et tester les 4 schémas, attention au sous-document dans event
+Côté frontend :
+Réadapter le code CSS et HTML de Sarah sous forme de composants
