@@ -21,7 +21,7 @@ function Home() {
       </div>
       <div className={styles.rightSection}>
       <div className={styles.containerLogin}>
-        <input type="text" placeholder="Prénom" className={styles.input}></input>
+        <input type="text" placeholder="Email" className={styles.input}></input>
         <input type="text" placeholder="Mot de passe" className={styles.input}></input>
       <button className={styles.buttonConnected}>
       Se connecter
