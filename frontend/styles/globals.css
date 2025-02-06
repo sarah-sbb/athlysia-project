@@ -4,8 +4,41 @@ body {
   padding: 0;
   margin: 0;
   font-family: 'Quicksand', sans-serif ;
+  font-weight: 500;
+  height: 100vh;
+  /*color: var(--main-text-color); à voir si on remet en bleu ou pas */
 }
 
 * {
   box-sizing: border-box;
+}
+
+:root { /* variables css dynamiques déclarées en amont pour éviter de répéter 
+  à réutiliser sur les éléments que l'on souhaite exemple color: var(--main-bg-color); */ 
+  --main-bg-color: #2E35B3;
+  --second-bg-color: #CAD2FC;
+  --third-bg-color: #BEBEBE;
+
+  --main-text-color: #0D1282;
+  --second-text-color: #322F2F;
+  --light-text-color: #ffffff;
+
+  --warning-color: #DC1C4D;
+
+  --fontsize-main: 2em;
+  --fontsize-second: 1.5em;
+  --fontsize-third: 1em;
+  --fontsize-paragraphe: 0.75em;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  font-family: 'Quicksand', sans-serif;
+}
+
+li {
+  list-style-type: none;
 }
