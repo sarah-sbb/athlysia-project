@@ -15,7 +15,8 @@ body {
 
 :root { /* variables css dynamiques déclarées en amont pour éviter de répéter 
   à réutiliser sur les éléments que l'on souhaite exemple color: var(--main-bg-color); */ 
-  --main-bg-color: #2E35B3;
+  /* --main-bg-color: #2E35B3; old color*/
+  --main-bg-color: #031EAD;
   --second-bg-color: #CAD2FC;
   --third-bg-color: #BEBEBE;
 
@@ -28,7 +29,7 @@ body {
   --fontsize-main: 2em;
   --fontsize-second: 1.5em;
   --fontsize-third: 1em;
-  --fontsize-paragraphe: 0.75em;
+  --fontsize-paragraphe: 1.1rem;
 }
 
 a {
