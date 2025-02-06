@@ -3,7 +3,6 @@
   width: 100vw
 }
 
-
 .headerContainer {
   display: flex;
   background-color: var(--main-bg-color);
@@ -20,7 +19,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 80vh;
-
 }
 
 .leftSection {
@@ -28,15 +26,12 @@
 justify-content: center;
 align-items: center;
 font-size: var(--fontsize-paragraphe);
-
 }
 
 .rightSection {
   display: flex;
   justify-content: center;
   align-items: center;
-
-
 }
 
 .textIntro {
