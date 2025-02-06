@@ -6,10 +6,11 @@ function Index() {
   return (
   <div>
     <Home />;
-    <div><FontAwesomeIcon 
-				
+    <div>
+      <FontAwesomeIcon 				
 				icon={faBookmark} 
-				/></div>
+				/>
+    </div>
   </div>
 
 );
