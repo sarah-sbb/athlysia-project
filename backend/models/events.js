@@ -1,10 +1,23 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const eventSchema = mongoose.Schema ({
-    title:String,
-    admin_id:String,
-})
+const SUPPORTS_COM = [ "Facebook", "Internet" ]; // penser à rajouter les supports de com ici
 
-const Event = mongoose.model('events', eventSchema);
+const autorisationSchema = mongoose.Schema({
+  participant: { type: mongoose.Schema.Types.ObjectId, ref: "participants" },
+  isValidated: Boolean,
+});
 
-module.exports = Event
+const eventSchema = mongoose.Schema({
+  title: String,
+  adminId: String,
+  authorisation: autorisationSchema,
+  groupId: { type: mongoose.Schema.Types.ObjectId, ref: "groups" },
+  dateStart: Date,
+  dateEnd: Date,
+  place: String,
+  supportsCom: [{type: String, enum: SUPPORTS_COM}], // à checker si ça marche avec le tableau extérieur
+});
+
+const Event = mongoose.model("events", eventSchema);
+
+module.exports = Event;

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const connectionString = process.env.CONNECTION_STRING;
 console.log(connectionString)
 if (!connectionString) {
-    console.log("the connexion string is not defined")
+    console.log("The connection string is not defined")
 }
 
 mongoose.connect(connectionString, { connectTimeoutMS: 2000 })
