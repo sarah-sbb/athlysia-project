@@ -52,7 +52,7 @@ margin-bottom: 80px;
 gap: 20px;
 }
 
-.buttonConnected {
+.buttonSignIn {
 
   background-color: var(--warning-color);
   width: 80%;
@@ -71,7 +71,7 @@ gap: 20px;
   padding-left: 20px;
 }
 
-.buttonRegister {
+.buttonSignUp {
   background-color: white;
   border: none;
   border-radius: 5px;
