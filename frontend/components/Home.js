@@ -86,12 +86,15 @@ function Home() {
               <br /> Si vous souhaitez rejoindre notre plateforme et créer un
               compte, merci de contacter un de vos administrateurs.
             </p>
-            <Image
-              src="/logo-bleu.svg"
+          <div className={styles.logoBlueContainer}>
+          <Image
+              src="/iconeOff.webp"
               alt="logo Athlysia"
-              width={700}
-              height={50}
+            width={90}
+            height={70}
             />
+
+          </div>
           </div>
         </div>
         <div className={styles.rightSection}>
@@ -121,7 +124,7 @@ function Home() {
                   Pour s'inscrire, veuillez remplir les champs suivants :
                 </Typography>
 
-                {/* Formulaire avec Grid */}
+                {/* Formulaire */}
                 <Box sx={styleContainer}>
                   <TextField label="Prénom"  />
                   <TextField label="Nom"  />
