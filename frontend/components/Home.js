@@ -1,17 +1,50 @@
 import styles from "../styles/Home.module.css";
+import { useState } from "react";
 import Image from "next/image";
 import SignUp from "./SignUp";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 
-
-import { useState } from "react";
 
 function Home() {
-  const [open, setOpen] = useState(false);
+  const router = useRouter();
 
+  const [open, setOpen] = useState(false);
   const handleToggleModal = () => {
+    console.log("handleToggleModal appelé !")
+
     setOpen(!open);
   };
+  const [signIn, setSignIn] = useState ({
+    email: "",
+    password: "",
+
+  })
+ 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSignIn((prevSignIn) => ({
+      ...prevSignIn,
+      [name]: value,
+    }));
+  };
+  
+	const handleConnection = () => {
+		fetch('http://localhost:3000/admins/signin', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ email: signIn.email, password: signIn.password }),
+		}).then(response => response.json())
+			.then(data => {
+				if (data.result) {
+          router.push("/dashboard");
+          console.log("connecté : ", data.result)
+				} else {
+          console.log(data.result, "erreur : ",  data.message);
+        }
+			});
+	};
 
 
   return (
@@ -58,13 +91,19 @@ function Home() {
               type="text"
               placeholder="Email"
               className={styles.input}
+              value={signIn.email}
+              name="email"
+              onChange={handleChange}
             ></input>
             <input
-              type="text"
+              type="password"
               placeholder="Mot de passe"
               className={styles.input}
+              value={signIn.password}
+              name="password"
+              onChange={handleChange}
             ></input>
-            <button className={styles.buttonSignIn}>Se connecter</button>
+            <button className={styles.buttonSignIn} onClick={handleConnection}>Se connecter</button>
             <button className={styles.buttonSignUp} onClick={handleToggleModal}>S'inscrire</button>
            <SignUp  open={open} handleToggleModal={handleToggleModal}/>
           </div>

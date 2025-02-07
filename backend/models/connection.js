@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const connectionString = process.env.CONNECTION_STRING;
-console.log(connectionString)
 if (!connectionString) {
     console.log("The connection string is not defined")
 }

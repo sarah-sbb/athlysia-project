@@ -6,7 +6,7 @@ const { checkBody } = require("../modules/checkBody");
 
 // Route pour l'ajout d'un admin en BDD (signup)
 router.post("/signup", (req, res) => {
-  const signupFields = ["firstName", "lastName", "function", "role", "pictureUrl", "email", "password"];
+  const signupFields = ["firstName", "lastName", "function", "role", "email", "password", "establishment"];
 
   // Vérification de la présence des données
   if (!checkBody(req.body, signupFields)) {
@@ -24,6 +24,7 @@ router.post("/signup", (req, res) => {
           function: req.body.function,
           role: req.body.role,
           pictureUrl: req.body.pictureUrl,
+          establishment: req.body.establishment,
           email: req.body.email,
           password: req.body.password,
           token: uid2(32),
