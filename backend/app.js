@@ -9,7 +9,8 @@ var indexRouter = require('./routes/index');
 var adminsRouter = require('./routes/admins');
 var groupsRouter = require('./routes/groups');
 var participantsRouter = require('./routes/participants');
-var eventsRouter= require('./routes/events')
+var eventsRouter= require('./routes/events');
+var etablissementsRouter = require('./routes/etablissements');
 
 var app = express();
 const cors = require('cors');
@@ -25,6 +26,7 @@ app.use('/', indexRouter);
 app.use('/admins', adminsRouter);
 app.use('/groups', groupsRouter);
 app.use('/participants', participantsRouter);
-app.use('/events', eventsRouter)
+app.use('/events', eventsRouter);
+app.use('/etablissements', etablissementsRouter);
 
 module.exports = app;

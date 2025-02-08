@@ -4,8 +4,7 @@ const groupSchema = mongoose.Schema ({
     title:String,
     adminId: { type: mongoose.Schema.Types.ObjectId, ref: "admins" },
     participantIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "participants" }],
-    dateOfCreation: Date
-})
+}, { timestamps: true })
 
 const Group = mongoose.model('groups', groupSchema);
 
