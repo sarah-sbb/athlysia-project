@@ -8,7 +8,7 @@ import styles from '../styles/Dashboard.module.css';
 
 function Dashboard() {
   return (
-    <div classNameName={styles.container}>
+    <div className={styles.container}>
       <Header/>
       <Main/>
       <Footer/>

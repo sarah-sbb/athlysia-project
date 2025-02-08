@@ -9,7 +9,6 @@
     background-color: var(--main-bg-color);
     color: var(--light-text-color);
     align-items: center;
-    height: 100px;
 }
   
   .headerLogo { 

@@ -6,7 +6,6 @@
     grid-template-areas:
       "footerLogout footerContent";
     grid-area: footer;
-    height: 50px; /* Assure une taille fixe */
   }
 
 .footerLogout { 
