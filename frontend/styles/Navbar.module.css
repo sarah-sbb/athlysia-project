@@ -1,0 +1,7 @@
+.mainNavbar { 
+    display: flex;
+    background-color: var(--second-bg-color);
+    padding: 40px;
+    grid-area: mainNavbar; 
+    height: 100%;
+}

@@ -1,0 +1,4 @@
+.mainContent { 
+    padding: 40px;
+    grid-area: mainContent; 
+}
