@@ -100,7 +100,7 @@ router.get('/findAllByEtablissement', (req, res) => {
   } else {
   Admin.find({ etablissement: req.body.etablissement }).then((data) => {
     if (data.length === 0) {
-      res.json({ result: false, message: "Aucun admin sur cet établissement"})
+      res.json({ result: false, message: "Aucun admin sur cet établissement ou établissement inconnu"})
     } else {
       res.json({ result: true, data})
     }
