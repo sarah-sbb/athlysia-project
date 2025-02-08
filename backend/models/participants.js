@@ -7,7 +7,7 @@ const participantSchema = mongoose.Schema ({
     phone: String,
     pictureUrl: String,
     birthDate: Date
-})
+});
 
 const Participant = mongoose.model('participants', participantSchema);
 

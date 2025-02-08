@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const Admin = require("../models/admins");
 const uid2 = require("uid2");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const { checkBody } = require("../modules/checkBody");
 
 // Route pour l'ajout d'un admin en BDD (signup)
@@ -55,15 +55,16 @@ router.post("/signin", (req, res) => {
   if (!checkBody(req.body, fields)) {
     res.json({ result: false, message: "Champs manquants ou vides" });
   } else {
-    Admin.findOne({ email: req.body.email, password: req.body.password }).then(
-      (response) => {
-        if (!response) {
-          res.json({ result: false, message: "Aucun admin trouvé" });
-        } else {
-          res.json({ result: true, token: response.token });
-        }
+    Admin.findOne({ email: req.body.email }).then((response) => {
+      if (
+        response &&
+        bcrypt.compareSync(req.body.password, response.password)
+      ) {
+        res.json({ result: true, token: response.token });
+      } else {
+        res.json({ result: false, message: "Aucun admin trouvé - mot de passe ou email incorrect" });
       }
-    );
+    });
   }
 });
 
@@ -78,7 +79,10 @@ router.get("/findByEmail", (req, res) => {
   } else {
     Admin.findOne({ email: req.body.email }).then((response) => {
       if (!response) {
-        res.json({ result: false, message: "Aucun admin trouvé avec cet email"})
+        res.json({
+          result: false,
+          message: "Aucun admin trouvé avec cet email",
+        });
       } else {
         res.json({ result: true, data: response });
       }
@@ -87,10 +91,21 @@ router.get("/findByEmail", (req, res) => {
 });
 
 // Route pour rechercher tous les admins d'un établissement
+router.get('/findAllByEtablissement', (req, res) => {
+  const fields = ["etablissement"];
 
-//
-
-/* GET admins listing. */
-router.get("/", function (req, res) {});
+  // Vérification de la présence des données
+  if (!checkBody(req.body, fields)) {
+    res.json({ result: false, message: "Champs manquants ou vides" });
+  } else {
+  Admin.find({ etablissement: req.body.etablissement }).then((data) => {
+    if (data.length === 0) {
+      res.json({ result: false, message: "Aucun admin sur cet établissement"})
+    } else {
+      res.json({ result: true, data})
+    }
+  })
+  }
+})
 
 module.exports = router;
