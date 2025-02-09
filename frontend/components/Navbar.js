@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import styles from '../styles/Navbar.module.css';
 
 function Navbar() {
@@ -38,7 +39,7 @@ function Navbar() {
             className={styles.accordionHeader}
             onClick={() => handleAccordionClick(1)}
           >
-            Tableau de bord
+            <Link href="/dashboard">Tableau de bord</Link>
           </div>
         </div>
 
@@ -48,7 +49,7 @@ function Navbar() {
             className={styles.accordionHeader}
             onClick={() => handleAccordionClick(2)}
           >
-            Groupes
+            <Link href="./pages/dashboard/groups">Groupes</Link>
           </div>
           <div
             className={`${styles.accordionContent} ${
@@ -65,7 +66,7 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/")}
             >
-              Tous les groupes
+              <Link href="./pages/dashboard/groups">Tous les groupes</Link>
             </a>
             <a
               href="/add-group"
@@ -74,7 +75,7 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/add-group")}
             >
-              Ajouter un groupe
+              <Link href="./pages/dashboard/groups">Créer un groupe</Link>
             </a>
           </div>
         </div>
@@ -85,7 +86,7 @@ function Navbar() {
             className={styles.accordionHeader}
             onClick={() => handleAccordionClick(3)}
           >
-            Participants
+            <Link href="./pages/dashboard/participants">Participants</Link>
           </div>
           <div
             className={`${styles.accordionContent} ${
@@ -102,7 +103,7 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/participants")}
             >
-              Tous les participants
+              <Link href="./pages/dashboard/participants">Tous les participants</Link>
             </a>
             <a
               href="/add-participant"
@@ -113,7 +114,7 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/add-participant")}
             >
-              Ajouter un participant
+              <Link href="./pages/dashboard/participants">Ajouer un participants</Link>
             </a>
           </div>
         </div>
@@ -124,7 +125,7 @@ function Navbar() {
             className={styles.accordionHeader}
             onClick={() => handleAccordionClick(4)}
           >
-            Événements
+            <Link href="./pages/dashboard/events">Evenements</Link>
           </div>
           <div
             className={`${styles.accordionContent} ${
@@ -141,7 +142,7 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/events")}
             >
-              Tous les événements
+              <Link href="./pages/dashboard/events">Tous les évènements</Link>
             </a>
             <a
               href="/add-event"
@@ -150,7 +151,7 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/add-event")}
             >
-              Créer un événement
+              <Link href="./pages/dashboard/events">Créer un évènement</Link>
             </a>
           </div>
         </div>
