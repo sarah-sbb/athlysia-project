@@ -62,7 +62,10 @@ router.post("/signin", (req, res) => {
       ) {
         res.json({ result: true, token: response.token });
       } else {
-        res.json({ result: false, message: "Aucun admin trouvé - mot de passe ou email incorrect" });
+        res.json({
+          result: false,
+          message: "Aucun admin trouvé - mot de passe ou email incorrect",
+        });
       }
     });
   }
@@ -91,21 +94,42 @@ router.get("/findByEmail", (req, res) => {
 });
 
 // Route pour rechercher tous les admins d'un établissement
-router.get('/findAllByEtablissement', (req, res) => {
+router.get("/findAllByEtablissement", (req, res) => {
   const fields = ["etablissement"];
 
   // Vérification de la présence des données
   if (!checkBody(req.body, fields)) {
     res.json({ result: false, message: "Champs manquants ou vides" });
   } else {
-  Admin.find({ etablissement: req.body.etablissement }).then((data) => {
-    if (data.length === 0) {
-      res.json({ result: false, message: "Aucun admin sur cet établissement ou établissement inconnu"})
-    } else {
-      res.json({ result: true, data})
-    }
-  })
+    Admin.find({ etablissement: req.body.etablissement }).then((data) => {
+      if (data.length === 0) {
+        res.json({
+          result: false,
+          message: "Aucun admin sur cet établissement ou établissement inconnu",
+        });
+      } else {
+        res.json({ result: true, data });
+      }
+    });
   }
-})
+});
+
+// Route pour supprimer un admin (via son ID)
+router.delete("/deleteById", (req, res) => {
+  const fields = ["adminId"];
+
+  // Vérification de la présence des données
+  if (!checkBody(req.body, fields)) {
+    res.json({ result: false, message: "Champs manquants ou vides" });
+  } else {
+    Admin.deleteOne({ _id: req.body.adminId }).then((response) => {
+      if (response.deletedCount > 0) {
+        res.json({ result: true, message: "Admin supprimé" });
+      } else {
+        res.json({ result: false, message: "Aucun admin trouvé avec cet ID" });
+      }
+    });
+  }
+});
 
 module.exports = router;
