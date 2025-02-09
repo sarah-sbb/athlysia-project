@@ -40,6 +40,7 @@ export default function DataTable() {
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 sx={{ border: 0 }}
+                //overflow: hidden
             />
         </Paper>
     );
