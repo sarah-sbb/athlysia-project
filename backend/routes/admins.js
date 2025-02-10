@@ -132,4 +132,118 @@ router.delete("/deleteById", (req, res) => {
   }
 });
 
+// Route pour modifier les infos d'un admin (via son ID)
+router.put("/updateById", (req, res) => {
+  const mandatoryFields = ["adminId"];
+
+  // Vérification de la présence des données
+  if (!checkBody(req.body, mandatoryFields)) {
+    res.json({ result: false, message: "ID manquant ou vide" });
+  } else {
+    let updatedFields = [];
+
+    // Modification de firstName
+    if (req.body.firstName) {
+      Admin.updateOne({
+        id: req.body.adminId,
+        firstName: req.body.firstName,
+      }).then((data) => {
+        if (data.modifiedCount === 1) {
+          updatedFields.push("firstName");
+        } 
+      });
+    }
+
+    // Modification de function
+    else if (req.body.function) {
+      Admin.updateOne({
+        id: req.body.adminId,
+        function: req.body.function,
+      }).then((data) => {
+        if (data.modifiedCount === 1) {
+          updatedFields.push("function");
+        }
+      });
+    }
+
+    // Modification de role
+    else if (req.body.role) {
+      Admin.updateOne({
+        id: req.body.adminId,
+        role: req.body.role,
+      }).then((data) => {
+        if (data.modifiedCount === 1) {
+          updatedFields.push("role");
+        }
+      });
+    }
+
+    // Modification de pictureUrl
+    else if (req.body.pictureUrl) {
+      Admin.updateOne({
+        id: req.body.adminId,
+        pictureUrl: req.body.pictureUrl,
+      }).then((data) => {
+        if (data.modifiedCount === 1) {
+          updatedFields.push("pictureUrl");
+        }
+      });
+    }
+
+    // Modification de pictureUrl
+    else if (req.body.pictureUrl) {
+      Admin.updateOne({
+        id: req.body.adminId,
+        pictureUrl: req.body.pictureUrl,
+      }).then((data) => {
+        if (data.modifiedCount === 1) {
+          updatedFields.push("pictureUrl");
+        }
+      });
+    }
+
+     // Modification de email
+     else if (req.body.email) {
+      Admin.updateOne({
+        id: req.body.adminId,
+        email: req.body.email,
+      }).then((data) => {
+        if (data.modifiedCount === 1) {
+          updatedFields.push("email");
+        }
+      });
+    }
+
+    // Modification de etablissement
+    else if (req.body.etablissement) {
+      Admin.updateOne({
+        id: req.body.adminId,
+        etablissement: req.body.etablissement,
+      }).then((data) => {
+        if (data.modifiedCount === 1) {
+          updatedFields.push("etablissement");
+        }
+      });
+    }
+
+    // Modification de password
+    else if (req.body.etablissement) {
+      Admin.updateOne({
+        id: req.body.adminId,
+        password: bcrypt.hashSync(req.body.password, 10),
+      }).then((data) => {
+        if (data.modifiedCount === 1) {
+          updatedFields.push("password");
+        }
+      });
+    }
+
+    if (updatedFields.length > 0) {
+      res.json({ result: true, updatedFields })
+    } else {
+      res.json({ result: false, message: "Aucun champ modifié"})
+    }
+  }
+});
+
 module.exports = router;
