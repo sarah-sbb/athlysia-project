@@ -7,19 +7,23 @@ const { checkBody } = require("../modules/checkBody");
 
 // Route pour l'ajout d'un admin en BDD (signup)
 router.post("/signup", (req, res) => {
-  const fields = [
-    "firstName",
-    "lastName",
-    "function",
-    "role",
-    "email",
-    "password",
-    "etablissement",
-  ];
-
+// V1
+  // const fields = [
+  //   "firstName",
+  //   "lastName",
+  //   "function",
+  //   "role",
+  //   "email",
+  //   "password",
+  //   "etablissement",
+  // ];
+  // if (!checkBody(req.body, fields)) {
+  //   res.json({ result: false, message: "Champs vides" });
+  // } 
   // Vérification de la présence des données
-  if (!checkBody(req.body, fields)) {
-    res.json({ result: false, message: "Champs manquants ou vides" });
+  if (!checkBody(req.body)) {
+    res.json({ result: false, message: "Champs vides" });
+   
   } else {
     // Check si l'admin n'existe pas déjà via son email
     Admin.findOne({ email: req.body.email }).then((response) => {
