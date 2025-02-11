@@ -2,6 +2,7 @@ import styles from '../styles/Header.module.css';
 import Image from "next/image";
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';       <FontAwesomeIcon icon={faBookmark} />
 //import { faBookmark, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; 
+import Link from 'next/Link';
 
 function Header() {
   return (
@@ -12,7 +13,7 @@ function Header() {
       <div className={styles.headerTitle}>
         <h1>Titre de la page</h1>
       </div>
-      <div className={styles.headerNav}>profil</div>
+      <div className={styles.headerNav}><Link href="/adminProfile"><a className={styles.link}>Mon profil</a></Link></div>
     </div>
   );
 }
