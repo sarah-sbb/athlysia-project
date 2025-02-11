@@ -1,16 +1,20 @@
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import Main from '../components/Main';
-import styles from '../styles/adminProfile.module.css';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
+import ContentAdminProfile from "../components/ContentAdminProfile";
+import styles from "../styles/adminProfile.module.css";
 
 function adminProfile() {
-    return (
-        <div className={styles.container}>
-            <Header/>
-            <Main/>
-            <Footer/>
-        </div>
-    )
-};
+  return (
+    <div>
+      <Header />
+      <div className={styles.main}>
+        <Navbar />
+        <ContentAdminProfile />
+      </div>
+      <Footer />
+    </div>
+  );
+}
 
 export default adminProfile;
