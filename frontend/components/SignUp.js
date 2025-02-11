@@ -12,7 +12,7 @@ function SignUp({ open, handleToggleModal }) {
     function: "",
     role: "",
     email: "",
-    establishment: "",
+    etablissement: "",
     password: "",
   });
 
@@ -30,7 +30,7 @@ function SignUp({ open, handleToggleModal }) {
         function: form.function,
         role: form.role,
         email: form.email,
-        establishment: form.establishment,
+        etablissement: form.etablissement,
         password: form.password,
       }),
     })
@@ -149,7 +149,7 @@ function SignUp({ open, handleToggleModal }) {
           <TextField
             type="text"
             label="Établissement"
-            name="establishment"
+            name="etablissement"
             value={form.establishment}
             onChange={handleChange}
           />
