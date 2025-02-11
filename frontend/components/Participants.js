@@ -1,15 +1,45 @@
+import React, { useState } from 'react';
 import styles from '../styles/Participants.module.css';
-import DataTable from './Table'; 
+import Table from './Table';
 
 function Participants() {
+  const [participants, setParticipants] = useState([
+    { name: 'Albert' },
+    { name: 'Einstein' },
+    { name: 'Homer' },
+    { name: 'Marge' },
+    { name: 'Bart' },
+    { name: 'Malcolm' }
+  ]);
+
+  const addParticipant = () => {
+    
+  };
+
+  const editParticipant = (index) => {
+    
+  };
+
+  const deleteParticipant = (index) => {
+    
+  };
+
+  const searchParticipant = (event) => {
+   
+  };
+
   return (
     <div className={styles.centered}>
       <header className={styles.headerContainer}>
         Participant
       </header>
-      <div className={styles.tableContainer}>
-        <DataTable /> {}
-      </div>
+      <Table
+        participants={participants}
+        addParticipant={addParticipant}
+        editParticipant={editParticipant}
+        deleteParticipant={deleteParticipant}
+        searchParticipant={searchParticipant}
+      />
     </div>
   );
 }
