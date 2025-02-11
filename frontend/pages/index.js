@@ -5,9 +5,6 @@ function Index() {
   return (
   <div>
     <Home />;
-    <div>
-
-    </div>
   </div>
 
 );

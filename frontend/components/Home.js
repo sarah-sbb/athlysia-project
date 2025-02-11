@@ -2,7 +2,6 @@ import styles from "../styles/Home.module.css";
 import { useState } from "react";
 import Image from "next/image";
 import SignUp from "./SignUp";
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 
