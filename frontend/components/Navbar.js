@@ -6,14 +6,6 @@ function Navbar() {
   const [activeAccordion, setActiveAccordion] = useState(null); // État actif pour les accordéons
   const [activeSubItem, setActiveSubItem] = useState(""); // État actif pour les sous-menus
 
-  // Charger le sous-menu actif depuis localStorage au démarrage
-  useEffect(() => {
-    const savedActiveSubItem = localStorage.getItem("activeSubItem");
-    if (savedActiveSubItem) {
-      setActiveSubItem(savedActiveSubItem);
-    }
-  }, []);
-
   // Fonction pour gérer les clics sur un élément de l'accordéon
   const handleAccordionClick = (index) => {
     // Si l'élément cliqué est déjà actif, on le referme
@@ -27,7 +19,6 @@ function Navbar() {
   // Fonction pour gérer les clics sur un sous-élément
   const handleSubItemClick = (href) => {
     setActiveSubItem(href); // Mettre à jour l'état local
-    localStorage.setItem("activeSubItem", href); // Enregistrer dans localStorage
   };
 
   return (
@@ -49,7 +40,7 @@ function Navbar() {
             className={styles.accordionHeader}
             onClick={() => handleAccordionClick(2)}
           >
-            <Link href="./pages/dashboard/groups">Groupes</Link>
+            Groupes
           </div>
           <div
             className={`${styles.accordionContent} ${
@@ -59,24 +50,24 @@ function Navbar() {
               maxHeight: activeAccordion === 2 ? "200px" : "0", // Ajustement dynamique de la hauteur
             }}
           >
-            <a
+            <div
               href="/"
               className={`${styles.subItem} ${
                 activeSubItem === "/" ? styles.activeSubItem : ""
               }`}
               onClick={() => handleSubItemClick("/")}
             >
-              <Link href="./pages/dashboard/groups">Tous les groupes</Link>
-            </a>
-            <a
+              <Link href="/dashboard/groups">Tous les groupes</Link>
+            </div>
+            <div
               href="/add-group"
               className={`${styles.subItem} ${
                 activeSubItem === "/add-group" ? styles.activeSubItem : ""
               }`}
               onClick={() => handleSubItemClick("/add-group")}
             >
-              <Link href="./pages/dashboard/groups">Créer un groupe</Link>
-            </a>
+              <Link href="/dashboard/groups">Créer un groupe</Link>
+            </div>
           </div>
         </div>
 
@@ -86,7 +77,7 @@ function Navbar() {
             className={styles.accordionHeader}
             onClick={() => handleAccordionClick(3)}
           >
-            <Link href="./pages/dashboard/participants">Participants</Link>
+            Participants
           </div>
           <div
             className={`${styles.accordionContent} ${
@@ -96,16 +87,16 @@ function Navbar() {
               maxHeight: activeAccordion === 3 ? "200px" : "0",
             }}
           >
-            <a
+            <div
               href="/participants"
               className={`${styles.subItem} ${
                 activeSubItem === "/participants" ? styles.activeSubItem : ""
               }`}
               onClick={() => handleSubItemClick("/participants")}
             >
-              <Link href="./pages/dashboard/participants">Tous les participants</Link>
-            </a>
-            <a
+              <Link href="/dashboard/participants">Tous les participants</Link>
+            </div>
+            <div
               href="/add-participant"
               className={`${styles.subItem} ${
                 activeSubItem === "/add-participant"
@@ -114,8 +105,8 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/add-participant")}
             >
-              <Link href="./pages/dashboard/participants">Ajouer un participants</Link>
-            </a>
+              <Link href="/dashboard/participants">Ajouer un participants</Link>
+            </div>
           </div>
         </div>
 
@@ -125,7 +116,7 @@ function Navbar() {
             className={styles.accordionHeader}
             onClick={() => handleAccordionClick(4)}
           >
-            <Link href="./pages/dashboard/events">Evenements</Link>
+            Evenements
           </div>
           <div
             className={`${styles.accordionContent} ${
@@ -135,24 +126,24 @@ function Navbar() {
               maxHeight: activeAccordion === 4 ? "200px" : "0",
             }}
           >
-            <a
+            <div
               href="/events"
               className={`${styles.subItem} ${
                 activeSubItem === "/events" ? styles.activeSubItem : ""
               }`}
               onClick={() => handleSubItemClick("/events")}
             >
-              <Link href="./pages/dashboard/events">Tous les évènements</Link>
-            </a>
-            <a
+              <Link href="/dashboard/events">Tous les évènements</Link>
+            </div>
+            <div
               href="/add-event"
               className={`${styles.subItem} ${
                 activeSubItem === "/add-event" ? styles.activeSubItem : ""
               }`}
               onClick={() => handleSubItemClick("/add-event")}
             >
-              <Link href="./pages/dashboard/events">Créer un évènement</Link>
-            </a>
+              <Link href="/dashboard/events">Créer un évènement</Link>
+            </div>
           </div>
         </div>
       </div>
