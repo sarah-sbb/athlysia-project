@@ -73,7 +73,7 @@ router.post("/signin", (req, res) => {
 
 // Route pour rechercher un admin en particulier (à partir de l'email)
 
-router.get("/findByEmail", (req, res) => {
+router.post("/findByEmail", (req, res) => {
   const fields = ["email"];
 
   // Vérification de la présence des données
