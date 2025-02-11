@@ -16,6 +16,7 @@ const eventSchema = mongoose.Schema({
   dateEnd: Date,
   place: String,
   supportsCom: [{type: String, enum: SUPPORTS_COM}],
+  etablissement: { type: mongoose.Schema.Types.ObjectId, ref: 'etablissements' },
 });
 
 const Event = mongoose.model("events", eventSchema);

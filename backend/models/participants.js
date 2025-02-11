@@ -6,7 +6,8 @@ const participantSchema = mongoose.Schema ({
     email: String,
     phone: String,
     pictureUrl: String,
-    birthDate: Date
+    birthDate: Date,
+    etablissementId: { type: mongoose.Schema.Types.ObjectId, ref: 'etablissements' },
 });
 
 const Participant = mongoose.model('participants', participantSchema);
