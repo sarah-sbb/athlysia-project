@@ -20,4 +20,11 @@
   
   .headerTitle { grid-area: headerTitle; }
   
-  .headerNav { grid-area: headerNav; }
+  .headerNav {
+    grid-area: headerNav;
+   }
+
+   .link {
+    color: white;
+    font-weight: 800;
+   }
