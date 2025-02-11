@@ -1,11 +1,13 @@
 import { Modal, Box, Button, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-
+import { useRouter } from 'next/router';
 
 
 function SignUp({ open, handleToggleModal }) {
     
-  
+  const router = useRouter();
+  const [isCorrect, setIsCorrect] =useState(true)
+
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -38,8 +40,11 @@ function SignUp({ open, handleToggleModal }) {
       .then((data) => {
         if (data.result) {
           console.log("user créé");
+          router.push("/dashboard");
+        
         } else {
           console.log(data.result, "erreur : ",  data.message);
+          setIsCorrect(!isCorrect)
         }
       });
   };
@@ -104,6 +109,20 @@ function SignUp({ open, handleToggleModal }) {
     fontSize: "0.90rem",
     width: 100,
   };
+
+  const styleErrorSignUp={
+    display: "flex",
+    justifyContent: "center",
+    color:"red",
+  };
+
+const styleSuccesSignUp={
+  display: "flex",
+  justifyContent: "center",
+  color:"green",
+
+}
+
   return (
     // props sx pour styliser la modal directment dans le composant Mui
 
@@ -160,9 +179,15 @@ function SignUp({ open, handleToggleModal }) {
             value={form.password}
             onChange={handleChange}
           />
+  
         </Box>
 
+        {isCorrect ? null: <Typography sx={styleErrorSignUp}>
+            Veuillez - remplir tous les champs
+          </Typography>}
+          
         {/* Footer avec les deux boutons */}
+        
         <Box sx={styleFooter}>
           <Button sx={buttonCloseStyle} onClick={handleToggleModal}>
             Fermer

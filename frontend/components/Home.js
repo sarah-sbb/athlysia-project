@@ -2,7 +2,6 @@ import styles from "../styles/Home.module.css";
 import { useState } from "react";
 import Image from "next/image";
 import SignUp from "./SignUp";
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 
@@ -10,7 +9,11 @@ import { useRouter } from 'next/router';
 function Home() {
   const router = useRouter();
 
+
   const [open, setOpen] = useState(false);
+  const [isCorrect, setIsCorrect]= useState(false)
+
+
   const handleToggleModal = () => {
     console.log("handleToggleModal appelé !")
 
@@ -40,8 +43,10 @@ function Home() {
 				if (data.result) {
           router.push("/dashboard");
           console.log("connecté : ", data.result)
+          setIsCorrect(false)
 				} else {
           console.log(data.result, "erreur : ",  data.message);
+          setIsCorrect(true)
         }
 			});
 	};
@@ -103,7 +108,9 @@ function Home() {
               name="password"
               onChange={handleChange}
             ></input>
+            {!isCorrect ? null : <p className={styles.errorConnection}>Mot de passe ou email incorrect </p>}
             <button className={styles.buttonSignIn} onClick={handleConnection}>Se connecter</button>
+          
             <button className={styles.buttonSignUp} onClick={handleToggleModal}>S'inscrire</button>
            <SignUp  open={open} handleToggleModal={handleToggleModal}/>
           </div>
