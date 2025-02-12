@@ -16,15 +16,15 @@ function Participants() {
     
   };
 
-  const editParticipant = (index) => {
+  const editParticipant = () => {
     
   };
 
-  const deleteParticipant = (index) => {
+  const deleteParticipant = () => {
     
   };
 
-  const searchParticipant = (event) => {
+  const searchParticipant = () => {
    
   };
 
