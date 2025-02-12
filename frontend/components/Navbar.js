@@ -30,7 +30,7 @@ function Navbar() {
             className={styles.accordionHeader}
             onClick={() => handleAccordionClick(1)}
           >
-            <Link href="/dashboard">Tableau de bord</Link>
+            <Link href="/ctp-admin">Tableau de bord</Link>
           </div>
         </div>
 
@@ -57,7 +57,7 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/")}
             >
-              <Link href="/dashboard/groups">Tous les groupes</Link>
+              <Link href="/ctp-admin/groups">Tous les groupes</Link>
             </div>
             <div
               href="/add-group"
@@ -66,7 +66,7 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/add-group")}
             >
-              <Link href="/dashboard/groups">Créer un groupe</Link>
+              <Link href="/ctp-admin/groups">Créer un groupe</Link>
             </div>
           </div>
         </div>
@@ -94,7 +94,7 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/participants")}
             >
-              <Link href="/dashboard/participants">Tous les participants</Link>
+              <Link href="/ctp-admin/participants">Tous les participants</Link>
             </div>
             <div
               href="/add-participant"
@@ -105,7 +105,7 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/add-participant")}
             >
-              <Link href="/dashboard/participants">Ajouer un participants</Link>
+              <Link href="/ctp-admin/participants">Ajouer un participants</Link>
             </div>
           </div>
         </div>
@@ -133,7 +133,7 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/events")}
             >
-              <Link href="/dashboard/events">Tous les évènements</Link>
+              <Link href="/ctp-admin/events">Tous les évènements</Link>
             </div>
             <div
               href="/add-event"
@@ -142,7 +142,7 @@ function Navbar() {
               }`}
               onClick={() => handleSubItemClick("/add-event")}
             >
-              <Link href="/dashboard/events">Créer un évènement</Link>
+              <Link href="/ctp-admin/events">Créer un évènement</Link>
             </div>
           </div>
         </div>
