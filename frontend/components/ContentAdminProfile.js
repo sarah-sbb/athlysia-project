@@ -22,7 +22,6 @@ function Content() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.data.pictureUrl);
         setFirstName(data.data.firstName);
         setLastName(data.data.lastName);
         setFonction(data.data.function);

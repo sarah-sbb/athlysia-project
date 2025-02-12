@@ -1,12 +1,24 @@
-import { Modal, Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Select,
+  InputLabel,
+  MenuItem
+} from "@mui/material";
 import { useState } from "react";
-import { useRouter } from 'next/router';
-
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 function SignUp({ open, handleToggleModal }) {
-    
+  const [etablissementList, setEtablissementList] = useState([]);
+  const [etablissement, setEtablissement] = useState('');
+  const etablissementListToDisplay = [];
+
   const router = useRouter();
-  const [isCorrect, setIsCorrect] =useState(true)
+  const [isCorrect, setIsCorrect] = useState(true);
 
   const [form, setForm] = useState({
     firstName: "",
@@ -18,11 +30,23 @@ function SignUp({ open, handleToggleModal }) {
     password: "",
   });
 
+  useEffect(() => {
+    fetch("http://localhost:3000/etablissements/allEtablissements")
+      .then((response) => response.json())
+      .then((data) => {
+        for (let element of data.data) {
+          setEtablissementList((e) => [...e, element.name]);
+        }
+      });
+  }, []);
 
+  useEffect(() => {
+    for (let element of etablissementList) {
+      etablissementListToDisplay.push(<MenuItem value={element}>{element}</MenuItem>)
+    }
+  }, [etablissementList]);
 
   const handleRegister = () => {
- 
- 
     fetch("http://localhost:3000/admins/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -41,10 +65,9 @@ function SignUp({ open, handleToggleModal }) {
         if (data.result) {
           console.log("user créé");
           router.push("/dashboard");
-        
         } else {
-          console.log(data.result, "erreur : ",  data.message);
-          setIsCorrect(!isCorrect)
+          console.log(data.result, "erreur : ", data.message);
+          setIsCorrect(!isCorrect);
         }
       });
   };
@@ -55,6 +78,10 @@ function SignUp({ open, handleToggleModal }) {
       ...prevForm,
       [name]: value,
     }));
+  };
+
+  const handleSelectChange = (event) => {
+    setEtablissement(event.target.value);
   };
 
   // MODAL STYLE
@@ -110,18 +137,19 @@ function SignUp({ open, handleToggleModal }) {
     width: 100,
   };
 
-  const styleErrorSignUp={
+  const styleErrorSignUp = {
     display: "flex",
     justifyContent: "center",
-    color:"red",
+    color: "red",
   };
 
-const styleSuccesSignUp={
-  display: "flex",
-  justifyContent: "center",
-  color:"green",
+  const styleSuccesSignUp = {
+    display: "flex",
+    justifyContent: "center",
+    color: "green",
+  };
 
-}
+  console.log(etablissementListToDisplay)
 
   return (
     // props sx pour styliser la modal directment dans le composant Mui
@@ -157,7 +185,13 @@ const styleSuccesSignUp={
             value={form.function}
             onChange={handleChange}
           />
-          <TextField type="text" label="Rôle" name="role" value={form.role}   onChange={handleChange} />
+          <TextField
+            type="text"
+            label="Rôle"
+            name="role"
+            value={form.role}
+            onChange={handleChange}
+          />
           <TextField
             type="text"
             label="Email"
@@ -165,7 +199,15 @@ const styleSuccesSignUp={
             value={form.email}
             onChange={handleChange}
           />
-          <TextField
+          <Select // ca bug par ici
+            id="Etablissement2"
+            value={form.etablissement}
+            label="Etablissement"
+            onChange={handleSelectChange}
+          >
+{etablissementListToDisplay}
+          </Select>
+          <TextField // A supprimer une fois que le menu déroulant fonctionne
             type="text"
             label="Établissement"
             name="etablissement"
@@ -179,15 +221,16 @@ const styleSuccesSignUp={
             value={form.password}
             onChange={handleChange}
           />
-  
         </Box>
 
-        {isCorrect ? null: <Typography sx={styleErrorSignUp}>
+        {isCorrect ? null : (
+          <Typography sx={styleErrorSignUp}>
             Veuillez - remplir tous les champs
-          </Typography>}
-          
+          </Typography>
+        )}
+
         {/* Footer avec les deux boutons */}
-        
+
         <Box sx={styleFooter}>
           <Button sx={buttonCloseStyle} onClick={handleToggleModal}>
             Fermer
