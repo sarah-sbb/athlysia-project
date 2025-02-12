@@ -22,4 +22,12 @@ router.post("/add", function (req, res) {
   }
 });
 
+// Route pour récupérer tous les établissements
+
+router.get("/allEtablissements", (req, res ) => {
+  Etablissement.find().then((data) => {
+    res.json({ result: true, data})
+  })
+})
+
 module.exports = router;
