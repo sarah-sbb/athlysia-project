@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 
 function Content() {
-  // Récupération des données admin
 
   const email = {email: 'jean@gmail.com'}; // A DYNAMISER
 
@@ -13,7 +12,7 @@ function Content() {
   const [lastName, setLastName] = useState('');
   const [fonction, setFonction] = useState('');
   const [role, setRole] = useState('');
-  const [picture, setPicture] = useState(''); // ne marche pas -  A CHECKER
+  const [picture, setPicture] = useState('');
 
   useEffect(() => {
     fetch("http://localhost:3000/admins/findByEmail", {
@@ -28,13 +27,13 @@ function Content() {
         setLastName(data.data.lastName);
         setFonction(data.data.function);
         setRole(data.data.role);
-        setPicture(data.data.pictureUrl); // ne marche pas -  A CHECKER
+        setPicture(data.data.pictureUrl);
       });
   }, []);
 
   return (
     <div className={styles.mainContent}>
-      <Image src='/profil.webp' alt="Ma photo de profil" width={100} height={100} />
+      {picture && <Image src={picture} alt="Ma photo de profil" width={100} height={100} />}
       <ul>
       <li>First name: {firstName}</li>
       <li>Last name: {lastName}</li>
