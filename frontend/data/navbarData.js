@@ -1,4 +1,3 @@
-// data/navbarData.js
 const navbarData = [
     {
       id: 1,

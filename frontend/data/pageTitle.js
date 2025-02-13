@@ -1,0 +1,13 @@
+export const getPageTitle = (pathname) => {
+    const titles = {
+      "/ctp-admin": "Tableau de bord",
+      "/ctp-admin/groups": "Groupes",
+      "/ctp-admin/groups/add": "Créer un groupe",
+      "/ctp-admin/participants": "Participants",
+      "/ctp-admin/participants/add": "Ajouter un participant",
+      "/ctp-admin/events": "Événements",
+      "/ctp-admin/events/add": "Créer un événement",
+    };
+  
+    return titles[pathname] || "Titre par défaut"; // Si le chemin n'est pas trouvé, affiche un titre par défaut
+  };
