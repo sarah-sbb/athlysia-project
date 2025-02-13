@@ -1,4 +1,4 @@
-import styles from '../styles/Header.module.css';
+import styles from '../../styles/Header.module.css';
 import Image from "next/image";
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';       <FontAwesomeIcon icon={faBookmark} />
 //import { faBookmark, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; 

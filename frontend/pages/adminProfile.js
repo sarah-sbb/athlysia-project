@@ -1,6 +1,6 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
+import Navbar from "../components/layout/Navbar";
 import ContentAdminProfile from "../components/ContentAdminProfile";
 import styles from "../styles/adminProfile.module.css";
 

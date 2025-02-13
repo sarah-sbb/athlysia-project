@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Link from 'next/Link';
-import styles from '../styles/Navbar.module.css';
+import styles from '../../styles/Navbar.module.css';
 
 function Navbar() {
   const [activeAccordion, setActiveAccordion] = useState(null); // État actif pour les accordéons

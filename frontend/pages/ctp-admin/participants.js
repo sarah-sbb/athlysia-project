@@ -1,5 +1,5 @@
+import Layout from "../../components/layout/Layout";
 import Participants from "../../components/Participants";
-import Layout from "../../components/Layout";
 
 function GroupPage () {
   return (
