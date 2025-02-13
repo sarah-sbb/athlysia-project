@@ -6,7 +6,8 @@ import {
   Typography,
   Select,
   InputLabel,
-  MenuItem
+  MenuItem,
+  FormControl
 } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -14,7 +15,7 @@ import { useEffect } from "react";
 
 function SignUp({ open, handleToggleModal }) {
   const [etablissementList, setEtablissementList] = useState([]);
-  const [etablissement, setEtablissement] = useState('');
+  // const [etablissement, setEtablissement] = useState('');
   const etablissementListToDisplay = [];
 
   const router = useRouter();
@@ -26,7 +27,7 @@ function SignUp({ open, handleToggleModal }) {
     function: "",
     role: "",
     email: "",
-    etablissement: "",
+    xyz: null,
     password: "",
   });
 
@@ -34,17 +35,13 @@ function SignUp({ open, handleToggleModal }) {
     fetch("http://localhost:3000/etablissements/allEtablissements")
       .then((response) => response.json())
       .then((data) => {
-        for (let element of data.data) {
-          setEtablissementList((e) => [...e, element.name]);
-        }
+          setEtablissementList(data.data.map((e) => e.name));
       });
   }, []);
 
-  useEffect(() => {
     for (let element of etablissementList) {
       etablissementListToDisplay.push(<MenuItem value={element}>{element}</MenuItem>)
     }
-  }, [etablissementList]);
 
   const handleRegister = () => {
     fetch("http://localhost:3000/admins/signup", {
@@ -56,7 +53,7 @@ function SignUp({ open, handleToggleModal }) {
         function: form.function,
         role: form.role,
         email: form.email,
-        etablissement: form.etablissement,
+        etablissement: form.xyz,
         password: form.password,
       }),
     })
@@ -64,7 +61,7 @@ function SignUp({ open, handleToggleModal }) {
       .then((data) => {
         if (data.result) {
           console.log("user créé");
-          router.push("/dashboard");
+          router.push("/ctp-admin");
         } else {
           console.log(data.result, "erreur : ", data.message);
           setIsCorrect(!isCorrect);
@@ -78,10 +75,6 @@ function SignUp({ open, handleToggleModal }) {
       ...prevForm,
       [name]: value,
     }));
-  };
-
-  const handleSelectChange = (event) => {
-    setEtablissement(event.target.value);
   };
 
   // MODAL STYLE
@@ -149,8 +142,6 @@ function SignUp({ open, handleToggleModal }) {
     color: "green",
   };
 
-  console.log(etablissementListToDisplay)
-
   return (
     // props sx pour styliser la modal directment dans le composant Mui
 
@@ -199,21 +190,25 @@ function SignUp({ open, handleToggleModal }) {
             value={form.email}
             onChange={handleChange}
           />
-          <Select // ca bug par ici
-            id="Etablissement2"
-            value={form.etablissement}
-            label="Etablissement"
-            onChange={handleSelectChange}
+          <FormControl fullWidth>
+            <InputLabel id="etablissement">Etablissement</InputLabel>
+          <Select
+          labelId="etablissement"
+            id="etablissement"
+            value={form.xyz}
+            label="etablissement"
+            onChange={handleChange}
           >
 {etablissementListToDisplay}
           </Select>
-          <TextField // A supprimer une fois que le menu déroulant fonctionne
+          </FormControl>
+          {/* <TextField // A supprimer une fois que le menu déroulant fonctionne
             type="text"
             label="Établissement"
             name="etablissement"
             value={form.establishment}
             onChange={handleChange}
-          />
+          /> */}
           <TextField
             type="password"
             label="Mot de passe"
