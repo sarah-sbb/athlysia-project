@@ -18,6 +18,7 @@ function SignUp({ open, handleToggleModal }) {
   // const [etablissement, setEtablissement] = useState('');
   const etablissementListToDisplay = [];
 
+
   const router = useRouter();
   const [isCorrect, setIsCorrect] = useState(true);
 
@@ -27,9 +28,18 @@ function SignUp({ open, handleToggleModal }) {
     function: "",
     role: "",
     email: "",
-    xyz: null,
+    etablissement: "",
     password: "",
   });
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  };
 
   useEffect(() => {
     fetch("http://localhost:3000/etablissements/allEtablissements")
@@ -53,7 +63,7 @@ function SignUp({ open, handleToggleModal }) {
         function: form.function,
         role: form.role,
         email: form.email,
-        etablissement: form.xyz,
+        etablissement: form.etablissement,
         password: form.password,
       }),
     })
@@ -69,13 +79,7 @@ function SignUp({ open, handleToggleModal }) {
       });
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prevForm) => ({
-      ...prevForm,
-      [name]: value,
-    }));
-  };
+
 
   // MODAL STYLE
   //Composant MUI adapté au projet
@@ -195,7 +199,8 @@ function SignUp({ open, handleToggleModal }) {
           <Select
           labelId="etablissement"
             id="etablissement"
-            value={form.xyz}
+            name="etablissement"
+            value={form.etablissement}
             label="etablissement"
             onChange={handleChange}
           >
