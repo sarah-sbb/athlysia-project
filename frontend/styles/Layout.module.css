@@ -1,0 +1,26 @@
+.container {  
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.4fr 2.3fr 0.3fr;
+    grid-template-areas:
+      "header" 
+      "main"
+      "footer";
+      height: 100vh;
+  }
+
+  .main {  
+    display: grid;
+    grid-template-columns: 250px 1.5fr;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-template-areas:
+      "mainNavbar mainContent";
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .mainContent { 
+    padding: 40px;
+    grid-area: mainContent; 
+}
