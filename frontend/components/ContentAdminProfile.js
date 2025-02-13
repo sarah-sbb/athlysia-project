@@ -1,4 +1,4 @@
-import styles from "../styles/Content.module.css";
+import styles from "../styles/adminProfile.module.css";
 import Image from "next/image";
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';       <FontAwesomeIcon icon={faBookmark} />
 //import { faBookmark, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
