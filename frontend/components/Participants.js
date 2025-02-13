@@ -37,6 +37,32 @@ const rows = [
 const paginationModel = { page: 0, pageSize: 5 };
 
 export default function DataTable() {
+  const [rows, setRows] = useState(initialRows);
+  const [idCounter, setIdCounter] = useState(initialRows.length + 1);
+
+  const addParticipant = (firstName, lastName, age) => {
+    setRows([
+      ...rows,
+      {
+        id: idCounter,
+        firstName,
+        lastName,
+        age,
+      },
+    ]);
+    setIdCounter(idCounter + 1);
+  };
+
+  const editParticipant = (id, updatedData) => {
+    setRows(rows.map((row) => (row.id === id ? { ...row, ...updatedData } : row)));
+  };
+
+  const deleteParticipant = (id) => {
+    setRows(rows.filter((row) => row.id !== id));
+  };
+}
+
+export default function DataTable() {
   return (
     <Paper sx={{ height: 400, width: '100%' }}>
       <DataGrid
