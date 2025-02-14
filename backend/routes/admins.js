@@ -44,7 +44,7 @@ router.post("/signup", (req, res) => {
         });
 
         newAdmin.save().then((response) => {
-          res.json({ result: true, token: response.token });
+          res.json({ result: true, token: response.token, etablissement: response.etablissement, role: response.role, infoAdmin : {firstName: response.firstName, lastName: response.lastName, function: response.function } });
         });
       }
     });
@@ -64,7 +64,7 @@ router.post("/signin", (req, res) => {
         response &&
         bcrypt.compareSync(req.body.password, response.password)
       ) {
-        res.json({ result: true, token: response.token });
+        res.json({ result: true, token: response.token, etablissement: response.etablissement, role: response.role, infoAdmin : {firstName: response.firstName, lastName: response.lastName, function: response.function } });
       } else {
         res.json({
           result: false,

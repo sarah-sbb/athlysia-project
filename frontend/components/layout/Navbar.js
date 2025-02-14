@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Link from "next/Link";
+import Link from "next/link";
 import navbarData from "../../data/navbarData"; // Importe les données du menu
 import styles from "../../styles/Navbar.module.css"; 
 

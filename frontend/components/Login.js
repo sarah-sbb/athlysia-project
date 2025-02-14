@@ -3,26 +3,31 @@ import { useState } from "react";
 import Image from "next/image";
 import SignUp from "./SignUp";
 import { useRouter } from 'next/router';
+import { login } from '../reducers/admin';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Home() {
+  //redux
+	const dispatch = useDispatch();
+	const admin = useSelector((state) => state.admin.value);
+
+  //route
   const router = useRouter();
 
-
+  //state
   const [open, setOpen] = useState(false);
   const [isCorrect, setIsCorrect]= useState(false)
-
-
-  const handleToggleModal = () => {
-    console.log("handleToggleModal appelé !")
-
-    setOpen(!open);
-  };
   const [signIn, setSignIn] = useState ({
     email: "",
     password: "",
 
   })
- 
+
+  // logique
+  const handleToggleModal = () => {
+    setOpen(!open);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSignIn((prevSignIn) => ({
@@ -31,6 +36,8 @@ function Home() {
     }));
   };
   
+
+
 	const handleConnection = () => {
 		fetch('http://localhost:3000/admins/signin', {
 			method: 'POST',
@@ -41,6 +48,7 @@ function Home() {
 				if (data.result) {
           router.push("/ctp-admin");
           console.log("connecté : ", data.result)
+          dispatch(login({token : data.token, etablissement : data.etablissement, role :data.role, infoAdmin : data.infoAdmin}))
           setIsCorrect(false)
 				} else {
           console.log(data.result, "erreur : ",  data.message);
