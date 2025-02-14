@@ -1,23 +1,16 @@
-import styles from '../../styles/Events.module.css';
+import AddEvent from "./AddEvent";
+import AddParticipant from "./AddParticipant";
+import AddCom from "./AddCom";
 
-function Add() {
+function EventPage () {
   return (
-    <form className={styles.form}>
-      <div className={styles.formButtons}>
-        <button>Enregistrer</button>
-        <button>Générer les autorisations</button>
-      </div>
-      <div className={styles.formExample}>
-        <label>Enter your name: </label>
-      </div>
-      <div className={styles.formExample}>
-        <label>Enter your email: </label>
-        <input/>
-      </div>
-      <div className={styles.formExample}>
-      </div>
-    </form>
+    <div>
+      <AddEvent />
+      <AddParticipant />
+      <AddCom />
+    </div>
+
   );
 }
 
-export default Add;
+export default EventPage;
