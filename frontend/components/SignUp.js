@@ -7,19 +7,27 @@ import {
   Select,
   InputLabel,
   MenuItem,
-  FormControl
+  FormControl,
 } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { login } from "../reducers/admin";
+import { useDispatch, useSelector } from "react-redux";
 
 function SignUp({ open, handleToggleModal }) {
-  const [etablissementList, setEtablissementList] = useState([]);
-  // const [etablissement, setEtablissement] = useState('');
-  const etablissementListToDisplay = [];
 
+  
 
+  //redux
+  const dispatch = useDispatch();
+  const admin = useSelector((state) => state.admin.value);
+
+  //changement de route
   const router = useRouter();
+
+  //state
+  const [etablissementList, setEtablissementList] = useState([]);
   const [isCorrect, setIsCorrect] = useState(true);
 
   const [form, setForm] = useState({
@@ -32,6 +40,9 @@ function SignUp({ open, handleToggleModal }) {
     password: "",
   });
 
+  //logique
+
+  const etablissementListToDisplay = [];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,13 +56,15 @@ function SignUp({ open, handleToggleModal }) {
     fetch("http://localhost:3000/etablissements/allEtablissements")
       .then((response) => response.json())
       .then((data) => {
-          setEtablissementList(data.data.map((e) => e.name));
+        setEtablissementList(data.data.map((e) => e.name));
       });
   }, []);
 
-    for (let element of etablissementList) {
-      etablissementListToDisplay.push(<MenuItem value={element}>{element}</MenuItem>)
-    }
+  for (let element of etablissementList) {
+    etablissementListToDisplay.push(
+      <MenuItem value={element}>{element}</MenuItem>
+    );
+  }
 
   const handleRegister = () => {
     fetch("http://localhost:3000/admins/signup", {
@@ -71,6 +84,7 @@ function SignUp({ open, handleToggleModal }) {
       .then((data) => {
         if (data.result) {
           console.log("user créé");
+          dispatch(login({token : data.token, etablissement : data.etablissement, role :data.role, infoAdmin : data.infoAdmin}))
           router.push("/ctp-admin");
         } else {
           console.log(data.result, "erreur : ", data.message);
@@ -78,8 +92,6 @@ function SignUp({ open, handleToggleModal }) {
         }
       });
   };
-
-
 
   // MODAL STYLE
   //Composant MUI adapté au projet
@@ -196,16 +208,16 @@ function SignUp({ open, handleToggleModal }) {
           />
           <FormControl fullWidth>
             <InputLabel id="etablissement">Etablissement</InputLabel>
-          <Select
-          labelId="etablissement"
-            id="etablissement"
-            name="etablissement"
-            value={form.etablissement}
-            label="etablissement"
-            onChange={handleChange}
-          >
-{etablissementListToDisplay}
-          </Select>
+            <Select
+              labelId="etablissement"
+              id="etablissement"
+              name="etablissement"
+              value={form.etablissement}
+              label="etablissement"
+              onChange={handleChange}
+            >
+              {etablissementListToDisplay}
+            </Select>
           </FormControl>
           {/* <TextField // A supprimer une fois que le menu déroulant fonctionne
             type="text"
