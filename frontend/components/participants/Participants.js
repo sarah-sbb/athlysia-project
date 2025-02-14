@@ -13,6 +13,7 @@ Si ça peut t'aider à y voir plus clair dans ton code.
 */ 
 
 //import * as React from 'react';
+import { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 
@@ -36,7 +37,7 @@ const columns = [
   },
 ];
 
-const rows = [
+const initialRows = [
   { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
   { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
   { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
@@ -74,9 +75,9 @@ export default function DataTable() {
   const deleteParticipant = (id) => {
     setRows(rows.filter((row) => row.id !== id));
   };
-}
+//}
 
-export default function DataTable() {
+//export default function DataTable() {
   return (
     <Paper sx={{ height: 400, width: '100%' }}>
       <DataGrid
