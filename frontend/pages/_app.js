@@ -22,15 +22,6 @@ const store = configureStore({
 
 const persistor = persistStore(store);
 
-//redux imports
-
-
-
-// redux-persist imports
-import { persistStore, persistReducer } from 'redux-persist';
-import { PersistGate } from 'redux-persist/integration/react';
-import storage from 'redux-persist/lib/storage';
-
 
 
 function App({ Component, pageProps }) {
