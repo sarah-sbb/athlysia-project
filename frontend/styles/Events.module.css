@@ -1,7 +1,7 @@
 .formContainer {  display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 0.4fr 1.3fr 1.3fr;
-    gap: 20px;
+    gap: 40px;
     grid-template-areas:
       "formButton"
       "formInfos"
@@ -40,6 +40,16 @@
   }
   
   .formAddInfos { grid-area: formAddInfos; }
+
+  .formAddInfos > form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .formAddInfos > form > h2  {
+    margin: 0;
+  }
   
   .formAddParticipants { grid-area: formAddParticipants; }
   
