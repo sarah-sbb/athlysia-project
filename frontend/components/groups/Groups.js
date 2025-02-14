@@ -1,4 +1,4 @@
-import styles from '../styles/Groups.module.css';
+import styles from '../../styles/Groups.module.css';
 
 function Groups() {
   return (
