@@ -10,9 +10,9 @@
 
 .footerLogout { 
     display: flex;
-    justify-content: center;
     align-items: center;
     background-color: var(--second-bg-color);
+    padding-left: 40px;
     grid-area: footerLogout; 
 }
   
@@ -20,7 +20,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 10px;
+    padding: 10px 40px;
     box-sizing: border-box;
     color: var(--light-text-color);
     background-color: var(--main-bg-color);
