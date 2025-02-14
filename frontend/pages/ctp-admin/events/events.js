@@ -1,7 +1,7 @@
 import Layout from "../../../components/layout/Layout";
 import Events from "../../../components/events/Events";
 
-function GroupPage () {
+function EventPage () {
   return (
     <Layout>
       <Events />
@@ -9,4 +9,4 @@ function GroupPage () {
   );
 }
 
-export default GroupPage;
+export default EventPage;

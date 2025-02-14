@@ -1,7 +1,7 @@
 import Layout from "../../../components/layout/Layout";
 import Participants from "../../../components/participants/Participants";
 
-function GroupPage () {
+function ParticipantPage () {
   return (
     <Layout>
       <Participants />
@@ -9,4 +9,4 @@ function GroupPage () {
   );
 }
 
-export default GroupPage;
+export default ParticipantPage;

@@ -3,7 +3,7 @@ import styles from '../../styles/Groups.module.css';
 function Groups() {
   return (
     <div>
-    Group
+    Tous les groupes
     </div>
   );
 }
