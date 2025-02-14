@@ -9,5 +9,5 @@ export const getPageTitle = (pathname) => {
       "/ctp-admin/events/add": "Créer un événement",
     };
   
-    return titles[pathname] || "Titre par défaut"; // Si le chemin n'est pas trouvé, affiche un titre par défaut
+    return titles[pathname] || "Check To Pic la super application !"; // Si le chemin n'est pas trouvé, affiche un titre par défaut
   };
