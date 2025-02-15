@@ -75,20 +75,20 @@ router.post("/signin", (req, res) => {
   }
 });
 
-// Route pour rechercher un admin en particulier (à partir de l'email)
+// Route pour rechercher un admin en particulier (à partir de son token)
 
-router.post("/findByEmail", (req, res) => {
-  const fields = ["email"];
+router.post("/findByToken", (req, res) => {
+  const fields = ["token"];
 
   // Vérification de la présence des données
   if (!checkBody(req.body, fields)) {
     res.json({ result: false, message: "Champs manquants ou vides" });
   } else {
-    Admin.findOne({ email: req.body.email }).then((response) => {
+    Admin.findOne({ token: req.body.token }).then((response) => {
       if (!response) {
         res.json({
           result: false,
-          message: "Aucun admin trouvé avec cet email",
+          message: "Aucun admin trouvé avec ce token",
         });
       } else {
         res.json({ result: true, data: response });
@@ -136,7 +136,7 @@ router.delete("/deleteById", (req, res) => {
   }
 });
 
-// Route pour modifier les infos d'un admin (via son ID)
+// Route pour modifier les infos d'un admin (via son ID) (ne marche pas pour l'instant)
 router.put("/updateById", (req, res) => {
   const mandatoryFields = ["adminId"];
 
