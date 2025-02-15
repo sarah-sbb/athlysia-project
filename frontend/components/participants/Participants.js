@@ -35,6 +35,29 @@ const columns = [
     width: 160,
     valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
   },
+  {
+    field: 'modify',
+    headerName: 'Modify',
+    width: 130,
+    renderCell: (params) => (
+      <a href={`/ctp-admin/participants/modify/${params.row.id}`} style={{ color: 'blue' }}>
+        Modify
+      </a>
+    ),
+  },
+  {
+    field: 'delete',
+    headerName: 'Delete',
+    width: 130,
+    renderCell: (params) => (
+      <a
+        href={`/participant/delete/${params.row.id}`}
+        style={{ textDecoration: 'none', color: 'red' }}
+      >
+        Delete
+      </a>
+    ),
+  },
 ];
 
 const initialRows = [
@@ -75,14 +98,13 @@ export default function DataTable() {
   const deleteParticipant = (id) => {
     setRows(rows.filter((row) => row.id !== id));
   };
-//}
 
-//export default function DataTable() {
   return (
     <Paper sx={{ height: 400, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
+        rowCount={rows ? rows.length : 0}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}
         checkboxSelection
