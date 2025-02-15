@@ -33,6 +33,14 @@ a {
   text-decoration: none;
 }
 
+a:visited {
+  color: var(--main-text-color);
+}
+
+a:active {
+  font-weight: bold;
+}
+
 button {
   font-family: 'Quicksand', sans-serif;
 }
