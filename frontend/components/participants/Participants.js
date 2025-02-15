@@ -16,6 +16,8 @@ Si ça peut t'aider à y voir plus clair dans ton code.
 import { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
+import LargeButtonRed from '../smallComponents/LargeButtonRed';
+import LargeButtonWhite from '../smallComponents/LargeButtonWhite';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -79,7 +81,9 @@ export default function DataTable() {
 
 //export default function DataTable() {
   return (
-    <Paper sx={{ height: 400, width: '100%' }}>
+
+
+<Paper sx={{ height: 400, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -89,6 +93,8 @@ export default function DataTable() {
         sx={{ border: 0 }}
       />
     </Paper>
+
+
   );
 }
 
