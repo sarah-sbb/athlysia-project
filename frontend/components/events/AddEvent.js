@@ -1,13 +1,13 @@
-import styles from '../../styles/Events.module.css';
+import styles from '../../styles/formEvent.module.css';
 
 function AddEvent() {
   return (
-    <form>
-      <h2>Votre évènement</h2>
+    <form>      
       <div className={styles.formGroup}>
         <label>Nom de l'évènement</label>
         <input type="text" className={styles.formControl} />
       </div>
+
       <div className={styles.formGroup}>
         <label>Choix du groupe</label>
         <select className={styles.formSelect}>
@@ -17,6 +17,7 @@ function AddEvent() {
           <option value="groupe3">Groupe 3</option>
         </select>
       </div>
+
       <div className={styles.formGroup}>
         <label>Ajouter un participant</label>
         <select className={styles.formSelect}>
@@ -26,14 +27,17 @@ function AddEvent() {
           <option value="participant3">Participant 3</option>
         </select>
       </div>
+
       <div className={styles.formGroup}>
         <label>Date de début</label>
         <input type="date" className={styles.formControl} />
       </div>
+      
       <div className={styles.formGroup}>
         <label>Date de fin</label>
         <input type="date" className={styles.formControl} />
       </div>
+
       <div className={styles.formGroup}>
         <label>Lieu de l'évènement</label>
         <input type="text" className={styles.formControl} />
