@@ -19,3 +19,8 @@
   box-sizing: border-box;
   overflow: hidden;
 }
+
+.list {
+  display: list-item;
+list-style: square;
+}

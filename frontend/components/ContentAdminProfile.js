@@ -16,9 +16,7 @@ function Content() {
   const [picture, setPicture] = useState("");
 
   // Infos groupes gérés par l'admin
-  const [groupsData, setGroupsData] = useState([
-    { title: "", nbParticipants: 0 },
-  ]);
+  const [groupsData, setGroupsData] = useState([]);
   let groupsList = [];
 
   useEffect(() => {
@@ -46,16 +44,12 @@ function Content() {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          for (let element of data.data) {
-            setGroupsData([
-              // Problème ici: il ne me récupère pas tous les groupes
-              ...groupsData,
-              {
-                title: element.title,
-                nbParticipants: element.participantIds.length,
-              },
-            ]);
-          }
+          setGroupsData(
+            data.data.map((element) => ({
+              title: element.title,
+              nbParticipants: element.participantIds.length,
+            }))
+          );
         }
       });
   }, []);
@@ -63,7 +57,7 @@ function Content() {
   // Transformation des données brutes des groupes pour affichage
   groupsList = groupsData.map((e) => {
     return (
-      <li>
+      <li className={styles.list}>
         {e.title} - {e.nbParticipants} participant(s)
       </li>
     );
@@ -87,16 +81,16 @@ function Content() {
         />
       )}
       <ul>
-        <li>First name: {firstName}</li>
-        <li>Last name: {lastName}</li>
-        <li>Function: {fonction}</li>
-        <li>Role: {role}</li>
+        <li className={styles.list}><strong>First name</strong> {firstName}</li>
+        <li className={styles.list}><strong>Last name</strong> {lastName}</li>
+        <li className={styles.list}><strong>Function</strong> {fonction}</li>
+        <li className={styles.list}><strong>Role</strong> {role}</li>
       </ul>
       <span>Modifier mon profil</span>
       <h3>Mes stats</h3>
       <h3>Mes groupes</h3>
-      <ul>
-        {groupsData.length === 1 ? (
+      <ul> 
+        {groupsData.length === 0 ? (
           <span>Aucun groupe</span>
         ) : groupsList}
       </ul>
