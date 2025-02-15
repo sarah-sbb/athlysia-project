@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 
-export const getPageTitle = (pathname, firstName) => {
+export const getPageTitle = (pathname) => {
     const firstName = useSelector((state) => state.admin.value.infoAdmin.firstName);
     const titles = {
       "/ctp-admin": "Tableau de bord",
