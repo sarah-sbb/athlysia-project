@@ -1,0 +1,57 @@
+.formContainer {  display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.4fr 1.3fr 1.3fr;
+    gap: 40px;
+    grid-template-areas:
+      "formButton"
+      "formInfos"
+      "formAddCom";
+  }
+  
+  .formButton { 
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    grid-area: formButton; 
+}
+
+.formButton > button {
+    border: none;
+    color: white;
+    background-color: var(--warning-color);
+    padding: 10px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.formButton > button:first-child {
+    background-color: var(--main-bg-color);
+}
+  
+  .formInfos {  display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+      "formAddInfos formAddParticipants";
+    grid-area: formInfos;
+  }
+  
+  .formAddInfos { grid-area: formAddInfos; }
+
+  .formAddInfos > form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .formAddInfos > form > h2  {
+    margin: 0;
+  }
+  
+  .formAddParticipants { grid-area: formAddParticipants; }
+  
+  .formAddCom { grid-area: formAddCom; }
+  

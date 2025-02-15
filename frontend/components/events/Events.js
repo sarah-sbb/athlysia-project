@@ -2,7 +2,12 @@ import styles from '../../styles/Events.module.css';
 
 function Events() {
   return (
-<div>
+<div className={styles.eventContent}>
+  <div className={styles.eventGrid}> 
+    <h2>Titre</h2>
+    <div className={styles.eventGridData}>Data</div>
+  </div>
+
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
     Aliquam libero tortor, placerat ut nulla at, porttitor volutpat urna. 

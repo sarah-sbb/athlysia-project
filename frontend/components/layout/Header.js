@@ -1,15 +1,19 @@
 import styles from "../../styles/Header.module.css";
+
 import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { useSelector } from "react-redux";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Button from "@mui/material/Button";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
+import Image from "next/image";
+import Link from "next/link";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+
 function Header({ title }) {
+  
   //nettoyer le composant = Hassen
   const admin = useSelector((state) => state.admin.value);
   const [anchorEl, setAnchorEl] = useState(null);
