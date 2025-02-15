@@ -1,7 +1,7 @@
 import styles from '../../styles/Layout.module.css';
 
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { getPageTitle } from "../../data/pageTitle";
 
