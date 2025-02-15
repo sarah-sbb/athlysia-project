@@ -3,10 +3,12 @@ import Image from "next/image";
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';       <FontAwesomeIcon icon={faBookmark} />
 //import { faBookmark, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function Content() {
 
-  const email = {email: 'jean@gmail.com'}; // A DYNAMISER
+  // Récupération des infos admins du reducer
+  const token = useSelector((state) => state.admin.value.token);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -15,10 +17,10 @@ function Content() {
   const [picture, setPicture] = useState('');
 
   useEffect(() => {
-    fetch("http://localhost:3000/admins/findByEmail", {
+    fetch("http://localhost:3000/admins/findByToken" , {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(email),
+      body: JSON.stringify({token}),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -32,7 +34,7 @@ function Content() {
 
   return (
     <div className={styles.mainContent}>
-      {picture && <Image src={picture} alt="Ma photo de profil" width={100} height={100} />}
+      {picture ? <Image src={picture} alt="Ma photo de profil" width={100} height={100} /> : <Image src='/profil.webp' alt="Ma photo de profil" width={100} height={100} />} 
       <ul>
       <li>First name: {firstName}</li>
       <li>Last name: {lastName}</li>
