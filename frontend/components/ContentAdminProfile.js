@@ -45,20 +45,22 @@ function Content() {
     })
       .then((response) => response.json())
       .then((data) => {
-        for (let element of data.data) {
-          setGroupsData([
-            ...groupsData,
-            {
-              title: element.title,
-              nbParticipants: element.participantIds.length,
-            },
-          ]);
+        if (data.result) {
+          for (let element of data.data) {
+            setGroupsData([  // Problème ici: il ne me récupère pas tous les groupes
+              ...groupsData,
+              {
+                title: element.title,
+                nbParticipants: element.participantIds.length,
+              },
+            ]);
+          }
         }
       });
   }, []);
 
+  // Transformation des données brutes des groupes pour affichage
   groupsList = groupsData.map((e) => {
-    // Problème avec l'asynchronie - ça affiche le données de base
     return (
       <li>
         {e.title} - {e.nbParticipants} participant(s)
