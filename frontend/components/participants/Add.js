@@ -1,30 +1,27 @@
 import styles from '../../styles/Participants.module.css';
+
 import { buttonStyles } from '../modules/Button';
-import { Input } from '../modules/Input';
 
-//import Input from '../smallComponents/Input';
+import AddParticipant from "./AddParticipant";
 
-function Add() {
+function ParticipantPage () {
   return (
-    <div className={styles.participantContainer}>
-        <div>Ajout d'un participant</div>
-
-        <div className={styles.partButton}>
-          <button className={buttonStyles(
-            { color: 'primary' })}>
-              Title 1
-          </button>
-          <button className={buttonStyles(
-            { color: 'secondary' })}>
-              Title 2
-          </button>
-        </div>
-        <div>
-          <Input label="Un input" />
-        </div>
+    <div className={styles.partContainer}>
+            <div className={styles.partHeader}>
+              <p>Compléter les informations du participant</p>
+              <div className={styles.formButton}>
+                <button className={buttonStyles(
+                  { color: 'primary' })}>
+                  Enregistrer
+                </button>
+              </div>
+            </div>
+          <div>
+              <AddParticipant />
+          </div>
     </div>
 
   );
 }
 
-export default Add;
+export default ParticipantPage;

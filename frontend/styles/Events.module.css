@@ -4,9 +4,14 @@
   gap: 30px;
 }
 
+.form {
+  box-sizing: border-box;
+}
+
 .formInfos {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 100px;
 
 }
 

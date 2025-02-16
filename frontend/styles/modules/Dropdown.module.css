@@ -7,7 +7,7 @@
     font-size:var(--fontsize-paragraphe);
     padding: 20px 10px 15px 5px;
     display: block;
-    width: 250px;
+    width: 100%;
     border:none;
     border-bottom: 1px solid #757575;
     background-color: #fafafa;

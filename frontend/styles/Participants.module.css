@@ -4,7 +4,25 @@
     gap: 20px;
 }
 
-.partButton {
+.partHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  }
+  
+  .formAddParticipant {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+  }
+
+  .partGrid {
     display: flex;
     gap: 20px;
-}
+    justify-content: center;
+    align-items: center;
+  }
+
+  .partTitle {
+    font-size: 18px;
+  }
