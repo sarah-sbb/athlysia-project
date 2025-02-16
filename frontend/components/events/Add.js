@@ -1,4 +1,5 @@
 import styles from '../../styles/Events.module.css';
+
 import { buttonStyles } from '../modules/Button';
 
 import AddEvent from "./AddEvent";
@@ -8,14 +9,19 @@ import AddCom from "./AddCom";
 function EventPage () {
   return (
     <div className={styles.formContainer}>
+            <div className={styles.formHeader}>
+              <h2>Ajouter un évènement</h2>
               <div className={styles.formButton}>
-              <button className={buttonStyles({ color: 'primary' })}>
-                Enregistrer
-              </button>
-              <button className={buttonStyles({ color: 'secondary' })}>
-                Générer les autorisations
-              </button>
+                <button className={buttonStyles(
+                  { color: 'primary' })}>
+                  Enregistrer
+                </button>
+                <button className={buttonStyles(
+                  { color: 'secondary' })}>
+                  Générer les autorisations
+                </button>
               </div>
+            </div>
           <div class={styles.formInfos}>
             <div class={styles.formAddInfos}>
               <AddEvent />

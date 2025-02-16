@@ -1,20 +1,28 @@
 .btn {
     border: none;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 50px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     cursor: pointer;        
     font-weight: bold;
     padding : 10px 40px;
     text-transform: uppercase;
+    overflow: hidden; 
+    transition: color 0.4s ease-in-out; 
+}
+
+.btn:hover {
+    background-color: var(--warning-color-dark);
+    color: var(--light-color);
+    transition: ease-in-out 0.4s;
 }
 
 .btnSmall { padding: 0 20px; }
 
 .btnMedium { padding: 0 30px; }
 
-.btnPrimary {
-    color: var(--second-text-color);
+.btnPrimary {    
     background-color: var(--light-color);
+    color: var(--second-text-color);
 }
 
 .btnSecondary {

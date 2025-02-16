@@ -11,7 +11,9 @@
   --main-text-color: #040958;
   --second-text-color: #322F2F;
 
+  --success-color: #4CAF50;
   --warning-color: #DC1C4D;
+  --warning-color-dark: #8E0024;
 
   --fontsize-main: 2em;
   --fontsize-second: 1.5em;

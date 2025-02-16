@@ -1,11 +1,22 @@
-.eventGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr;
-  align-items: center;
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
-.eventGridData {
+.formInfos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+}
+
+.formHeader {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.formButton {
   display: flex;
-  justify-content: flex-end;
+  gap: 20px;
 }
