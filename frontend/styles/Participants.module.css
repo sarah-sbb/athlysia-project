@@ -1,0 +1,10 @@
+.participantContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.partButton {
+    display: flex;
+    gap: 20px;
+}

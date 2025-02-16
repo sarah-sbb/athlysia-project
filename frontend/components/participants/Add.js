@@ -1,14 +1,17 @@
 import styles from '../../styles/Participants.module.css';
-import LargeButtonRed from '../smallComponents/LargeButtonRed';
-import LargeButtonWhite from '../smallComponents/LargeButtonWhite';
+import { buttonStyles } from '../modules/Button';
 import Input from '../smallComponents/Input';
 
 function Add() {
   return (
-    <div>
+    <div className={styles.participantContainer}>
 <div>Ajout d'un participant</div>
-<LargeButtonRed title="title1"/>
-<LargeButtonWhite title="title2"/>
+
+<div className={styles.partButton}>
+  <button className={buttonStyles({ size: 'large', color: 'primary' })}>Title 1</button>
+  <button className={buttonStyles({ size: 'large', color: 'secondary' })}>Title 2</button>
+</div>
+
 <Input placeholder="my ass"/>
     </div>
 

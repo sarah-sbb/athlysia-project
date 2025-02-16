@@ -14,7 +14,7 @@
 .largeButtonWhite {
    border: none;
     color: black;
-    background-color: var(--forth-bg-color);
+    background-color: var(--light-color);
     padding: 10px 20px;
     cursor: pointer;
     text-transform: uppercase;
@@ -25,7 +25,7 @@
 
 .input {
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    background-color: var(--forth-bg-color);
+    background-color: var(--light-color);
     border-radius: 5px;
     border: none;
     padding: 10px 20px;
