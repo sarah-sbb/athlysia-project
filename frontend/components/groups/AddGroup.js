@@ -1,7 +1,9 @@
 import styles from '../../styles/Groups.module.css';
 import { Input } from '../modules/Input';
 import { Dropdown } from '../modules/Dropdown';
-import { buttonStyles } from '../modules/Button';
+import { Button } from '../modules/Button';
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 
 function AddGroup() {
   return (
@@ -15,10 +17,7 @@ function AddGroup() {
                 <li>Groupe 3</li>
             </Dropdown>
             {/* Button à revoir, réaliser les button carré spécial icon */}
-            <button className={buttonStyles(
-                { color: 'secondary', size: 'small' })}>
-                +
-            </button> 
+           <Button color="secondary" shape="square" icon={faPlus} />
         </div>
       </form>
   );
