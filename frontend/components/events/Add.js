@@ -10,7 +10,7 @@ function EventPage () {
   return (
     <div className={styles.formContainer}>
             <div className={styles.formHeader}>
-              <h2>Ajouter un évènement</h2>
+              <h2>Votre évènement</h2>
               <div className={styles.formButton}>
                 <button className={buttonStyles(
                   { color: 'primary' })}>
