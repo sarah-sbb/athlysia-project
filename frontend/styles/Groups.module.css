@@ -1,0 +1,24 @@
+.groupContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.groupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  }
+
+.groupInfos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+}
+
+.formAddGroupPart {
+    display: grid;
+    grid-template-columns: 1.5fr 0.5fr;
+    gap: 20px;
+    width: 100%;
+}

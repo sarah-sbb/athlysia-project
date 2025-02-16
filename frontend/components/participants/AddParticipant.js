@@ -2,7 +2,7 @@ import styles from '../../styles/Participants.module.css';
 import { Input } from '../modules/Input';
 import { Dropdown } from '../modules/Dropdown';
 
-function AddEvent() {
+function AddParticipant() {
   return (
     <div className={styles.formAddParticipant}>
       <form className={styles.form}>      
@@ -49,4 +49,4 @@ function AddEvent() {
   );
 }
 
-export default AddEvent;
+export default AddParticipant;
