@@ -9,10 +9,10 @@ function EventPage () {
   return (
     <div className={styles.formContainer}>
               <div className={styles.formButton}>
-              <button className={buttonStyles({ size: 'large', color: 'primary' })}>
+              <button className={buttonStyles({ color: 'primary' })}>
                 Enregistrer
               </button>
-              <button className={buttonStyles({ size: 'large', color: 'secondary' })}>
+              <button className={buttonStyles({ color: 'secondary' })}>
                 Générer les autorisations
               </button>
               </div>

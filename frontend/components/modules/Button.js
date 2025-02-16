@@ -8,7 +8,6 @@ export const buttonStyles = cva(
       size: {
         small: styles.btnSmall,
         medium: styles.btnMedium,
-        large: styles.btnLarge,
       },
       color: {
         primary: styles.btnPrimary,

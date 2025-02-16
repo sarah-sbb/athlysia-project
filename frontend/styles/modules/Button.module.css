@@ -4,15 +4,13 @@
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
     cursor: pointer;        
     font-weight: bold;
-    padding : 10px 0;
+    padding : 10px 40px;
     text-transform: uppercase;
 }
 
 .btnSmall { padding: 0 20px; }
 
-.btnMedium { padding: 10px 30px; }
-
-.btnLarge { padding: 10px 40px; }
+.btnMedium { padding: 0 30px; }
 
 .btnPrimary {
     color: var(--second-text-color);

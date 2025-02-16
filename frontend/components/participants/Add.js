@@ -8,8 +8,8 @@ function Add() {
 <div>Ajout d'un participant</div>
 
 <div className={styles.partButton}>
-  <button className={buttonStyles({ size: 'large', color: 'primary' })}>Title 1</button>
-  <button className={buttonStyles({ size: 'large', color: 'secondary' })}>Title 2</button>
+  <button className={buttonStyles({ color: 'primary' })}>Title 1</button>
+  <button className={buttonStyles({ color: 'secondary' })}>Title 2</button>
 </div>
 
 <Input placeholder="my ass"/>
