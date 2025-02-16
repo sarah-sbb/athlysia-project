@@ -47,7 +47,8 @@ function Content() {
       .then((data) => {
         if (data.result) {
           for (let element of data.data) {
-            setGroupsData([  // Problème ici: il ne me récupère pas tous les groupes
+            setGroupsData([
+              // Problème ici: il ne me récupère pas tous les groupes
               ...groupsData,
               {
                 title: element.title,
@@ -94,7 +95,11 @@ function Content() {
       <span>Modifier mon profil</span>
       <h3>Mes stats</h3>
       <h3>Mes groupes</h3>
-      <ul>{groupsList}</ul>
+      <ul>
+        {groupsData.length === 1 ? (
+          <span>Aucun groupe</span>
+        ) : groupsList}
+      </ul>
       <h3>Mes sorties</h3>
       <h3>Mes autorisations</h3>
     </div>
