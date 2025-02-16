@@ -13,14 +13,15 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 
 function Header({ title }) {
-  
-  //nettoyer le composant = Hassen
+  // Nettoyer le composant = Hassen
   const admin = useSelector((state) => state.admin.value);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -42,17 +43,17 @@ function Header({ title }) {
       </div>
       <div className={styles.headerNav}>
         <div className={styles.containerMenu}>
-          <p>{admin.infoAdmin.firstName}</p>
+          <p>{admin.infoAdmin?.firstName || "Nom utilisateur"}</p>
+
           <Button
             id="basic-button"
             aria-controls={open ? "basic-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
-            sx={{ color: "white", minWidth: "auto", pt: 1}}
-          
+            sx={{ color: "white", minWidth: "auto", pt: 1 }}
           >
-            <FontAwesomeIcon icon={faCaretDown} />
+            <FontAwesomeIcon icon={faCaretDown} className={styles.dropDownIcon} />
           </Button>
         </div>
 

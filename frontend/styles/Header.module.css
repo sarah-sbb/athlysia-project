@@ -31,3 +31,9 @@
  .containerMenu {
   display: flex;
  }
+
+ .dropDownIcon {
+  color: white;
+  font-size: 20px;
+  margin-left: 8px;
+}
