@@ -26,7 +26,7 @@
     align-items: center;
     padding: 10px 40px;
     box-sizing: border-box;
-    color: var(--light-text-color);
+    color: var(--light-color);
     background-color: var(--main-bg-color);
     grid-area: footerContent; 
 }

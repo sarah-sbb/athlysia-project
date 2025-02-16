@@ -59,7 +59,7 @@ gap: 20px;
   height: 16%;
   border-radius: 10px;
   border: none;
-  color: var(--light-text-color);
+  color: var(--light-color);
   font-size: var(--fontsize-third);
   cursor: pointer;
 }

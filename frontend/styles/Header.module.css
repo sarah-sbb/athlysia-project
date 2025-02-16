@@ -7,7 +7,7 @@
       "headerLogo headerTitle headerNav";
     grid-area: header;
     background-color: var(--main-bg-color);
-    color: var(--light-text-color);
+    color: var(--light-color);
     align-items: center;
 }
   

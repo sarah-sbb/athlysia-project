@@ -2,14 +2,14 @@
 
 :root { /* variables css dynamiques déclarées en amont pour éviter de répéter 
   à réutiliser sur les éléments que l'on souhaite exemple color: var(--main-bg-color); */ 
+  --light-color: #ffffff;
+  
   --main-bg-color: #2E35B3;
   --second-bg-color: #dde3fc;
   --third-bg-color: #BEBEBE;
-  --forth-bg-color: white;
 
   --main-text-color: #040958;
   --second-text-color: #322F2F;
-  --light-text-color: #ffffff;
 
   --warning-color: #DC1C4D;
 

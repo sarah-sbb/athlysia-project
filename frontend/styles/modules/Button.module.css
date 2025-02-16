@@ -1,38 +1,25 @@
 .btn {
     border: none;
-    cursor: pointer;
-    color: white;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;        
+    font-weight: bold;
+    padding : 10px 0;
+    text-transform: uppercase;
+}
+
+.btnSmall { padding: 0 20px; }
+
+.btnMedium { padding: 10px 30px; }
+
+.btnLarge { padding: 10px 40px; }
+
+.btnPrimary {
+    color: var(--second-text-color);
+    background-color: var(--light-color);
+}
+
+.btnSecondary {
+    color: var(--light-color);
     background-color: var(--warning-color);
-    padding: 10px 20px;
-    
-    text-transform: uppercase;
-    font-weight: bold;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-
-}
-
-.largeButtonRed {
-
-
-}
-
-.largeButtonWhite {
-   border: none;
-    color: black;
-    background-color: var(--forth-bg-color);
-    padding: 10px 20px;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-weight: bold;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.input {
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    background-color: var(--forth-bg-color);
-    border-radius: 5px;
-    border: none;
-    padding: 10px 20px;
 }
