@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 
-const buttonStyles = cva(
+export const buttonStyles = cva(
   'btn', // base class
   {
     variants: {
