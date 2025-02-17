@@ -3,7 +3,8 @@ import Image from "next/image";
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';       <FontAwesomeIcon icon={faBookmark} />
 //import { faBookmark, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { modify } from "../reducers/admin";
 import {
   Modal,
   Box,
@@ -17,7 +18,12 @@ import {
 } from "@mui/material";
 
 function Content() {
+
+  const dispatch = useDispatch();
   const token = useSelector((state) => state.admin.value.token);
+  
+  const reducertest = useSelector((state) => state.admin.value);
+  console.log(reducertest)
 
   // Modal modifications des infos admin
   const [open, setOpen] = useState(false);
@@ -28,6 +34,9 @@ function Content() {
   const [position, setPosition] = useState("");
   const [role, setRole] = useState("");
   const [picture, setPicture] = useState("");
+
+  // Reload test
+  const [forceReload, setForceReload] = useState(false);
 
   // Infos groupes gérés par l'admin
   const [groupsData, setGroupsData] = useState([]);
@@ -57,7 +66,6 @@ function Content() {
   };
 
   const handleModify = () => {
-    console.log(token)
     setOpen(!open);
     fetch("http://localhost:3000/admins/updateByToken", {
       method: "PUT",
@@ -66,7 +74,10 @@ function Content() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        if (data.result) {
+          dispatch(modify(data.data))
+          setForceReload(!forceReload);
+        }
       });
   };
 
@@ -159,7 +170,7 @@ function Content() {
           );
         }
       });
-  }, []);
+  }, [forceReload]);
 
   // Transformation des données brutes des groupes pour affichage
   groupsList = groupsData.map((e) => {
