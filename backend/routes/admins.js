@@ -7,7 +7,7 @@ const { checkBody } = require("../modules/checkBody");
 
 // Route pour l'ajout d'un admin en BDD (signup)
 router.post("/signup", (req, res) => {
-// V1
+  // V1
   // const fields = [
   //   "firstName",
   //   "lastName",
@@ -19,11 +19,10 @@ router.post("/signup", (req, res) => {
   // ];
   // if (!checkBody(req.body, fields)) {
   //   res.json({ result: false, message: "Champs vides" });
-  // } 
+  // }
   // Vérification de la présence des données
   if (!checkBody(req.body)) {
     res.json({ result: false, message: "Champs vides" });
-   
   } else {
     // Check si l'admin n'existe pas déjà via son email
     Admin.findOne({ email: req.body.email }).then((response) => {
@@ -44,7 +43,17 @@ router.post("/signup", (req, res) => {
         });
 
         newAdmin.save().then((response) => {
-          res.json({ result: true, token: response.token, etablissement: response.etablissement, role: response.role, infoAdmin : {firstName: response.firstName, lastName: response.lastName, position: response.position } });
+          res.json({
+            result: true,
+            token: response.token,
+            etablissement: response.etablissement,
+            role: response.role,
+            infoAdmin: {
+              firstName: response.firstName,
+              lastName: response.lastName,
+              position: response.position,
+            },
+          });
         });
       }
     });
@@ -64,7 +73,17 @@ router.post("/signin", (req, res) => {
         response &&
         bcrypt.compareSync(req.body.password, response.password)
       ) {
-        res.json({ result: true, token: response.token, etablissement: response.etablissement, role: response.role, infoAdmin : {firstName: response.firstName, lastName: response.lastName, position: response.position } });
+        res.json({
+          result: true,
+          token: response.token,
+          etablissement: response.etablissement,
+          role: response.role,
+          infoAdmin: {
+            firstName: response.firstName,
+            lastName: response.lastName,
+            position: response.position,
+          },
+        });
       } else {
         res.json({
           result: false,
@@ -144,51 +163,55 @@ router.put("/updateByToken", (req, res) => {
   if (!checkBody(req.body, mandatoryFields)) {
     res.json({ result: false, message: "Token manquant ou vide" });
   } else {
-
     let modifiedObject = {};
 
     // Modification de firstName
     if (req.body.firstName) {
-      modifiedObject.firstName = req.body.firstName
+      modifiedObject.firstName = req.body.firstName;
+    }
+
+    // Modification de lastName
+    if (req.body.lastName) {
+      modifiedObject.lastName = req.body.lastName;
     }
 
     // Modification de position
     if (req.body.position) {
-      modifiedObject.position = req.body.position
+      modifiedObject.position = req.body.position;
     }
 
     // Modification de role
     if (req.body.role) {
-      modifiedObject.role = req.body.role
+      modifiedObject.role = req.body.role;
     }
 
     // Modification de pictureUrl
     if (req.body.pictureUrl) {
-      modifiedObject.pictureUrl = req.body.pictureUrl
+      modifiedObject.pictureUrl = req.body.pictureUrl;
     }
 
-     // Modification de email
-     if (req.body.email) {
-      modifiedObject.email = req.body.email
+    // Modification de email
+    if (req.body.email) {
+      modifiedObject.email = req.body.email;
     }
 
     // Modification de etablissement
     if (req.body.etablissement) {
-      modifiedObject.etablissement = req.body.etablissement
+      modifiedObject.etablissement = req.body.etablissement;
     }
 
     // Modification de password
     if (req.body.password) {
-      modifiedObject.password = bcrypt.hashSync(req.body.password, 10)
+      modifiedObject.password = bcrypt.hashSync(req.body.password, 10);
     }
 
-    Admin.updateOne({token: req.body.token}, modifiedObject).then((data) => {
+    Admin.updateOne({ token: req.body.token }, modifiedObject).then((data) => {
       if (data.modifiedCount === 1) {
-        res.json({result: true, modifiedFields: Object.keys(modifiedObject)})
-          }  else {
-            res.json({ result: false, message: "Aucun champ modifié"})
-          }
-    })
+        res.json({ result: true, modifiedFields: Object.keys(modifiedObject) });
+      } else {
+        res.json({ result: false, message: "Aucun champ modifié" });
+      }
+    });
   }
 });
 
