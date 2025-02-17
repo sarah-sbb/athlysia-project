@@ -208,7 +208,10 @@ router.put("/updateByToken", (req, res) => {
 
     Admin.updateOne({ token: req.body.token }, modifiedObject).then((data) => {
       if (data.modifiedCount === 1) {
-        res.json({ result: true, modifiedFields: Object.keys(modifiedObject) });
+        Admin.findOne({ token: req.body.token }).select("-_id -password").then((data) => {
+          res.json({ result: true, data });
+        })
+        
       } else {
         res.json({ result: false, message: "Aucun champ modifié" });
       }
