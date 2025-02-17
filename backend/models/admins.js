@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const adminSchema = mongoose.Schema ({
     firstName:String,
     lastName:String,
-    function:String,
+    position:String,
     role: String,
     pictureUrl:String,
     email: String,
