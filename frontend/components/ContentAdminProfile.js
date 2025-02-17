@@ -9,23 +9,23 @@ import {
   Box,
   Button,
   TextField,
-  Typography,
-  Select,
-  InputLabel,
-  MenuItem,
-  FormControl,
+  // Typography,
+  // Select,
+  // InputLabel,
+  // MenuItem,
+  // FormControl,
 } from "@mui/material";
 
 function Content() {
   const token = useSelector((state) => state.admin.value.token);
 
   // Modal modifications des infos admin
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   // Infos admin
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [fonction, setFonction] = useState("");
+  const [position, setPosition] = useState("");
   const [role, setRole] = useState("");
   const [picture, setPicture] = useState("");
 
@@ -33,25 +33,84 @@ function Content() {
   const [groupsData, setGroupsData] = useState([]);
   let groupsList = [];
 
+  // Formulaire pour les modifications des infos admins
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    position: "",
+    role: "",
+    email: "",
+    etablissement: "",
+    password: "",
+  });
+
   const handleToggleModal = () => {
     setOpen(!open);
   };
 
+  const handleChangeForm = (e) => {
+    const { name, value } = e.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  };
+
   const handleModify = () => {
-    console.log('test')
-  }
+    console.log(token)
+    setOpen(!open);
+    fetch("http://localhost:3000/admins/updateByToken", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({...form, token}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
 
   let modificationPopin = (
     <Modal open={open} onClose={handleToggleModal}>
       <Box sx={styleModal}>
         {/* Formulaire */}
         <Box sx={styleContainer}>
-          <TextField type="text" label="Prénom" name="firstName" />
-          <TextField type="text" label="Nom" name="lastName" />
-          <TextField type="text" label="Fonction" name="function" />
-          <TextField type="text" label="Email" name="email" />
-          <TextField type="text" label="URL photo" name="pictureUrl" />
-          <TextField type="password" label="Mot de passe" name="password" />
+          <TextField
+            type="text"
+            label="Prénom"
+            name="firstName"
+            onChange={handleChangeForm}
+          />
+          <TextField
+            type="text"
+            label="Nom"
+            name="lastName"
+            onChange={handleChangeForm}
+          />
+          <TextField
+            type="text"
+            label="Position"
+            name="position"
+            onChange={handleChangeForm}
+          />
+          <TextField
+            type="text"
+            label="Email"
+            name="email"
+            onChange={handleChangeForm}
+          />
+          <TextField
+            type="text"
+            label="URL photo"
+            name="pictureUrl"
+            onChange={handleChangeForm}
+          />
+          <TextField
+            type="password"
+            label="Mot de passe"
+            name="password"
+            onChange={handleChangeForm}
+          />
         </Box>
         {/* Footer avec les deux boutons */}
 
@@ -78,7 +137,7 @@ function Content() {
       .then((data) => {
         setFirstName(data.data.firstName);
         setLastName(data.data.lastName);
-        setFonction(data.data.function);
+        setPosition(data.data.position);
         setRole(data.data.role);
         setPicture(data.data.pictureUrl);
       });
@@ -136,7 +195,7 @@ function Content() {
           <strong>Last name</strong> {lastName}
         </li>
         <li className={styles.list}>
-          <strong>Function</strong> {fonction}
+          <strong>Position</strong> {position}
         </li>
         <li className={styles.list}>
           <strong>Role</strong> {role}

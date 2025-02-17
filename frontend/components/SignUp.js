@@ -33,7 +33,7 @@ function SignUp({ open, handleToggleModal }) {
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
-    function: "",
+    position: "",
     role: "",
     email: "",
     etablissement: "",
@@ -74,7 +74,7 @@ function SignUp({ open, handleToggleModal }) {
       body: JSON.stringify({
         firstName: form.firstName,
         lastName: form.lastName,
-        function: form.function,
+        position: form.position,
         role: form.role,
         email: form.email,
         etablissement: form.etablissement,
@@ -193,9 +193,9 @@ function SignUp({ open, handleToggleModal }) {
           />
           <TextField
             type="text"
-            label="Fonction"
-            name="function"
-            value={form.function}
+            label="Position"
+            name="position"
+            value={form.position}
             onChange={handleChange}
           />
           <TextField
