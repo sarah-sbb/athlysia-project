@@ -17,13 +17,10 @@ import {
   // FormControl,
 } from "@mui/material";
 
-function Content() {
-
+function ContentAdminProfile() {
+  // Initialisation redux
   const dispatch = useDispatch();
   const token = useSelector((state) => state.admin.value.token);
-  
-  const reducertest = useSelector((state) => state.admin.value);
-  console.log(reducertest)
 
   // Modal modifications des infos admin
   const [open, setOpen] = useState(false);
@@ -70,12 +67,12 @@ function Content() {
     fetch("http://localhost:3000/admins/updateByToken", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({...form, token}),
+      body: JSON.stringify({ ...form, token }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          dispatch(modify(data.data))
+          dispatch(modify(data.data));
           setForceReload(!forceReload);
         }
       });
@@ -290,4 +287,4 @@ const styleSuccesSignUp = {
   color: "green",
 };
 
-export default Content;
+export default ContentAdminProfile;
