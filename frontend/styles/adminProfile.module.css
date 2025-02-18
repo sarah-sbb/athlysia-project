@@ -38,6 +38,12 @@
 
 .tabBar {
   width: 80vw;
+  display: flex;
+}
+
+.tab {
+  width: 20%;
+  padding: 20px
 }
 
 .upperInfos {

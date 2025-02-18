@@ -1,10 +1,10 @@
-import styles from "../styles/adminProfile.module.css";
+import styles from "../../styles/adminProfile.module.css";
 import Image from "next/image";
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';       <FontAwesomeIcon icon={faBookmark} />
 //import { faBookmark, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { modify } from "../reducers/admin";
+import { modify } from "../../reducers/admin";
 import {
   Modal,
   Box,
@@ -16,8 +16,12 @@ import {
   // MenuItem,
   // FormControl,
 } from "@mui/material";
+import AdminProfileStats from "./AdminProfileStats";
+import AdminProfileAuthorizations from "./AdminProfileAuthorizations";
+import AdminProfileGroups from "./AdminProfileGroups";
+import AdminProfileEvents from "./AdminProfileEvents";
 
-function ContentAdminProfile() {
+function AdminProfileMain() {
   // Initialisation redux
   const dispatch = useDispatch();
   const token = useSelector((state) => state.admin.value.token);
@@ -32,12 +36,18 @@ function ContentAdminProfile() {
   const [role, setRole] = useState("");
   const [picture, setPicture] = useState("");
 
-  // Reload test
+  // Toggles pour les tabs
+  const [showStats, setShowStats] = useState(true);
+  const [showGroups, setShowGroups] = useState(false);
+  const [showEvents, setShowEvents] = useState(false);
+  const [showAuthorizations, setShowAuthorizations] = useState(false);
+
+  // Force reload (à optimiser si j'ai le temps)
   const [forceReload, setForceReload] = useState(false);
 
-  // Infos groupes gérés par l'admin
-  const [groupsData, setGroupsData] = useState([]);
-  let groupsList = [];
+  // // Infos groupes gérés par l'admin
+  // const [groupsData, setGroupsData] = useState([]);
+  // let groupsList = [];
 
   // Formulaire pour les modifications des infos admins
   const [form, setForm] = useState({
@@ -66,23 +76,23 @@ function ContentAdminProfile() {
         setPicture(data.data.pictureUrl);
       });
 
-    // Récupération des infos relatives aux groupes gérés par l'admin
-    fetch("http://localhost:3000/groups/findAllGroupsByAdminToken", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          setGroupsData(
-            data.data.map((element) => ({
-              title: element.title,
-              nbParticipants: element.participantIds.length,
-            }))
-          );
-        }
-      });
+    // // Récupération des infos relatives aux groupes gérés par l'admin
+    // fetch("http://localhost:3000/groups/findAllGroupsByAdminToken", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ token }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     if (data.result) {
+    //       setGroupsData(
+    //         data.data.map((element) => ({
+    //           title: element.title,
+    //           nbParticipants: element.participantIds.length,
+    //         }))
+    //       );
+    //     }
+    //   });
   }, [forceReload]);
 
   const handleToggleModal = () => {
@@ -111,6 +121,33 @@ function ContentAdminProfile() {
           setForceReload(!forceReload);
         }
       });
+  };
+
+  const handleToggleTab = (tabName) => {
+    if (tabName === "stats") {
+      setShowStats(!showStats);
+      setShowGroups(false);
+      setShowEvents(false);
+      setShowAuthorizations(false);
+    }
+    if (tabName === "groups") {
+      setShowGroups(!showGroups);
+      setShowStats(false);
+      setShowEvents(false);
+      setShowAuthorizations(false);
+    }
+    if (tabName === "events") {
+      setShowEvents(!showEvents);
+      setShowGroups(false);
+      setShowStats(false);
+      setShowAuthorizations(false);
+    }
+    if (tabName === "authorizations") {
+      setShowAuthorizations(!showAuthorizations);
+      setShowGroups(false);
+      setShowEvents(false);
+      setShowStats(false);
+    }
   };
 
   let modificationPopin = (
@@ -169,14 +206,14 @@ function ContentAdminProfile() {
     </Modal>
   );
 
-  // Transformation des données brutes des groupes pour affichage
-  groupsList = groupsData.map((e) => {
-    return (
-      <li className={styles.eventList}>
-        {e.title} - {e.nbParticipants} participant(s)
-      </li>
-    );
-  });
+  // // Transformation des données brutes des groupes pour affichage
+  // groupsList = groupsData.map((e) => {
+  //   return (
+  //     <li className={styles.eventList}>
+  //       {e.title} - {e.nbParticipants} participant(s)
+  //     </li>
+  //   );
+  // });
 
   return (
     <div className={styles.mainContent}>
@@ -213,23 +250,27 @@ function ContentAdminProfile() {
         </div>
       </div>
       <div className={styles.tabBar}>
-        <h3>Mes stats</h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a lectus
-          libero. Nunc ut nisl tortor. Maecenas nec mollis felis, non vulputate
-          lacus. Nullam pretium risus odio, eget posuere erat fringilla ac.
-          Suspendisse non sollicitudin elit. Vestibulum pulvinar in ligula at
-          placerat. Nullam tempus, justo non consectetur vulputate, urna dui
-          pellentesque augue, sit amet aliquam tellus est et metus. Quisque quis
-          lectus nec mauris vulputate dictum. Nulla facilisi.
-        </p>
-        <h3>Mes groupes</h3>
-        <ul>
-          {groupsData.length === 0 ? <span>Aucun groupe</span> : groupsList}
-        </ul>
-        <h3>Mes sorties</h3>
-        <h3>Mes autorisations</h3>
+        <h3 className={styles.tab} onClick={() => handleToggleTab("stats")}>
+          Mes stats
+        </h3>
+        <h3 className={styles.tab} onClick={() => handleToggleTab("groups")}>
+          Mes groupes
+        </h3>
+        <h3 className={styles.tab} onClick={() => handleToggleTab("events")}>
+          Mes sorties
+        </h3>
+        <h3
+          className={styles.tab}
+          onClick={() => handleToggleTab("authorizations")}
+        >
+          Mes autorisations
+        </h3>
       </div>
+      {showStats && <AdminProfileStats />}
+      {showGroups && <AdminProfileGroups />}
+      {showEvents && <AdminProfileEvents />}
+      {showAuthorizations && <AdminProfileAuthorizations />}
+      {/* groupsData.length === 0 ? <span>Aucun groupe</span> : groupsList */}
     </div>
   );
 }
@@ -297,4 +338,4 @@ const styleSuccesSignUp = {
   color: "green",
 };
 
-export default ContentAdminProfile;
+export default AdminProfileMain;
