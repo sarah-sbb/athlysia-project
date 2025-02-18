@@ -16,9 +16,6 @@ import { login } from "../reducers/admin";
 import { useDispatch, useSelector } from "react-redux";
 
 function SignUp({ open, handleToggleModal }) {
-
-  
-
   //redux
   const dispatch = useDispatch();
   const admin = useSelector((state) => state.admin.value);
@@ -52,7 +49,6 @@ function SignUp({ open, handleToggleModal }) {
     }));
   };
 
-
   useEffect(() => {
     fetch("http://localhost:3000/etablissements/allEtablissements")
       .then((response) => response.json())
@@ -85,15 +81,21 @@ function SignUp({ open, handleToggleModal }) {
       .then((data) => {
         if (data.result) {
           console.log("user créé");
-          dispatch(login({token : data.token, etablissement : data.etablissement, role :data.role, infoAdmin : data.infoAdmin}))
-          router.push("/ctp-admin");
+          dispatch(
+            login({
+              token: data.token,
+              etablissement: data.etablissement,
+              role: data.role,
+              infoAdmin: data.infoAdmin,
+            })
+          );
+          router.push("/ctp-admin");Ò
         } else {
           console.log(data.result, "erreur : ", data.message);
           setIsCorrect(!isCorrect);
         }
       });
   };
-
 
   const handleSelectChange = (event) => {
     setEtablissement(event.target.value);

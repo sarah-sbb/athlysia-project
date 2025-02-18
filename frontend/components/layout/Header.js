@@ -43,7 +43,7 @@ function Header({ title }) {
       </div>
       <div className={styles.headerNav}>
         <div className={styles.containerMenu}>
-          <p>{admin.infoAdmin?.firstName || "Nom utilisateur"}</p>
+          <p>{"Bonjour " + admin.infoAdmin?.firstName || "Nom utilisateur"}</p>
 
           <Button
             id="basic-button"
