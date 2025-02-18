@@ -18,7 +18,7 @@ import {
 function AdminProfileEvents() {
   return (
     <div
-    style={{ border: "1px dashed", color: "green", height: "100px", display: "flex", alignItems:"center", justifyContent: "center" }}
+    style={{ border: "1px dashed", color: "green", height: "200px", display: "flex", alignItems:"center", justifyContent: "center" }}
     >
       Les sorties seront ici
     </div>

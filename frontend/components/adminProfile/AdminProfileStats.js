@@ -18,7 +18,7 @@ import {
 function AdminProfileStats() {
   return (
     <div
-      style={{ border: "1px dashed", color: "red", height: "100px", display: "flex", alignItems:"center", justifyContent: "center" }}
+      style={{ border: "1px dashed", color: "red", height: "200px", display: "flex", alignItems:"center", justifyContent: "center" }}
     >
       Les stats seront ici
     </div>
