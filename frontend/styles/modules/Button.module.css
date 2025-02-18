@@ -16,9 +16,9 @@
     transition: ease-in-out 0.4s;
 }
 
-.btnSmall { padding: 0 10px; }
+.btnSmall { padding: 10px 10px; }
 
-.btnMedium { padding: 0 30px; }
+.btnMedium { padding: 10px 30px; }
 
 .btnPrimary {    
     background-color: var(--light-color);

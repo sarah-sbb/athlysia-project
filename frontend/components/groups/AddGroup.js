@@ -17,7 +17,6 @@ function AddGroup() {
                 <li>Groupe 3</li>
             </Dropdown>
             {/* Button à revoir, réaliser les button carré spécial icon */}
-           <Button color="secondary" shape="square" icon={faPlus} />
         </div>
       </form>
   );
