@@ -18,9 +18,9 @@ import {
 function AdminProfileEvents() {
   return (
     <div
-      style={{ backgroundColor: "blue", color: "white", textAlign: "center" }}
+    style={{ border: "1px dashed", color: "green", height: "100px", display: "flex", alignItems:"center", justifyContent: "center" }}
     >
-      Liste des sorties ici
+      Les sorties seront ici
     </div>
   );
 }

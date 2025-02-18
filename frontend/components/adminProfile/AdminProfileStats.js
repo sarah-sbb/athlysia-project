@@ -18,9 +18,9 @@ import {
 function AdminProfileStats() {
   return (
     <div
-      style={{ backgroundColor: "red", color: "white", textAlign: "center" }}
+      style={{ border: "1px dashed", color: "red", height: "100px", display: "flex", alignItems:"center", justifyContent: "center" }}
     >
-      Liste des stats ici
+      Les stats seront ici
     </div>
   );
 }

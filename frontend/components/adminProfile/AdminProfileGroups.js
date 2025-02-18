@@ -18,9 +18,9 @@ import {
 function AdminProfileGroups() {
   return (
     <div
-      style={{ backgroundColor: "green", color: "white", textAlign: "center" }}
+    style={{ border: "1px dashed", color: "blue", height: "100px", display: "flex", alignItems:"center", justifyContent: "center" }}
     >
-      Liste des groupes ici
+      Les groupes seront ici
     </div>
   );
 }

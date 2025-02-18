@@ -18,9 +18,9 @@ import {
 function AdminProfileAuthorizations() {
   return (
     <div
-      style={{ backgroundColor: "orange", color: "white", textAlign: "center" }}
+    style={{ border: "1px dashed", color: "orange", height: "100px", display: "flex", alignItems:"center", justifyContent: "center" }}
     >
-      Liste des autorisations ici
+      Les groupes seront ici
     </div>
   );
 }
