@@ -172,7 +172,7 @@ function ContentAdminProfile() {
   // Transformation des données brutes des groupes pour affichage
   groupsList = groupsData.map((e) => {
     return (
-      <li className={styles.list}>
+      <li className={styles.eventList}>
         {e.title} - {e.nbParticipants} participant(s)
       </li>
     );

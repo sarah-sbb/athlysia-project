@@ -44,7 +44,7 @@
   display: flex;
   width: 100vw;
   height: 30vh;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .modify {
@@ -59,4 +59,9 @@
 .fullName {
   font-weight: 1000;
   margin-bottom:20px;
+}
+
+.eventList {
+  display: list-item;
+  list-style: square;
 }
