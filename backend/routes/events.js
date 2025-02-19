@@ -36,7 +36,7 @@ router.post("/add", (req, res) => {
       dateStart: req.body.dateStart,
       dateEnd: req.body.dateEnd,
       place: req.body.place,
-      supportsCom: req.body.supportsCom
+      supportsCom: req.body.supportsCom,
     });
 
     newEvent.save().then((response) => {
@@ -51,7 +51,7 @@ router.post("/add", (req, res) => {
 la router.get("/eventsByAdmin/:token", (req, res) => { 
 permet de gérer explicitement les requêtes GET sur l'URL /eventsByAdmin/:token
 où :token est un paramètre de la requête
-*/ 
+*/
 router.get("/eventsByAdmin/:token", (req, res) => {
   const fields = ["token"];
   let adminId = "";
@@ -60,11 +60,14 @@ router.get("/eventsByAdmin/:token", (req, res) => {
   if (!checkBody(req.params, fields)) {
     res.json({ result: false, message: "Champs manquants ou vides" });
   } else {
-  // on vérifie si l'admin correspond au bon token
-    Admin.findOne({ adminId: req.params.token }).then((data) => {
+    // on vérifie si l'admin correspond au bon token
+    Admin.findOne({ token: req.params.token }).then((data) => {
       if (!data) {
-        res.json({ result : false, message: "Aucun admin trouvé avec ce token" })
-        } else {
+        res.json({
+          result: false,
+          message: "Aucun admin trouvé avec ce token",
+        });
+      } else {
         adminId = data._id;
         // adminId: adminID pour éviter tout ambiguité, on est sur que c'est l'adminId de l'admin qui est connecté
         Event.find({ adminId: adminId }).then((events) => {
@@ -111,16 +114,18 @@ router.get("/participantsByEtablissement/: ObjectId", (req, res) => {
   if (!checkBody(req.params, fields)) {
     res.json({ result: false, message: "Champs manquants ou vides" });
   } else {
-    Participant.find({ etablissementId: req.params.ObjectId }).then((response) => {
-      if (response.length === 0) {
-        res.json({
-          result: false,
-          message: "Aucun groupe trouvé pour cet établissement",
-        });
-      } else {
-        res.json({ result: true, data: response });
+    Participant.find({ etablissementId: req.params.ObjectId }).then(
+      (response) => {
+        if (response.length === 0) {
+          res.json({
+            result: false,
+            message: "Aucun groupe trouvé pour cet établissement",
+          });
+        } else {
+          res.json({ result: true, data: response });
+        }
       }
-    });
+    );
   }
 });
 
