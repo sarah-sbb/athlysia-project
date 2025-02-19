@@ -12,9 +12,13 @@ var participantsRouter = require('./routes/participants');
 var eventsRouter= require('./routes/events');
 var etablissementsRouter = require('./routes/etablissements');
 
+
 var app = express();
 const cors = require('cors');
 app.use(cors());
+
+const fileUpload = require('express-fileupload');
+app.use(fileUpload());
 
 app.use(logger('dev'));
 app.use(express.json());

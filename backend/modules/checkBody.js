@@ -1,6 +1,6 @@
 // Deuxième version de CheckBody utilisée pour la route "updateByToken"
 
-function checkBodyModify(obj, arr) {
+function checkBody(obj, arr) {
 
     for (let element of arr) {
         if (!Object.keys(obj).includes(element)) {
@@ -16,4 +16,4 @@ return true;
 
 }
 
-module.exports = { checkBodyModify };
+module.exports = { checkBody };

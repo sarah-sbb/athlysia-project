@@ -4,7 +4,6 @@ const Admin = require("../models/admins");
 const uid2 = require("uid2");
 const bcrypt = require("bcrypt");
 const { checkBody } = require("../modules/checkBody_OLD");
-const { checkBodyModify } = require("../modules/checkBody");
 
 // Route pour l'ajout d'un admin en BDD (signup)
 router.post("/signup", (req, res) => {
@@ -159,7 +158,7 @@ router.put("/updateByToken", (req, res) => {
   const mandatoryFields = ["token"];
 
   // Vérification de la présence des données
-  if (!checkBodyModify(req.body, mandatoryFields)) {
+  if (!checkBody(req.body, mandatoryFields)) {
     res.json({ result: false, message: "Token manquant ou vide" });
   } else {
     let modifiedObject = {};
@@ -216,5 +215,11 @@ router.put("/updateByToken", (req, res) => {
     });
   }
 });
+
+// Route pour gérer la mise à jour de la photo admin (peut-être à fusionner avec la route /updateByToken"
+router.post("/updatePicture", (req, res) => {
+  console.log(req.files.newAdminPicture)
+})
+
 
 module.exports = router;
