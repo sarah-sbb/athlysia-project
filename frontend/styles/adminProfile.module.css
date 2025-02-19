@@ -48,9 +48,11 @@
 
 .upperInfos {
   display: flex;
+  align-items: center;
   width: 100vw;
   height: 30vh;
   margin-bottom: 30px;
+  gap: 10px;
 }
 
 .modify {

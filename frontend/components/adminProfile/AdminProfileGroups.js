@@ -1,8 +1,6 @@
 import styles from "../../styles/adminProfile.module.css";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { modify } from "../../reducers/admin";
 import {
   Modal,
   Box,
