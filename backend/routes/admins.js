@@ -3,26 +3,24 @@ var router = express.Router();
 const Admin = require("../models/admins");
 const uid2 = require("uid2");
 const bcrypt = require("bcrypt");
-const { checkBody } = require("../modules/checkBody");
-const { checkBodyModify } = require("../modules/checkBodyModify");
+const { checkBody } = require("../modules/checkBody_OLD");
+const { checkBodyModify } = require("../modules/checkBody");
 
 // Route pour l'ajout d'un admin en BDD (signup)
 router.post("/signup", (req, res) => {
-  // V1
-  // const fields = [
-  //   "firstName",
-  //   "lastName",
-  //   "function",
-  //   "role",
-  //   "email",
-  //   "password",
-  //   "etablissement",
-  // ];
-  // if (!checkBody(req.body, fields)) {
-  //   res.json({ result: false, message: "Champs vides" });
-  // }
+
+  const fields = [
+    "firstName",
+    "lastName",
+    "function",
+    "role",
+    "email",
+    "password",
+    "etablissement",
+  ];
+
   // Vérification de la présence des données
-  if (!checkBody(req.body)) {
+  if (!checkBody(req.body, fields)) {
     res.json({ result: false, message: "Champs vides" });
   } else {
     // Check si l'admin n'existe pas déjà via son email
