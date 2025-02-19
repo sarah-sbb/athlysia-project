@@ -50,6 +50,41 @@ function ContentAdminProfile() {
     password: "",
   });
 
+  useEffect(() => {
+    // Récupération des infos relatives à l'admin lui-même
+    fetch("http://localhost:3000/admins/findByToken", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFirstName(data.data.firstName);
+        setLastName(data.data.lastName);
+        setPosition(data.data.position);
+        setRole(data.data.role);
+        setPicture(data.data.pictureUrl);
+      });
+
+    // Récupération des infos relatives aux groupes gérés par l'admin
+    fetch("http://localhost:3000/groups/findAllGroupsByAdminToken", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          setGroupsData(
+            data.data.map((element) => ({
+              title: element.title,
+              nbParticipants: element.participantIds.length,
+            }))
+          );
+        }
+      });
+  }, [forceReload]);
+
   const handleToggleModal = () => {
     setOpen(!open);
   };
@@ -134,45 +169,10 @@ function ContentAdminProfile() {
     </Modal>
   );
 
-  useEffect(() => {
-    // Récupération des infos relatives à l'admin lui-même
-    fetch("http://localhost:3000/admins/findByToken", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setFirstName(data.data.firstName);
-        setLastName(data.data.lastName);
-        setPosition(data.data.position);
-        setRole(data.data.role);
-        setPicture(data.data.pictureUrl);
-      });
-
-    // Récupération des infos relatives aux groupes gérés par l'admin
-    fetch("http://localhost:3000/groups/findAllGroupsByAdminToken", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          setGroupsData(
-            data.data.map((element) => ({
-              title: element.title,
-              nbParticipants: element.participantIds.length,
-            }))
-          );
-        }
-      });
-  }, [forceReload]);
-
   // Transformation des données brutes des groupes pour affichage
   groupsList = groupsData.map((e) => {
     return (
-      <li className={styles.list}>
+      <li className={styles.eventList}>
         {e.title} - {e.nbParticipants} participant(s)
       </li>
     );
@@ -180,50 +180,60 @@ function ContentAdminProfile() {
 
   return (
     <div className={styles.mainContent}>
-      {picture ? (
-        <Image
-          src={picture}
-          alt="Ma photo de profil"
-          width={100}
-          height={100}
-        />
-      ) : (
-        <Image
-          src="/profil.webp"
-          alt="Ma photo de profil"
-          width={100}
-          height={100}
-        />
-      )}
-      <ul>
-        <li className={styles.list}>
-          <strong>First name</strong> {firstName}
-        </li>
-        <li className={styles.list}>
-          <strong>Last name</strong> {lastName}
-        </li>
-        <li className={styles.list}>
-          <strong>Position</strong> {position}
-        </li>
-        <li className={styles.list}>
-          <strong>Role</strong> {role}
-        </li>
-      </ul>
-      <a onClick={handleToggleModal}>Modifier mon profil</a>
-      {modificationPopin}
-      <h3>Mes stats</h3>
-      <h3>Mes groupes</h3>
-      <ul>
-        {groupsData.length === 0 ? <span>Aucun groupe</span> : groupsList}
-      </ul>
-      <h3>Mes sorties</h3>
-      <h3>Mes autorisations</h3>
+      <div className={styles.upperInfos}>
+        <div className={styles.picContainer}>
+          {picture ? (
+            <Image
+              src={picture}
+              alt="Ma photo de profil"
+              width={200}
+              height={200}
+            />
+          ) : (
+            <Image
+              src="/profil.webp"
+              alt="Ma photo de profil"
+              width={200}
+              height={200}
+            />
+          )}
+        </div>
+        <div className={styles.adminInfos}>
+          <div className={styles.fullName}>
+            {firstName} <span className={styles.lastName}>{lastName}</span>
+          </div>
+          <div style={{ marginBottom: "20px" }}>
+            <div>Fonction : {position}</div>
+            <div>Rôle : {role}</div>
+          </div>
+          <a onClick={handleToggleModal} className={styles.modify}>
+            Modifier mon profil
+          </a>
+          {modificationPopin}
+        </div>
+      </div>
+      <div className={styles.tabBar}>
+        <h3>Mes stats</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a lectus
+          libero. Nunc ut nisl tortor. Maecenas nec mollis felis, non vulputate
+          lacus. Nullam pretium risus odio, eget posuere erat fringilla ac.
+          Suspendisse non sollicitudin elit. Vestibulum pulvinar in ligula at
+          placerat. Nullam tempus, justo non consectetur vulputate, urna dui
+          pellentesque augue, sit amet aliquam tellus est et metus. Quisque quis
+          lectus nec mauris vulputate dictum. Nulla facilisi.
+        </p>
+        <h3>Mes groupes</h3>
+        <ul>
+          {groupsData.length === 0 ? <span>Aucun groupe</span> : groupsList}
+        </ul>
+        <h3>Mes sorties</h3>
+        <h3>Mes autorisations</h3>
+      </div>
     </div>
   );
 }
-
 // MODAL STYLE
-//Composant MUI adapté au projet
 const styleModal = {
   display: "grid",
   gridTemplateRows: "auto 1fr auto",

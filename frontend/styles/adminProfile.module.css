@@ -1,26 +1,67 @@
 .container {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 0.4fr 2.3fr 0.3fr;
-    grid-template-areas:
-      "header" 
-      "main"
-      "footer";
-      height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.4fr 2.3fr 0.3fr;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  height: 100vh;
 }
 
-.main {  
+.main {
   display: grid;
   grid-template-columns: 250px 1.5fr;
   grid-column-start: 1;
   grid-column-end: 2;
-  grid-template-areas:
-    "mainNavbar mainContent";
+  grid-template-areas: "mainNavbar mainContent";
   box-sizing: border-box;
   overflow: hidden;
 }
 
-.list {
+.mainInfosList {
   display: list-item;
-list-style: square;
+  list-style: none;
+}
+
+.mainContent {
+  width: 80vw;
+}
+
+.adminInfos {
+  width: 80%;
+}
+
+.picContainer {
+  width: 20%;
+}
+
+.tabBar {
+  width: 80vw;
+}
+
+.upperInfos {
+  display: flex;
+  width: 100vw;
+  height: 30vh;
+  margin-bottom: 30px;
+}
+
+.modify {
+  font-weight: 1000;
+  text-decoration: underline;
+}
+
+.lastName {
+  text-transform: uppercase;
+}
+
+.fullName {
+  font-weight: 1000;
+  margin-bottom:20px;
+}
+
+.eventList {
+  display: list-item;
+  list-style: square;
 }
