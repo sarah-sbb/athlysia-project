@@ -1,20 +1,8 @@
 import styles from "../../styles/adminProfile.module.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Modal,
-  Box,
-  Button,
-  TextField,
-  // Typography,
-  // Select,
-  // InputLabel,
-  // MenuItem,
-  // FormControl,
-} from "@mui/material";
 
 function AdminProfileGroups() {
-
   // Récupération du token depuis redux
   const token = useSelector((state) => state.admin.value.token);
 
