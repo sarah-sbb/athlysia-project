@@ -25,7 +25,7 @@ router.post("/add", (req, res) => {
   }
 });
 
-// GET route to retrieve a participant by ID
+// GET route pour récupérer un participant 
 router.get("/:id", (req, res) => {
   Participant.findById(req.params.id)
     .then((participant) => {
@@ -36,7 +36,7 @@ router.get("/:id", (req, res) => {
     })
 });
 
-// PUT route to update a participant by ID
+// PUT route pour mettre à jour un participant
 router.put("/update/:id", (req, res) => {
   const fields = ["firstName", "lastName", "email", "phone", "birthDate"];
   if (!checkBody(req.body, fields)) {
@@ -62,14 +62,14 @@ router.put("/update/:id", (req, res) => {
     })
 });
 
-// GET route for deleting a participant
+// GET route pour supprimer un participant
 router.get("/delete/:id", (req, res) => {
   Participant.findByIdAndDelete(req.params.id)
     .then((deletedParticipant) => {
       if (!deletedParticipant) {
         return res.json({ result: false, message: "Participant not found" });
       }
-      // After deletion, redirect to the Participants list page (adjust the path as needed)
+      // Après la suppression, redirigez vers la page de liste des participants (ajustez le chemin si nécessaire)
       res.redirect("/");
     })
 });
