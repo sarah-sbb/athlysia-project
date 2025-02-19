@@ -5,17 +5,8 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { modify } from "../../reducers/admin";
-import {
-  Modal,
-  Box,
-  Button,
-  TextField,
-  // Typography,
-  // Select,
-  // InputLabel,
-  // MenuItem,
-  // FormControl,
-} from "@mui/material";
+import { Modal, Box, Button, TextField } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import AdminProfileStats from "./AdminProfileStats";
 import AdminProfileAuthorizations from "./AdminProfileAuthorizations";
 import AdminProfileGroups from "./AdminProfileGroups";
@@ -45,7 +36,7 @@ function AdminProfileMain() {
   // Force reload (à optimiser si j'ai le temps)
   const [forceReload, setForceReload] = useState(false);
 
-  // Formulaire pour les modifications des infos admins
+  // Formulaire pour les modifications des infos admins (sauf image)
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -85,19 +76,44 @@ function AdminProfileMain() {
     }));
   };
 
+  // TEST: Fonction pour gérer l'envoi au backend de l'image
+
+  const [adminImg, setAdminImg] = useState(null);
+
+  const handleChangeImage = (e) => {
+    setAdminImg(e.target.files);
+  };
+
   const handleModify = () => {
-    setOpen(!open);
-    fetch("http://localhost:3000/admins/updateByToken", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, token }),
+    // setOpen(!open);
+    // // fetch("http://localhost:3000/admins/updateByToken", {
+    // //   method: "PUT",
+    // //   headers: { "Content-Type": "application/json" },
+    // //   body: JSON.stringify({ ...form, token }),
+    // // })
+    // //   .then((response) => response.json())
+    // //   .then((data) => {
+    // //     if (data.result) {
+    // //       dispatch(modify(data.data));
+    // //       setForceReload(!forceReload);
+    // //     }
+    // //   });
+
+    // Test pour image
+    const formData = new FormData();
+    formData.append('newAdminPicture', {
+      uri: `/${adminImg[0].name}`,
+      name: 'photo.jpg',
+      type: 'image/jpeg',
+     });
+
+    fetch("http://localhost:3000/admins/updatePicture", {
+      method: "POST",
+      body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.result) {
-          dispatch(modify(data.data));
-          setForceReload(!forceReload);
-        }
+        console.log(data);
       });
   };
 
@@ -169,6 +185,18 @@ function AdminProfileMain() {
             name="password"
             onChange={handleChangeForm}
           />
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+          >
+            Modifier ma photo
+            <VisuallyHiddenInput
+              type="file"
+              onChange={(event) => handleChangeImage(event)}
+            />
+          </Button>
         </Box>
         {/* Footer avec les deux boutons */}
 
@@ -305,5 +333,17 @@ const styleSuccesSignUp = {
   justifyContent: "center",
   color: "green",
 };
+
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 
 export default AdminProfileMain;
