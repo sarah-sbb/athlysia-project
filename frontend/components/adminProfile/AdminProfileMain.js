@@ -45,10 +45,6 @@ function AdminProfileMain() {
   // Force reload (à optimiser si j'ai le temps)
   const [forceReload, setForceReload] = useState(false);
 
-  // // Infos groupes gérés par l'admin
-  // const [groupsData, setGroupsData] = useState([]);
-  // let groupsList = [];
-
   // Formulaire pour les modifications des infos admins
   const [form, setForm] = useState({
     firstName: "",
@@ -75,24 +71,6 @@ function AdminProfileMain() {
         setRole(data.data.role);
         setPicture(data.data.pictureUrl);
       });
-
-    // // Récupération des infos relatives aux groupes gérés par l'admin
-    // fetch("http://localhost:3000/groups/findAllGroupsByAdminToken", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ token }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     if (data.result) {
-    //       setGroupsData(
-    //         data.data.map((element) => ({
-    //           title: element.title,
-    //           nbParticipants: element.participantIds.length,
-    //         }))
-    //       );
-    //     }
-    //   });
   }, [forceReload]);
 
   const handleToggleModal = () => {
@@ -169,7 +147,7 @@ function AdminProfileMain() {
           />
           <TextField
             type="text"
-            label="Position"
+            label="Fonction"
             name="position"
             onChange={handleChangeForm}
           />
@@ -205,15 +183,6 @@ function AdminProfileMain() {
       </Box>
     </Modal>
   );
-
-  // // Transformation des données brutes des groupes pour affichage
-  // groupsList = groupsData.map((e) => {
-  //   return (
-  //     <li className={styles.eventList}>
-  //       {e.title} - {e.nbParticipants} participant(s)
-  //     </li>
-  //   );
-  // });
 
   return (
     <div className={styles.mainContent}>
@@ -270,7 +239,6 @@ function AdminProfileMain() {
       {showGroups && <AdminProfileGroups />}
       {showEvents && <AdminProfileEvents />}
       {showAuthorizations && <AdminProfileAuthorizations />}
-      {/* groupsData.length === 0 ? <span>Aucun groupe</span> : groupsList */}
     </div>
   );
 }

@@ -9,10 +9,10 @@ const autorisationSchema = mongoose.Schema({
 
 const eventSchema = mongoose.Schema({
   title: String,
-  adminId: String,
+  adminId: { type: mongoose.Schema.Types.ObjectId, ref: "admins" },
   authorisations: [autorisationSchema],
   groupId: { type: mongoose.Schema.Types.ObjectId, ref: "groups" },
-  participantId: { type: mongoose.Schema.Types.ObjectId, ref: "participants" },
+  participantId: [{ type: mongoose.Schema.Types.ObjectId, ref: "participants" }],
   dateStart: Date,
   dateEnd: Date,
   place: String,

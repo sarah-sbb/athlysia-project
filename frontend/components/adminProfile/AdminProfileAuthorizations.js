@@ -20,7 +20,7 @@ function AdminProfileAuthorizations() {
     <div
     style={{ border: "1px dashed", color: "orange", height: "200px", display: "flex", alignItems:"center", justifyContent: "center" }}
     >
-      Les groupes seront ici
+      Les autorisations seront ici
     </div>
   );
 }

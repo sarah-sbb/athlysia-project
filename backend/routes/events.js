@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const Event = require("../models/events");
-const { checkBody } = require("../modules/checkBodyModify");
+const { checkBody } = require("../modules/checkBody");
 
 const Group = require("../models/groups");
 const Participant = require("../models/participants");

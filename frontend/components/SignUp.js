@@ -89,7 +89,7 @@ function SignUp({ open, handleToggleModal }) {
               infoAdmin: data.infoAdmin,
             })
           );
-          router.push("/ctp-admin");Ò
+          router.push("/ctp-admin");
         } else {
           console.log(data.result, "erreur : ", data.message);
           setIsCorrect(!isCorrect);
