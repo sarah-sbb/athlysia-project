@@ -1,10 +1,13 @@
 var express = require("express");
 var router = express.Router();
-const Event = require("../models/events");
-const { checkBody } = require("../modules/checkBody");
 
+const Event = require("../models/events");
+const Admin = require("../models/admins");
 const Group = require("../models/groups");
 const Participant = require("../models/participants");
+const Etablissement = require("../models/etablissements");
+
+const { checkBody } = require("../modules/checkBody");
 
 // Route pour la création d'un nouvel event
 router.post("/add", (req, res) => {
@@ -74,6 +77,48 @@ router.get("/eventsByAdmin/:token", (req, res) => {
             res.json({ result: true, data: events });
           }
         });
+      }
+    });
+  }
+});
+
+// Route pour récupérer les groupes d'un établissement
+router.get("/groupsByEtablissement/: ObjectId", (req, res) => {
+  const fields = ["ObjectId"];
+
+  // Vérification de la présence des données
+  if (!checkBody(req.params, fields)) {
+    res.json({ result: false, message: "Champs manquants ou vides" });
+  } else {
+    Group.find({ etablissementId: req.params.ObjectId }).then((response) => {
+      if (response.length === 0) {
+        res.json({
+          result: false,
+          message: "Aucun groupe trouvé pour cet établissement",
+        });
+      } else {
+        res.json({ result: true, data: response });
+      }
+    });
+  }
+});
+
+// Route pour récupérer les participants d'un établissement
+router.get("/participantsByEtablissement/: ObjectId", (req, res) => {
+  const fields = ["ObjectId"];
+
+  // Vérification de la présence des données
+  if (!checkBody(req.params, fields)) {
+    res.json({ result: false, message: "Champs manquants ou vides" });
+  } else {
+    Participant.find({ etablissementId: req.params.ObjectId }).then((response) => {
+      if (response.length === 0) {
+        res.json({
+          result: false,
+          message: "Aucun groupe trouvé pour cet établissement",
+        });
+      } else {
+        res.json({ result: true, data: response });
       }
     });
   }
