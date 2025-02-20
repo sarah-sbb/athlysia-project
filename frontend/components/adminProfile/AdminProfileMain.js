@@ -234,15 +234,15 @@ function AdminProfileMain() {
         </div>
       </div>
       <div className={styles.tabBar}>
-        <h3 className={styles.tab} style={{color : showGroups ? 'red' : 'green'}} onClick={() => handleToggleTab("groups")}>
+        <h3 className={styles.tab} style={{color : showGroups ? 'var(--main-bg-color)' : ''}} onClick={() => handleToggleTab("groups")}>
           Mes groupes
         </h3>
-        <h3 className={styles.tab} style={{color : showEvents ? 'red' : 'green'}} onClick={() => handleToggleTab("events")}>
+        <h3 className={styles.tab} style={{color : showEvents ? 'var(--main-bg-color)' : ''}} onClick={() => handleToggleTab("events")}>
           Mes sorties
         </h3>
         <h3
           className={styles.tab}
-          style={{color : showAuthorizations ? 'red' : 'green'}}
+          style={{color : showAuthorizations ? 'var(--main-bg-color)' : ''}}
           onClick={() => handleToggleTab("authorizations")}
         >
           Mes autorisations
