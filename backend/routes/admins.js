@@ -20,12 +20,12 @@ router.post("/signup", (req, res) => {
 
   // Vérification de la présence des données
   if (!checkBody(req.body, fields)) {
-    res.json({ result: false, message: "Champs vides" });
+    res.json({ result: false, message: "Tous les champs sont requis " });
   } else {
     // Check si l'admin n'existe pas déjà via son email
     Admin.findOne({ email: req.body.email }).then((response) => {
       if (response) {
-        res.json({ result: false, message: "Admin existe déjà en BDD" });
+        res.json({ result: false, message: "L'adresse mail est déjà utilisée" });
       } else {
         // Enregistrement de l'admin en BDD
         const newAdmin = new Admin({
@@ -85,7 +85,7 @@ router.post("/signin", (req, res) => {
       } else {
         res.json({
           result: false,
-          message: "Aucun admin trouvé - mot de passe ou email incorrect",
+          message: "Mot de passe ou email incorrect",
         });
       }
     });

@@ -13,17 +13,18 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 
 function Header({ title }) {
-  // Nettoyer le composant = Hassen
+  
   const admin = useSelector((state) => state.admin.value);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+
+//selon la logique MIUI, isMenuOpen doit contenir l'objet event.target pour afficher le menu dropdown. Mais voyez le comme un boolean puisqu'en JS une valeur null = false.
+  const [isMenuOpen, setIsMenuOpen] = useState(null);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setIsMenuOpen(event.target);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setIsMenuOpen(null);
   };
 
   return (
@@ -34,6 +35,7 @@ function Header({ title }) {
             src="/iconeWhite.webp"
             alt="logo Athlysia"
             width={75}
+            
             height={52}
           />
         </Link>
@@ -46,10 +48,11 @@ function Header({ title }) {
           <p>{"Bonjour " + admin.infoAdmin?.firstName || "Nom utilisateur"}</p>
 
           <Button
+          //aria = améliore l'accessibilité (importé par MUI donc autant le laisser)
             id="basic-button"
-            aria-controls={open ? "basic-menu" : undefined}
+            aria-controls={isMenuOpen ? "basic-menu" : undefined}
             aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
+            aria-expanded={isMenuOpen ? "true" : undefined}
             onClick={handleClick}
             sx={{ color: "white", minWidth: "auto", pt: 1 }}
           >
@@ -59,14 +62,17 @@ function Header({ title }) {
 
         <Menu
           id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
+          //anchorlEl = permet d'ouvrir le menu en dessous du boutton 
+          //menuList = améliore l'accessibilité (importé par MUI donc autant le laisser)
+          anchorEl={isMenuOpen}
+          open={isMenuOpen}
           onClose={handleClose}
           MenuListProps={{
             "aria-labelledby": "basic-button",
           }}
         >
           <MenuItem>
+          {/* lien menu à ajouter ci-dessous */}
             <Link href="/adminProfile">Mon compte </Link>
           </MenuItem>
         </Menu>
