@@ -69,7 +69,7 @@ router.get("/delete/:id", (req, res) => {
       if (!deletedParticipant) {
         return res.json({ result: false, message: "Participant not found" });
       }
-      // After deletion, redirect to the Participants list page (adjust the path as needed)
+      // Après la suppression, redirigez vers la page de liste des participants (ajustez le chemin si nécessaire)
       res.redirect("/");
     })
 });
