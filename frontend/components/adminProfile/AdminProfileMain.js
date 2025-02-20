@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { modify } from "../../reducers/admin";
 import { Modal, Box, Button, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import AdminProfileStats from "./AdminProfileStats";
 import AdminProfileAuthorizations from "./AdminProfileAuthorizations";
 import AdminProfileGroups from "./AdminProfileGroups";
 import AdminProfileEvents from "./AdminProfileEvents";
@@ -101,11 +100,7 @@ function AdminProfileMain() {
 
     // Test pour image
     const formData = new FormData();
-    formData.append('newAdminPicture', {
-      uri: `/${adminImg[0].name}`,
-      name: 'photo.jpg',
-      type: 'image/jpeg',
-     });
+    formData.append('newAdminPicture', adminImg[0]);
 
     fetch("http://localhost:3000/admins/updatePicture", {
       method: "POST",
@@ -117,30 +112,22 @@ function AdminProfileMain() {
       });
   };
 
+
   const handleToggleTab = (tabName) => {
-    if (tabName === "stats") {
-      setShowStats(!showStats);
-      setShowGroups(false);
-      setShowEvents(false);
-      setShowAuthorizations(false);
-    }
     if (tabName === "groups") {
       setShowGroups(!showGroups);
-      setShowStats(false);
       setShowEvents(false);
       setShowAuthorizations(false);
     }
     if (tabName === "events") {
       setShowEvents(!showEvents);
       setShowGroups(false);
-      setShowStats(false);
       setShowAuthorizations(false);
     }
     if (tabName === "authorizations") {
       setShowAuthorizations(!showAuthorizations);
       setShowGroups(false);
       setShowEvents(false);
-      setShowStats(false);
     }
   };
 
@@ -247,23 +234,20 @@ function AdminProfileMain() {
         </div>
       </div>
       <div className={styles.tabBar}>
-        <h3 className={styles.tab} onClick={() => handleToggleTab("stats")}>
-          Mes stats
-        </h3>
-        <h3 className={styles.tab} onClick={() => handleToggleTab("groups")}>
+        <h3 className={styles.tab} style={{color : showGroups ? 'var(--main-bg-color)' : ''}} onClick={() => handleToggleTab("groups")}>
           Mes groupes
         </h3>
-        <h3 className={styles.tab} onClick={() => handleToggleTab("events")}>
+        <h3 className={styles.tab} style={{color : showEvents ? 'var(--main-bg-color)' : ''}} onClick={() => handleToggleTab("events")}>
           Mes sorties
         </h3>
         <h3
           className={styles.tab}
+          style={{color : showAuthorizations ? 'var(--main-bg-color)' : ''}}
           onClick={() => handleToggleTab("authorizations")}
         >
           Mes autorisations
         </h3>
       </div>
-      {showStats && <AdminProfileStats />}
       {showGroups && <AdminProfileGroups />}
       {showEvents && <AdminProfileEvents />}
       {showAuthorizations && <AdminProfileAuthorizations />}

@@ -6,7 +6,7 @@ function AdminProfileEvents() {
   // Récupération du token depuis redux
   const token = useSelector((state) => state.admin.value.token);
 
-  // Infos events
+  // Stockage infos events
   const [eventsData, setEventsData] = useState([]);
   let eventsList = [];
 
