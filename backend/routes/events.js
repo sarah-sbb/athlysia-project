@@ -129,4 +129,40 @@ router.get("/participantsByEtablissement/: ObjectId", (req, res) => {
   }
 });
 
+// Route pour récupérer les autorisations d'un événement en particulier (à partir du token admin)
+router.get("/autorisationsByEventViaAdminToken/:token", (req, res) => {
+  const fields = ["token"];
+  let adminId = "";
+
+  // Vérification de la présence des données
+  if (!checkBody(req.params, fields)) {
+    res.json({ result: false, message: "Champs manquants ou vides" });
+  } else {
+    // on vérifie si l'admin correspond au bon token
+    Admin.findOne({ token: req.params.token }).then((data) => {
+      if (!data) {
+        res.json({
+          result: false,
+          message: "Aucun admin trouvé avec ce token",
+        });
+      } else {
+        adminId = data._id;
+        // adminId: adminID pour éviter tout ambiguité, on est sur que c'est l'adminId de l'admin qui est connecté
+        Event.find({ adminId: adminId })
+        .populate('authorisations')
+        .then((events) => {
+          if (events.length === 0) {
+            res.json({
+              result: false,
+              message: "Aucun événement trouvé pour cet admin",
+            });
+          } else {
+            res.json({ result: true, data: events });
+          }
+        });
+      }
+    });
+  }
+});
+
 module.exports = router;
