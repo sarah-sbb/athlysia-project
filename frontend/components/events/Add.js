@@ -17,7 +17,7 @@ function EventPage () {
                   Enregistrer
                 </button>
                 <button className={buttonStyles(
-                  { color: 'secondary' })}>
+                  { color: 'secondary'})}>
                   Générer les autorisations
                 </button>
               </div>
