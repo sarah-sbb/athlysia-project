@@ -15,7 +15,7 @@ import Button from "@mui/material/Button";
 function Header({ title }) {
   const admin = useSelector((state) => state.admin.value);
 
-  const [picture, setPicture] = useState(admin.infoAdmin.pictureUrl);
+  const picture = admin.infoAdmin.pictureUrl;
 
   //selon la logique MIUI, isMenuOpen doit contenir l'objet event.target pour afficher le menu dropdown. Mais voyez le comme un boolean puisqu'en JS une valeur null = false.
   const [isMenuOpen, setIsMenuOpen] = useState(null);
@@ -28,7 +28,6 @@ function Header({ title }) {
     setIsMenuOpen(null);
   };
 
-  console.log(admin)
   return (
     <div className={styles.header}>
       <div className={styles.headerLogo}>
@@ -52,7 +51,7 @@ function Header({ title }) {
               alt="Ma photo de profil"
               width={50}
               height={50}
-              style={{marginRight: "10px", borderRadius: '100%'}}
+              style={{ marginRight: "10px", borderRadius: "100%" }}
             />
           ) : (
             <Image
@@ -60,7 +59,7 @@ function Header({ title }) {
               alt="Ma photo de profil"
               width={50}
               height={50}
-              style={{marginRight: "10px", borderRadius: '100%'}}
+              style={{ marginRight: "10px", borderRadius: "100%" }}
             />
           )}
           <p>{"Bonjour " + admin.infoAdmin?.firstName || "Nom utilisateur"}</p>
