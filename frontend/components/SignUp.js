@@ -17,8 +17,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 function SignUp({ open, handleToggleModal }) {
 
-  
-
   //redux
   const dispatch = useDispatch();
   const admin = useSelector((state) => state.admin.value);
@@ -51,7 +49,6 @@ function SignUp({ open, handleToggleModal }) {
       [name]: value,
     }));
   };
-
 
   useEffect(() => {
     fetch("http://localhost:3000/etablissements/allEtablissements")
