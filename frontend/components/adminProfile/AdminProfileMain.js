@@ -84,25 +84,25 @@ function AdminProfileMain() {
   };
 
   const handleModify = () => {
-    // setOpen(!open);
-    // // fetch("http://localhost:3000/admins/updateByToken", {
-    // //   method: "PUT",
-    // //   headers: { "Content-Type": "application/json" },
-    // //   body: JSON.stringify({ ...form, token }),
-    // // })
-    // //   .then((response) => response.json())
-    // //   .then((data) => {
-    // //     if (data.result) {
-    // //       dispatch(modify(data.data));
-    // //       setForceReload(!forceReload);
-    // //     }
-    // //   });
+    setOpen(!open);
+    fetch("http://localhost:3000/admins/updateByToken", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...form, token }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          dispatch(modify(data.data));
+          setForceReload(!forceReload);
+        }
+      });
 
-    // Test pour image
+    // Update de l'image
     const formData = new FormData();
-    formData.append('newAdminPicture', adminImg[0]);
+    formData.append('newAdminPicture', adminImg[0], token);
 
-    fetch("http://localhost:3000/admins/updatePicture", {
+    fetch(`http://localhost:3000/admins/updatePicture/${token}`, {
       method: "POST",
       body: formData,
     })
@@ -158,12 +158,6 @@ function AdminProfileMain() {
             type="text"
             label="Email"
             name="email"
-            onChange={handleChangeForm}
-          />
-          <TextField
-            type="text"
-            label="URL photo"
-            name="pictureUrl"
             onChange={handleChangeForm}
           />
           <TextField
