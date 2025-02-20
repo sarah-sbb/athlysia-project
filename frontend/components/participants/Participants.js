@@ -13,30 +13,17 @@ Si ça peut t'aider à y voir plus clair dans ton code.
 */ 
 
 //import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
-import LargeButtonRed from '../smallComponents/LargeButtonRed';
-import LargeButtonWhite from '../smallComponents/LargeButtonWhite';
+import axios from 'axios';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
   { field: 'firstName', headerName: 'First name', width: 130 },
   { field: 'lastName', headerName: 'Last name', width: 130 },
-  {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 90,
-  },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-  },
+  { field: 'email', headerName: 'Email', width: 200 },
+  { field: 'phone', headerName: 'Phone', width: 150 },
   {
     field: 'modify',
     headerName: 'Modify',
@@ -52,119 +39,46 @@ const columns = [
     headerName: 'Delete',
     width: 130,
     renderCell: (params) => (
-      <a
-        href={`/participant/delete/${params.row.id}`}
-        style={{ textDecoration: 'none', color: 'red' }}
-      >
+      <button onClick={() => handleDelete(params.row.id)} style={{ color: 'red', border: 'none', background: 'none' }}>
         Delete
-      </a>
+      </button>
     ),
   },
 ];
 
-const initialRows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
-
-const paginationModel = { page: 0, pageSize: 5 };
-
 export default function DataTable() {
-  const [rows, setRows] = useState(initialRows);
-  const [idCounter, setIdCounter] = useState(initialRows.length + 1);
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const addParticipant = (firstName, lastName, age) => {
-    setRows([
-      ...rows,
-      {
-        id: idCounter,
-        firstName,
-        lastName,
-        age,
-      },
-    ]);
-    setIdCounter(idCounter + 1);
-  };
+  useEffect(() => {
+    axios.get('http://localhost:3001/participants') // Adjust URL based on your backend
+      .then((response) => {
+        setRows(response.data.participants);
+        setLoading(false);
+      })
+      .catch((error) => console.error('Error fetching participants:', error));
+  }, []);
 
-  const editParticipant = (id, updatedData) => {
-    setRows(rows.map((row) => (row.id === id ? { ...row, ...updatedData } : row)));
-  };
-
-  const deleteParticipant = (id) => {
-    setRows(rows.filter((row) => row.id !== id));
+  // Function to delete participant
+  const handleDelete = (id) => {
+    axios.get(`http://localhost:3001/participants/delete/${id}`)
+      .then(() => {
+        setRows(rows.filter(row => row.id !== id));
+      })
+      .catch((error) => console.error('Error deleting participant:', error));
   };
 
   return (
-
-
-<Paper sx={{ height: 400, width: '100%' }}>
+    <Paper sx={{ height: 400, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
-        rowCount={rows ? rows.length : 0}
-        initialState={{ pagination: { paginationModel } }}
+        loading={loading}
         pageSizeOptions={[5, 10]}
         checkboxSelection
         sx={{ border: 0 }}
       />
     </Paper>
-
-
   );
 }
 
-
-// import React, { useState } from 'react';
-// import styles from '../styles/Participants.module.css';
-// import Table from './Table';
-
-// function Participants() {
-//   const [participants, setParticipants] = useState([
-//     { name: 'Albert' },
-//     { name: 'Einstein' },
-//     { name: 'Homer' },
-//     { name: 'Marge' },
-//     { name: 'Bart' },
-//     { name: 'Malcolm' }
-//   ]);
-
-//   const addParticipant = () => {
-    
-//   };
-
-//   const editParticipant = () => {
-    
-//   };
-
-//   const deleteParticipant = () => {
-    
-//   };
-
-//   const searchParticipant = () => {
-   
-//   };
-
-//   return (
-//     <div className={styles.centered}>
-//       <header className={styles.headerContainer}>
-//         Participant
-//       </header>
-//       <Table
-//         participants={participants}
-//         addParticipant={addParticipant}
-//         editParticipant={editParticipant}
-//         deleteParticipant={deleteParticipant}
-//         searchParticipant={searchParticipant}
-//       />
-//     </div>
-//   );
-// }
-
-// export default Participants;

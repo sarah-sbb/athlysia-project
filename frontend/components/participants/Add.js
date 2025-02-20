@@ -1,7 +1,5 @@
 import styles from '../../styles/Participants.module.css';
-
 import { buttonStyles } from '../modules/Button';
-
 import AddParticipant from "./AddParticipant";
 
 function ParticipantPage () {
