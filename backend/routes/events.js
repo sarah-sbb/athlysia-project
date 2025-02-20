@@ -51,20 +51,29 @@ où :token est un paramètre de la requête
 */ 
 router.get("/eventsByAdmin/:token", (req, res) => {
   const fields = ["token"];
+  let adminId = "";
 
   // Vérification de la présence des données
   if (!checkBody(req.params, fields)) {
     res.json({ result: false, message: "Champs manquants ou vides" });
   } else {
-    // Récupération des événements associés à l'admin
-    Event.find({ adminId: req.params.token }).then((response) => {
-      if (response.length === 0) {
-        res.json({
-          result: false,
-          message: "Aucun événement trouvé pour cet admin",
+  // on vérifie si l'admin correspond au bon token
+    Admin.findOne({ adminId: req.params.token }).then((data) => {
+      if (!data) {
+        res.json({ result : false, message: "Aucun admin trouvé avec ce token" })
+        } else {
+        adminId = data._id;
+        // adminId: adminID pour éviter tout ambiguité, on est sur que c'est l'adminId de l'admin qui est connecté
+        Event.find({ adminId: adminId }).then((events) => {
+          if (events.length === 0) {
+            res.json({
+              result: false,
+              message: "Aucun événement trouvé pour cet admin",
+            });
+          } else {
+            res.json({ result: true, data: events });
+          }
         });
-      } else {
-        res.json({ result: true, data: response });
       }
     });
   }
