@@ -2,28 +2,28 @@ import styles from "../styles/Login.module.css";
 import { useState } from "react";
 import Image from "next/image";
 import SignUp from "./SignUp";
-import { useRouter } from 'next/router';
-import { login } from '../reducers/admin';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from "next/router";
+import { login } from "../reducers/admin";
+import { useDispatch, useSelector } from "react-redux";
 
 function Home() {
-  //redux
-	const dispatch = useDispatch();
-	const admin = useSelector((state) => state.admin.value);
+  //A. Redux
+  const dispatch = useDispatch();
+  const admin = useSelector((state) => state.admin.value);
 
-  //route
+  //B. Route
   const router = useRouter();
 
-  //state
+  //C. State
   const [open, setOpen] = useState(false);
-  const [isCorrect, setIsCorrect]= useState(false)
-  const [signIn, setSignIn] = useState ({
+  const [signIn, setSignIn] = useState({
     email: "",
     password: "",
+  });
+  const [errorMsg, setErrorMsg] = useState("");
+  const [isError, setIsError] = useState(false);
 
-  })
-
-  // logique
+  //D. Logique
   const handleToggleModal = () => {
     setOpen(!open);
   };
@@ -35,28 +35,54 @@ function Home() {
       [name]: value,
     }));
   };
-  
 
+  // fonction pour vérifier le schéma de l'adresse mail
+  const isValidEmail = (mail) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(mail);
+  };
 
-	const handleConnection = () => {
-		fetch('http://localhost:3000/admins/signin', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ email: signIn.email, password: signIn.password }),
-		}).then(response => response.json())
-			.then(data => {
-				if (data.result) {
+  const handleConnection = () => {
+    // Vérification des champs + mail côté front pour ne pas requêter inutilisement le backend (si le temps le permet utiliser une libraire comme validator js)
+
+    if (!signIn.password || !signIn.email) {
+      setIsError(true);
+      setErrorMsg("Tous les champs sont requis");
+      return;
+    }
+
+    // Vérification de l'email avec la regex
+    if (!isValidEmail(signIn.email)) {
+      setIsError(true);
+      setErrorMsg("L'email est invalide.");
+      return;
+    }
+
+    fetch("http://localhost:3000/admins/signin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: signIn.email, password: signIn.password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
           router.push("/ctp-admin");
-          console.log("connecté : ", data.result)
-          dispatch(login({token : data.token, etablissement : data.etablissement, role :data.role, infoAdmin : data.infoAdmin}))
-          setIsCorrect(false)
-				} else {
-          console.log(data.result, "erreur : ",  data.message);
-          setIsCorrect(true)
+          console.log("connecté : ", data.result);
+          dispatch(
+            login({
+              token: data.token,
+              etablissement: data.etablissement,
+              role: data.role,
+              infoAdmin: data.infoAdmin,
+            })
+          );
+        } else {
+          console.log(data.result, "erreur : ", data.message);
+          setIsError(true);
+          setErrorMsg(data.message);
         }
-			});
-	};
-
+      });
+  };
 
   return (
     <div className={styles.homeContainer}>
@@ -105,7 +131,7 @@ function Home() {
               value={signIn.email}
               name="email"
               onChange={handleChange}
-            ></input>
+            />
             <input
               type="password"
               placeholder="Mot de passe"
@@ -113,12 +139,18 @@ function Home() {
               value={signIn.password}
               name="password"
               onChange={handleChange}
-            ></input>
-            {!isCorrect ? null : <p className={styles.errorConnection}>Mot de passe ou email incorrect </p>}
-            <button className={styles.buttonSignIn} onClick={handleConnection}>Se connecter</button>
-          
-            <button className={styles.buttonSignUp} onClick={handleToggleModal}>S'inscrire</button>
-           <SignUp  open={open} handleToggleModal={handleToggleModal}/>
+            />
+            {isError && errorMsg && (
+              <p className={styles.errorConnection}>{errorMsg} </p>
+            )}
+            <button className={styles.buttonSignIn} onClick={handleConnection}>
+              Se connecter
+            </button>
+
+            <button className={styles.buttonSignUp} onClick={handleToggleModal}>
+              S'inscrire
+            </button>
+            <SignUp open={open} handleToggleModal={handleToggleModal} />
           </div>
         </div>
       </div>
