@@ -9,6 +9,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.4.3",
+    "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",
     "cookie-parser": "~1.4.4",
@@ -17,7 +18,7 @@
     "dotenv": "^16.4.7",
     "express": "~4.16.1",
     "express-fileupload": "^1.5.1",
-    "mongoose": "^8.9.6",
+    "mongoose": "^8.10.1",
     "morgan": "~1.9.1",
     "uid2": "^1.0.0",
     "uniqid": "^5.4.0"

@@ -67,7 +67,7 @@ router.get("/delete/:id", (req, res) => {
   Participant.findByIdAndDelete(req.params.id)
     .then((deletedParticipant) => {
       if (!deletedParticipant) {
-        return res.json({ result: false, message: "Participant not found" });
+        return res.json({ result: false, message: "Participant non trouvé" });
       }
       // Après la suppression, redirigez vers la page de liste des participants (ajustez le chemin si nécessaire)
       res.redirect("/");
