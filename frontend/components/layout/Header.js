@@ -1,6 +1,6 @@
 import styles from "../../styles/Header.module.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,10 +13,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 
 function Header({ title }) {
-  
   const admin = useSelector((state) => state.admin.value);
 
-//selon la logique MIUI, isMenuOpen doit contenir l'objet event.target pour afficher le menu dropdown. Mais voyez le comme un boolean puisqu'en JS une valeur null = false.
+  const [picture, setPicture] = useState(admin.infoAdmin.pictureUrl);
+
+  //selon la logique MIUI, isMenuOpen doit contenir l'objet event.target pour afficher le menu dropdown. Mais voyez le comme un boolean puisqu'en JS une valeur null = false.
   const [isMenuOpen, setIsMenuOpen] = useState(null);
 
   const handleClick = (event) => {
@@ -27,6 +28,7 @@ function Header({ title }) {
     setIsMenuOpen(null);
   };
 
+  console.log(admin)
   return (
     <div className={styles.header}>
       <div className={styles.headerLogo}>
@@ -35,7 +37,6 @@ function Header({ title }) {
             src="/iconeWhite.webp"
             alt="logo Athlysia"
             width={75}
-            
             height={52}
           />
         </Link>
@@ -45,10 +46,27 @@ function Header({ title }) {
       </div>
       <div className={styles.headerNav}>
         <div className={styles.containerMenu}>
+          {picture ? (
+            <Image
+              src={picture}
+              alt="Ma photo de profil"
+              width={50}
+              height={50}
+              style={{marginRight: "10px", borderRadius: '100%'}}
+            />
+          ) : (
+            <Image
+              src="/profil.webp"
+              alt="Ma photo de profil"
+              width={50}
+              height={50}
+              style={{marginRight: "10px", borderRadius: '100%'}}
+            />
+          )}
           <p>{"Bonjour " + admin.infoAdmin?.firstName || "Nom utilisateur"}</p>
 
           <Button
-          //aria = améliore l'accessibilité (importé par MUI donc autant le laisser)
+            //aria = améliore l'accessibilité (importé par MUI donc autant le laisser)
             id="basic-button"
             aria-controls={isMenuOpen ? "basic-menu" : undefined}
             aria-haspopup="true"
@@ -56,13 +74,16 @@ function Header({ title }) {
             onClick={handleClick}
             sx={{ color: "white", minWidth: "auto", pt: 1 }}
           >
-            <FontAwesomeIcon icon={faCaretDown} className={styles.dropDownIcon} />
+            <FontAwesomeIcon
+              icon={faCaretDown}
+              className={styles.dropDownIcon}
+            />
           </Button>
         </div>
 
         <Menu
           id="basic-menu"
-          //anchorlEl = permet d'ouvrir le menu en dessous du boutton 
+          //anchorlEl = permet d'ouvrir le menu en dessous du boutton
           //menuList = améliore l'accessibilité (importé par MUI donc autant le laisser)
           anchorEl={isMenuOpen}
           open={isMenuOpen}
@@ -72,7 +93,7 @@ function Header({ title }) {
           }}
         >
           <MenuItem>
-          {/* lien menu à ajouter ci-dessous */}
+            {/* lien menu à ajouter ci-dessous */}
             <Link href="/adminProfile">Mon compte </Link>
           </MenuItem>
         </Menu>

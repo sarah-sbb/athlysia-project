@@ -75,15 +75,14 @@ function AdminProfileMain() {
     }));
   };
 
-  // TEST: Fonction pour gérer l'envoi au backend de l'image
-
+  // Gestion de la photo admin
   const [adminImg, setAdminImg] = useState(null);
 
   const handleChangeImage = (e) => {
     setAdminImg(e.target.files);
   };
 
-  const handleModify = () => {
+  const handleSubmit = () => {
     setOpen(!open);
     fetch("http://localhost:3000/admins/updateByToken", {
       method: "PUT",
@@ -93,14 +92,14 @@ function AdminProfileMain() {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          dispatch(modify(data.data));
-          setForceReload(!forceReload);
+          dispatch(modify(data.data)); // Mise à jour des infos reducer
+          setForceReload(!forceReload); // A optimiser si j'ai le temps
         }
       });
 
     // Update de l'image
     const formData = new FormData();
-    formData.append('newAdminPicture', adminImg[0], token);
+    formData.append("newAdminPicture", adminImg[0], token);
 
     fetch(`http://localhost:3000/admins/updatePicture/${token}`, {
       method: "POST",
@@ -108,10 +107,10 @@ function AdminProfileMain() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        dispatch(modify(data.data)); // Mise à jour des infos reducer
+        setForceReload(!forceReload); // A optimiser si j'ai le temps
       });
   };
-
 
   const handleToggleTab = (tabName) => {
     if (tabName === "groups") {
@@ -172,11 +171,11 @@ function AdminProfileMain() {
             variant="contained"
             tabIndex={-1}
           >
-            Modifier ma photo
             <VisuallyHiddenInput
               type="file"
               onChange={(event) => handleChangeImage(event)}
             />
+            Modifier ma photo
           </Button>
         </Box>
         {/* Footer avec les deux boutons */}
@@ -185,7 +184,7 @@ function AdminProfileMain() {
           <Button sx={buttonCloseStyle} onClick={handleToggleModal}>
             Fermer
           </Button>
-          <Button sx={buttonSignUpStyle} onClick={handleModify}>
+          <Button sx={buttonSignUpStyle} onClick={handleSubmit}>
             Valider
           </Button>
         </Box>
@@ -221,22 +220,30 @@ function AdminProfileMain() {
             <div>Fonction : {position}</div>
             <div>Rôle : {role}</div>
           </div>
-          <a onClick={handleToggleModal} className={styles.modify}>
+          <Button style={{border: "1px solid"}} onClick={handleToggleModal} >
             Modifier mon profil
-          </a>
+          </Button>
           {modificationPopin}
         </div>
       </div>
       <div className={styles.tabBar}>
-        <h3 className={styles.tab} style={{color : showGroups ? 'var(--main-bg-color)' : ''}} onClick={() => handleToggleTab("groups")}>
+        <h3
+          className={styles.tab}
+          style={{ color: showGroups ? "var(--main-bg-color)" : "" }}
+          onClick={() => handleToggleTab("groups")}
+        >
           Mes groupes
         </h3>
-        <h3 className={styles.tab} style={{color : showEvents ? 'var(--main-bg-color)' : ''}} onClick={() => handleToggleTab("events")}>
+        <h3
+          className={styles.tab}
+          style={{ color: showEvents ? "var(--main-bg-color)" : "" }}
+          onClick={() => handleToggleTab("events")}
+        >
           Mes sorties
         </h3>
         <h3
           className={styles.tab}
-          style={{color : showAuthorizations ? 'var(--main-bg-color)' : ''}}
+          style={{ color: showAuthorizations ? "var(--main-bg-color)" : "" }}
           onClick={() => handleToggleTab("authorizations")}
         >
           Mes autorisations
