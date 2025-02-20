@@ -1,28 +1,45 @@
 import styles from "../../styles/adminProfile.module.css";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { modify } from "../../reducers/admin";
-import {
-  Modal,
-  Box,
-  Button,
-  TextField,
-  // Typography,
-  // Select,
-  // InputLabel,
-  // MenuItem,
-  // FormControl,
-} from "@mui/material";
 
 function AdminProfileAuthorizations() {
-  return (
-    <div
-    style={{ border: "1px dashed", color: "orange", height: "200px", display: "flex", alignItems:"center", justifyContent: "center" }}
-    >
-      Les autorisations seront ici
-    </div>
-  );
+  // Récupération du token admin depuis redux
+  const token = useSelector((state) => state.admin.value.token);
+
+  // Stockage des infos autorisations
+  const [autorisationsData, setAutorisationsData] = useState([]);
+  let autorisationsList = [];
+
+  // Récupération des infos relatives aux autorisations des events gérés par l'admin
+  useEffect(() => {
+    fetch(
+      `http://localhost:3000/events/autorisationsByEventViaAdminToken/${token}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          setAutorisationsData(
+            data.data[0].authorisation.map((element) => ({
+              participant: element.participant,
+              isValidated: element.isValidated,
+            }))
+          );
+        }
+      });
+  }, []);
+
+  console.log(autorisationsData) // ❌Vide!
+
+  // Transformation des données brutes des autorisations pour affichage
+  autorisationsList = autorisationsData.map((e) => {
+    return (
+      <li className={styles.eventList}>
+        Participant: {e.participant} - Statut : {e.isValidated}
+      </li>
+    );
+  });
+
+  return <div>{autorisationsList}</div>;
 }
 
 export default AdminProfileAuthorizations;
