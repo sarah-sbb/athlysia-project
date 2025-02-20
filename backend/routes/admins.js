@@ -222,7 +222,7 @@ router.put("/updateByToken", (req, res) => {
   }
 });
 
-// Route pour gérer la mise à jour de la photo admin (peut-être à fusionner avec la route /updateByToken"
+// Route pour gérer la mise à jour de la photo admin
 router.post("/updatePicture/:token", async (req, res) => {
   const photoPath = `./tmp/${uniqid()}.jpg`; // Génération d'un nom de fichier unique avec chemin
   const resultMove = await req.files.newAdminPicture.mv(photoPath); // Déplacement vers dossier tmp
@@ -243,10 +243,8 @@ router.post("/updatePicture/:token", async (req, res) => {
           { pictureUrl: resultCloudinary.secure_url }
         ).then((data) => {
           if (data.modifiedCount > 0) {
-            res.json({
-              result: true,
-              message: "Photo modifiée en BDD",
-              url: resultCloudinary.secure_url,
+            Admin.findOne({ _id: adminId }).then((data) => {
+              res.json({ result: true, data });
             });
           } else {
             res.json({ result: false, error: "Photo non modifiée en BDD" });
