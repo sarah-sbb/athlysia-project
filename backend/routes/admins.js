@@ -1,13 +1,15 @@
 var express = require("express");
 var router = express.Router();
 const Admin = require("../models/admins");
-const uid2 = require("uid2");
-const bcrypt = require("bcrypt");
-const { checkBody } = require("../modules/checkBody_OLD");
+const uid2 = require("uid2"); // Token
+const bcrypt = require("bcrypt"); // Mot de passe
+const { checkBody } = require("../modules/checkBody");
+const uniqid = require("uniqid"); // ID unique pour les images
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
 
 // Route pour l'ajout d'un admin en BDD (signup)
 router.post("/signup", (req, res) => {
-
   const fields = [
     "firstName",
     "lastName",
@@ -25,7 +27,10 @@ router.post("/signup", (req, res) => {
     // Check si l'admin n'existe pas déjà via son email
     Admin.findOne({ email: req.body.email }).then((response) => {
       if (response) {
-        res.json({ result: false, message: "L'adresse mail est déjà utilisée" });
+        res.json({
+          result: false,
+          message: "L'adresse mail est déjà utilisée",
+        });
       } else {
         // Enregistrement de l'admin en BDD
         const newAdmin = new Admin({
@@ -205,10 +210,11 @@ router.put("/updateByToken", (req, res) => {
 
     Admin.updateOne({ token: req.body.token }, modifiedObject).then((data) => {
       if (data.modifiedCount === 1) {
-        Admin.findOne({ token: req.body.token }).select("-_id -password").then((data) => {
-          res.json({ result: true, data });
-        })
-        
+        Admin.findOne({ token: req.body.token })
+          .select("-_id -password")
+          .then((data) => {
+            res.json({ result: true, data });
+          });
       } else {
         res.json({ result: false, message: "Aucun champ modifié" });
       }
@@ -217,9 +223,40 @@ router.put("/updateByToken", (req, res) => {
 });
 
 // Route pour gérer la mise à jour de la photo admin (peut-être à fusionner avec la route /updateByToken"
-router.post("/updatePicture", (req, res) => {
-  console.log(req.files.newAdminPicture)
-})
+router.post("/updatePicture/:token", async (req, res) => {
+  const photoPath = `./tmp/${uniqid()}.jpg`; // Génération d'un nom de fichier unique avec chemin
+  const resultMove = await req.files.newAdminPicture.mv(photoPath); // Déplacement vers dossier tmp
 
+  if (!resultMove) {
+    const resultCloudinary = await cloudinary.uploader.upload(photoPath); // Upload sur Cloudinary
+    fs.unlinkSync(photoPath); // On supprime la photo du dossier tmp
+
+    // On va chercher l'admin à partir de son token pour pouvoir modifier sa photo en BDD
+    let adminId = "";
+    Admin.findOne({ token: req.params.token }).then((data) => {
+      if (!data) {
+        res.json({ result: false, error: "Aucun admin trouvé avec ce token" });
+      } else {
+        adminId = data._id;
+        Admin.updateOne(
+          { _id: adminId },
+          { pictureUrl: resultCloudinary.secure_url }
+        ).then((data) => {
+          if (data.modifiedCount > 0) {
+            res.json({
+              result: true,
+              message: "Photo modifiée en BDD",
+              url: resultCloudinary.secure_url,
+            });
+          } else {
+            res.json({ result: false, error: "Photo non modifiée en BDD" });
+          }
+        });
+      }
+    });
+  } else {
+    res.json({ result: false, error: resultCopy });
+  }
+});
 
 module.exports = router;
