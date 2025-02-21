@@ -34,14 +34,30 @@ function AdminProfileAuthorizations() {
   // Transformation des données brutes des autorisations pour affichage
   autorisationsList = autorisationsData.map((e) => {
     return (
-      <li className={styles.eventList}>
-        Participant: {e.participant} - Evenement: {e.title} - Statut :{" "}
-        {e.isValidated ? "Validé" : "En attente"}
-      </li>
+      <tr>
+      <td className={styles.td}>{e.participant}</td>
+      <td className={styles.td}>{e.title}</td>
+      <td className={styles.td}>{e.isValidated ? "Validé" : "En attente"}</td>
+    </tr>
     );
   });
 
-  return <div>{autorisationsList}</div>;
+  return (
+    <div>
+      {autorisationsList.length === 0 ? <span>Aucune autorisation</span> : <table className={styles.table}>
+        <thead className={styles.thead}>
+          <tr>
+            <th scope="col">Evenement</th>
+            <th scope="col">Participant</th>
+            <th scope="col">Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          {autorisationsList }
+        </tbody>
+      </table>}
+    </div>
+  );
 }
 
 export default AdminProfileAuthorizations;
