@@ -16,7 +16,9 @@ router.post("/add", (req, res) => {
         lastName: req.body.lastName,
         email: req.body.email,
         phone: req.body.phone,
-        birthDate: req.body.birthDate
+        birthDate: req.body.birthDate,
+        etablissementId: req.body.etablissementId,
+
     });
 
     newParticipant.save().then((response) => {

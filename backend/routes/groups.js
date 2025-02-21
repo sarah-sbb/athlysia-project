@@ -15,7 +15,7 @@ router.post("/add", (req, res) => {
     const newGroup = new Group({
       title: req.body.title,
       adminId: req.body.adminId,
-      participantIds: req.body.participantIds,
+      participantIds: [req.body.participantIds],
     });
 
     newGroup.save().then((response) => {
