@@ -73,10 +73,6 @@ function SignUp({ open, handleToggleModal }) {
     }));
   };
 
-
-
-
-
   // fonction pour vérifier le schéma de l'adresse mail
   const isValidEmail = (mail) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

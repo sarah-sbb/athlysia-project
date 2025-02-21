@@ -8,18 +8,25 @@
     padding: 20px 10px 15px 5px;
     display: block;
     width: 100%;
-    border:none;
+    border: none;
     border-bottom: 1px solid #757575;
     background-color: #fafafa;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
   
-  .select:hover { background-color: #f0f0f0; }
+  .select:hover { 
+    background-color: #f0f0f0; 
+    border-color: #bbb;
+  }
     
-  .select:focus { outline:none; }
+  .select:focus { 
+    outline:none; 
+    border-color: var(--main-bg-color);
+  }
     
   .label 				 {
     color: var(--second-text-color); 
@@ -33,6 +40,13 @@
     -moz-transition: 0.2s ease all; 
     -webkit-transition: 0.2s ease all;
   }
+
+    /* Ajout d'une classe pour déplacer le label lorsqu'une option est sélectionnée */
+    .labelActive {
+      top: -10px; /* Déplace le label */
+      font-size: 12px; /* Réduit la taille du label */
+      color: var(--main-bg-color); /* Change la couleur */
+    }
   
   .select:focus ~ .label { 
     top: 5px;
@@ -54,14 +68,10 @@
     z-index: 1;
   }
   
-  .options li {
+  .options {
     padding: 10px;
     border-bottom: 1px solid #ddd;
     cursor: pointer;
-  }
-  
-  .options li:hover {
-    background-color: #f0f0f0;
   }
   
   .select:focus ~ .options {
