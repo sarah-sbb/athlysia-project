@@ -18,23 +18,25 @@ function AdminProfileAuthorizations() {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          setAutorisationsData( 
-            data.data[0].authorisation.map((element) => ({ // RAF: Boucler pour récupérer tous les participants de tous les events
-              participant: element.participant,
-              isValidated: element.isValidated,
+          // On utilise flatmap pour récupérer tous les autorisations puis les fusionner au sein d'un même tableau
+          const allAutorisations = data.data.flatMap((event) =>
+            event.authorisation.map((auth) => ({
+              participant: auth.participant,
+              isValidated: auth.isValidated,
+              title: event.title,
             }))
           );
+          setAutorisationsData(allAutorisations);
         }
       });
   }, []);
-
-  console.log(autorisationsData[0]) 
 
   // Transformation des données brutes des autorisations pour affichage
   autorisationsList = autorisationsData.map((e) => {
     return (
       <li className={styles.eventList}>
-        Participant: {e.participant} - Statut : {e.isValidated ? 'Validé' : 'En attente de validation'}
+        Participant: {e.participant} - Evenement: {e.title} - Statut :{" "}
+        {e.isValidated ? "Validé" : "En attente"}
       </li>
     );
   });
