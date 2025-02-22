@@ -144,17 +144,11 @@ router.delete("/deleteById", (req, res) => {
   }
 });
 
-// Route pour récupérer les événements créés par un admin via le token de l'admin
-router.post("/eventsByAdmin", (req, res) => {
-  const fields = ["token"];
-
-  // Vérification de la présence des données dans le corps de la requête (req.body)
-  if (!checkBody(req.body, fields)) {
-    return res.json({ result: false, message: "Champs manquants ou vides" });
-  }
+// Route pour récupérer les événements créés par un admin via le token de l'admin (avec populate sur authorisations)
+router.get("/eventsByAdmin/:token", (req, res) => {
 
   // Vérifie si l'admin existe via son token
-  Admin.findOne({ token: req.body.token })
+  Admin.findOne({ token: req.params.token })
     .then((admin) => {
       if (!admin) {
         return res.json({
@@ -164,7 +158,7 @@ router.post("/eventsByAdmin", (req, res) => {
       }
 
       // Si l'admin est trouvé, récupère les événements liés à l'admin
-      return Event.find({ adminId: admin._id });
+      return Event.find({ adminId: admin._id }).populate('authorisations');
     })
     .then((events) => {
       if (!events || events.length === 0) {
