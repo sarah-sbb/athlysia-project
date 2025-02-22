@@ -9,10 +9,11 @@ import admin from "../reducers/admin";
 //redux persist imports
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
-import storage from "redux-persist/lib/storage";
+// import storage from "redux-persist/lib/storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const reducers = combineReducers({ admin });
-const persistConfig = { key: "admin", storage };
+const persistConfig = { key: "admin",  storage: AsyncStorage };
 
 const store = configureStore({
   reducer: persistReducer(persistConfig, reducers),
