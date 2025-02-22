@@ -58,22 +58,10 @@ function AdminProfileGroups() {
     },
   ];
 
-
+console.log(groupsData.length)
   return (
-    <Paper>
-      {/* {groupsList.length === 0 ? (
-        <span>Aucun groupe</span>
-      ) : (
-        <table className={styles.table}>
-          <thead className={styles.thead}>
-            <tr>
-              <th scope="col">Nom</th>
-              <th scope="col">Nombre de participants</th>
-            </tr>
-          </thead>
-          <tbody>{groupsList}</tbody>
-        </table>
-      )} */}
+      <div>
+    { groupsData.length === 0 ? ( <span>Aucun groupe</span> ) : (<Paper>
       <DataGrid
         columnVisibilityModel={{
           // Cache la colonne ID
@@ -91,7 +79,8 @@ function AdminProfileGroups() {
         pageSizeOptions={[5]}
         disableRowSelectionOnClick
       />
-    </Paper>
+    </Paper>)}
+    </div>
   );
 }
 

@@ -87,25 +87,31 @@ function AdminProfileEvents() {
   // console.log('finaldata', participantsData);
 
   return (
-    <Paper>
-      <DataGrid
-        columnVisibilityModel={{
-          // Cache la colonne ID
-          id: false,
-        }}
-        rows={eventsData}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        pageSizeOptions={[5]}
-        disableRowSelectionOnClick
-      />
-    </Paper>
+    <div>
+      {eventsData.length === 0 ? (
+        <span>Aucun événement</span>
+      ) : (
+        <Paper>
+          <DataGrid
+            columnVisibilityModel={{
+              // Cache la colonne ID
+              id: false,
+            }}
+            rows={eventsData}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5]}
+            disableRowSelectionOnClick
+          />
+        </Paper>
+      )}
+    </div>
   );
 }
 

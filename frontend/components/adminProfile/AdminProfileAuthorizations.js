@@ -68,25 +68,31 @@ function AdminProfileAuthorizations() {
   // });
 
   return (
-    <Paper>
-      <DataGrid
-        columnVisibilityModel={{
-          // Cache la colonne ID
-          id: false,
-        }}
-        rows={autorisationsData}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        pageSizeOptions={[5]}
-        disableRowSelectionOnClick
-      />
-    </Paper>
+    <div>
+      {autorisationsData.length === 0 ? (
+        <span>Aucune autorisation</span>
+      ) : (
+        <Paper>
+          <DataGrid
+            columnVisibilityModel={{
+              // Cache la colonne ID
+              id: false,
+            }}
+            rows={autorisationsData}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5]}
+            disableRowSelectionOnClick
+          />
+        </Paper>
+      )}
+    </div>
   );
 }
 
