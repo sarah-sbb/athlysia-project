@@ -60,18 +60,25 @@ router.post("/add", (req, res) => {
     });
 });
 
-// Route pour récupérer les events d'un établissement
-router.get("/eventsByEtablissement/:ObjectId", (req, res) => {
-  Event.find({ etablissementId: req.params.ObjectId })
-    .then((events) => {
-      if (!events || events.length === 0) {
-        return res.status(404).json({ result: false, message: "Aucun événement trouvé pour cet établissement" });
+// Route pour rechercher tous les events d'un établissement
+router.get("/findAllByEtablissement", (req, res) => {
+  const fields = ["etablissement"];
+
+  // Vérification de la présence des données
+  if (!checkBody(req.body, fields)) {
+    res.json({ result: false, message: "Champs manquants ou vides" });
+  } else {
+    Event.find({ etablissement: req.body.etablissement }).then((data) => {
+      if (data.length === 0) {
+        res.json({
+          result: false,
+          message: "Aucun événement sur cet établissement ou établissement inconnu",
+        });
+      } else {
+        res.json({ result: true, data });
       }
-      res.status(200).json({ result: true, data: events });
-    })
-    .catch((error) => {
-      res.status(500).json({ result: false, message: "Erreur serveur", error });
     });
+  }
 });
 
 // Route pour modifier un évènement
@@ -119,85 +126,178 @@ router.put("/update/:id", (req, res) => {
     });
 });
 
-// Route pour supprimer un évènement
-router.delete("/delete/:id", (req, res) => {
-  Event.findByIdAndDelete(req.params.id)
-    .then((deletedEvent) => {
-      if (!deletedEvent) {
-        return res.status(404).json({ result: false, message: "Évènement non trouvé" });
+// Route pour supprimer un event (via son ID)
+router.delete("/deleteById", (req, res) => {
+  const fields = ["eventId"];
+
+  // Vérification de la présence des données
+  if (!checkBody(req.body, fields)) {
+    res.json({ result: false, message: "Champs manquants ou vides" });
+  } else {
+    Event.deleteOne({ _id: req.body.eventId }).then((response) => {
+      if (response.deletedCount > 0) {
+        res.json({ result: true, message: "Evénement supprimé" });
+      } else {
+        res.json({ result: false, message: "Aucun évènement trouvé avec cet ID" });
       }
-      res.status(200).json({ result: true, message: "Évènement supprimé avec succès" });
-    })
-    .catch((error) => {
-      res.status(500).json({ result: false, message: "Erreur serveur", error });
     });
+  }
 });
 
-// Route pour récupérer les événements créés par un admin via son token
-router.get("/eventsByAdmin/:token", (req, res) => {
-  verifyAdminToken(req.params.token)
+// Route pour récupérer les événements créés par un admin via le token de l'admin
+router.post("/eventsByAdmin", (req, res) => {
+  const fields = ["token"];
+
+  // Vérification de la présence des données dans le corps de la requête (req.body)
+  if (!checkBody(req.body, fields)) {
+    return res.json({ result: false, message: "Champs manquants ou vides" });
+  }
+
+  // Vérifie si l'admin existe via son token
+  Admin.findOne({ token: req.body.token })
     .then((admin) => {
+      if (!admin) {
+        return res.json({
+          result: false,
+          message: "Aucun admin trouvé avec ce token",
+        });
+      }
+
+      // Si l'admin est trouvé, récupère les événements liés à l'admin
       return Event.find({ adminId: admin._id });
     })
     .then((events) => {
       if (!events || events.length === 0) {
-        return res.status(404).json({ result: false, message: "Aucun événement trouvé pour cet admin" });
+        return res.status(404).json({
+          result: false,
+          message: "Aucun événement trouvé pour cet admin",
+        });
       }
+
       res.status(200).json({ result: true, data: events });
     })
     .catch((error) => {
-      res.status(400).json({ result: false, message: error.message });
+      res.status(500).json({
+        result: false,
+        message: "Erreur serveur",
+        error: error.message,
+      });
     });
 });
 
-router.get("/groupsByEtablissement/:ObjectId", (req, res) => {
-  console.log("[DEBUG] Route GET /groupsByEtablissement/:ObjectId triggered");
-  console.log("[DEBUG] ObjectId received:", req.params.ObjectId);
+// Route pour récupérer les événements d'un groupe
+router.get("/getEventByGroup", (req, res) => {
+  const fields = ["groupId"];
 
-  Group.find({ etablissementId: req.params.ObjectId })
-    .then((groups) => {
-      if (!groups || groups.length === 0) {
-        console.log("[DEBUG] No groups found for ObjectId:", req.params.ObjectId);
-        return res.status(404).json({ result: false, message: "Aucun groupe trouvé pour cet établissement" });
+  // Vérification de la présence des données
+  if (!checkBody(req.body, fields)) {
+    res.json({ result: false, message: "Champs manquants ou vides" });
+  } else {
+    Event.find({ _id: req.body.groupId }).then((response) => {
+      if (response.findCount > 0) {
+        res.json({ result: true, message: "Evénement trouvé" });
+      } else {
+        res.json({ result: false, message: "Aucun événement trouvé avec cet ID" });
       }
-      console.log("[DEBUG] Groups found:", groups);
-      res.status(200).json({ result: true, data: groups });
+    });
+  }
+});
+
+// Route pour récupérer tous les events d'un établissement
+router.get("/eventsByEtablissement/:etablissement", (req, res) => {
+  const { etablissement } = req.params;
+
+  // Vérification que l'ID de l'établissement est fourni
+  if (!etablissement) {
+    return res.status(400).json({ result: false, message: "L'identifiant de l'établissement est requis" });
+  }
+
+  // Recherche des participants par l'établissement
+  Event.find({ etablissement })
+    .then((data) => {
+      if (data.length === 0) {
+        return res.status(404).json({
+          result: false,
+          message: "Aucun évènement trouvé pour cet établissement ou établissement inconnu",
+        });
+      }
+
+      res.status(200).json({ result: true, data });
     })
     .catch((error) => {
-      console.error("[ERROR] Error during Group.find:", error);
-      res.status(500).json({ result: false, message: "Erreur serveur", error });
+      res.status(500).json({
+        result: false,
+        message: "Erreur lors de la récupération des évènements",
+        error: error.message,
+      });
     });
 });
 
+// Route pour récupérer tous les participants d'un établissement
+router.get("/participantByEtablissement/:etablissement", (req, res) => {
+  const { etablissement } = req.params;
 
-// Route pour récupérer les participants d'un établissement
-router.get("/participantsByEtablissement/:ObjectId", (req, res) => {
-  Participant.find({ etablissementId: req.params.ObjectId })
-    .then((participants) => {
-      if (!participants || participants.length === 0) {
-        return res.status(404).json({ result: false, message: "Aucun participant trouvé pour cet établissement" });
+  // Vérification que l'ID de l'établissement est fourni
+  if (!etablissement) {
+    return res.status(400).json({ result: false, message: "L'identifiant de l'établissement est requis" });
+  }
+
+  // Recherche des participants par l'établissement
+  Participant.find({ etablissement })
+    .then((data) => {
+      if (data.length === 0) {
+        return res.status(404).json({
+          result: false,
+          message: "Aucun participant trouvé pour cet établissement ou établissement inconnu",
+        });
       }
-      res.status(200).json({ result: true, data: participants });
+
+      res.status(200).json({ result: true, data });
     })
     .catch((error) => {
-      res.status(500).json({ result: false, message: "Erreur serveur", error });
+      res.status(500).json({
+        result: false,
+        message: "Erreur lors de la récupération des participants",
+        error: error.message,
+      });
     });
 });
 
-// Route pour récupérer les autorisations d'un événement via le token admin
-router.get("/autorisationsByEventViaAdminToken/:token", (req, res) => {
-  verifyAdminToken(req.params.token)
-    .then((admin) => {
-      return Event.find({ adminId: admin._id }).populate("authorisations");
-    })
-    .then((events) => {
-      if (!events || events.length === 0) {
-        return res.status(404).json({ result: false, message: "Aucun événement trouvé pour cet admin" });
+// Route pour récupérer les autorisations d'un événement via son ID
+router.post("/autorisationByEvent", (req, res) => {
+  const fields = ["eventId"]; 
+
+ // Vérification de la présence des données dans le body
+ if (!checkBody(req.body, fields)) {
+  return res.status(400).json({ result: false, message: "Champs manquants ou vides" });
+}
+
+// Extraction de l'eventId du body
+const { eventId } = req.body; 
+
+  // Recherche de l'événement via son ID
+  Event.findById(eventId)
+    .then((event) => {
+      if (!event) {
+        return res.status(404).json({
+          result: false,
+          message: "Aucun événement trouvé avec cet ID",
+        });
       }
-      res.status(200).json({ result: true, data: events });
+
+      // Si l'événement est trouvé, renvoyer les autorisations
+      res.status(200).json({
+        result: true,
+        data: event.authorisations, // Supposons que les autorisations sont stockées dans ce champ
+      });
     })
+
     .catch((error) => {
-      res.status(400).json({ result: false, message: error.message });
+      res.status(500).json({
+        result: false,
+        message: "Erreur serveur",
+        error: error.message,
+      });
     });
 });
 
