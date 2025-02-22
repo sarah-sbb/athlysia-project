@@ -3,6 +3,16 @@ var router = express.Router();
 const Participant = require("../models/participants");
 const { checkBody } = require("../modules/checkBody");
 
+// Route pour récupérer tous les participants
+router.get("/", async (req, res) => {
+  try {
+    const participants = await Participant.find();
+    res.json({ result: true, participants });
+  } catch (error) {
+    res.json({ result: false, message: "Erreur serveur" });
+  }
+});
+
 // Route pour la création d'un nouveau participant
 router.post("/add", (req, res) => {
   const fields = ["firstName", "lastName", "email", "phone", "birthDate"];
