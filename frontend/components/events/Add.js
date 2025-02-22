@@ -12,10 +12,12 @@ function EventPage () {
             <div className={styles.formHeader}>
               <h2>Votre évènement</h2>
               <div className={styles.formButton}>
+
                 <button className={buttonStyles(
                   { color: 'primary' })}>
                   Enregistrer
                 </button>
+                
                 <button className={buttonStyles(
                   { color: 'secondary'})}>
                   Générer les autorisations
