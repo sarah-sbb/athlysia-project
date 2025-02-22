@@ -21,7 +21,7 @@ function AdminProfileMain() {
   const [open, setOpen] = useState(false);
 
   // Toggles pour les tabs
-  const [showGroups, setShowGroups] = useState(false);
+  const [showGroups, setShowGroups] = useState(true);
   const [showEvents, setShowEvents] = useState(false);
   const [showAuthorizations, setShowAuthorizations] = useState(false);
 

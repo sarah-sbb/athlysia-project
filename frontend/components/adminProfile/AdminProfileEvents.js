@@ -1,8 +1,12 @@
 import styles from "../../styles/adminProfile.module.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import moment from 'moment';
+import 'moment/locale/fr';
 
 function AdminProfileEvents() {
+
+  moment.locale('fr');
   // Récupération du token depuis redux
   const token = useSelector((state) => state.admin.value.token);
 
@@ -20,7 +24,7 @@ function AdminProfileEvents() {
             data.data.map((element) => ({
               title: element.title,
               place: element.place,
-              dateStart: element.dateStart,
+              dateStart: moment(element.dateStart).format('LL'),
             }))
           );
         }
