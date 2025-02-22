@@ -15,19 +15,12 @@ function AdminProfileMain() {
   // Initialisation redux
   const dispatch = useDispatch();
   const token = useSelector((state) => state.admin.value.token);
+  const infoAdmin = useSelector((state) => state.admin.value.infoAdmin);
 
   // Modal modifications des infos admin
   const [open, setOpen] = useState(false);
 
-  // Infos admin
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [position, setPosition] = useState("");
-  const [role, setRole] = useState("");
-  const [picture, setPicture] = useState("");
-
   // Toggles pour les tabs
-  const [showStats, setShowStats] = useState(true);
   const [showGroups, setShowGroups] = useState(false);
   const [showEvents, setShowEvents] = useState(false);
   const [showAuthorizations, setShowAuthorizations] = useState(false);
@@ -35,7 +28,7 @@ function AdminProfileMain() {
   // Force reload (à optimiser si j'ai le temps)
   const [forceReload, setForceReload] = useState(false);
 
-  // Formulaire pour les modifications des infos admins (sauf image)
+  // Formulaire pour les modifications des infos admins (sauf pictureUrl qui est gérée à part)
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -45,23 +38,6 @@ function AdminProfileMain() {
     etablissement: "",
     password: "",
   });
-
-  useEffect(() => {
-    // Récupération des infos relatives à l'admin lui-même
-    fetch("http://localhost:3000/admins/findByToken", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setFirstName(data.data.firstName);
-        setLastName(data.data.lastName);
-        setPosition(data.data.position);
-        setRole(data.data.role);
-        setPicture(data.data.pictureUrl);
-      });
-  }, [forceReload]);
 
   const handleToggleModal = () => {
     setOpen(!open);
@@ -75,7 +51,7 @@ function AdminProfileMain() {
     }));
   };
 
-  // Gestion de la photo admin
+  // Etat pour stocker temporairement la nouvelle photo admin si elle est uploadée
   const [adminImg, setAdminImg] = useState(null);
 
   const handleChangeImage = (e) => {
@@ -196,9 +172,9 @@ function AdminProfileMain() {
     <div className={styles.mainContent}>
       <div className={styles.upperInfos}>
         <div className={styles.picContainer}>
-          {picture ? (
+          {infoAdmin.pictureUrl ? (
             <Image
-              src={picture}
+              src={infoAdmin.pictureUrl}
               alt="Ma photo de profil"
               width={200}
               height={200}
@@ -214,11 +190,11 @@ function AdminProfileMain() {
         </div>
         <div className={styles.adminInfos}>
           <div className={styles.fullName}>
-            {firstName} <span className={styles.lastName}>{lastName}</span>
+            {infoAdmin.firstName} <span className={styles.lastName}>{infoAdmin.lastName}</span>
           </div>
           <div style={{ marginBottom: "20px" }}>
-            <div>Fonction : {position}</div>
-            <div>Rôle : {role}</div>
+            <div>Fonction : {infoAdmin.position}</div>
+            <div>Rôle : {infoAdmin.role}</div>
           </div>
           <Button style={{border: "1px solid"}} onClick={handleToggleModal} >
             Modifier mon profil
@@ -232,21 +208,21 @@ function AdminProfileMain() {
           style={{ color: showGroups ? "var(--main-bg-color)" : "" }}
           onClick={() => handleToggleTab("groups")}
         >
-          Mes groupes
+          Tous mes groupes
         </h3>
         <h3
           className={styles.tab}
           style={{ color: showEvents ? "var(--main-bg-color)" : "" }}
           onClick={() => handleToggleTab("events")}
         >
-          Mes sorties
+          Toutes mes sorties
         </h3>
         <h3
           className={styles.tab}
           style={{ color: showAuthorizations ? "var(--main-bg-color)" : "" }}
           onClick={() => handleToggleTab("authorizations")}
         >
-          Mes autorisations
+          Toutes mes autorisations
         </h3>
       </div>
       {showGroups && <AdminProfileGroups />}

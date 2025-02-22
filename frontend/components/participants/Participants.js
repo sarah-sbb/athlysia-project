@@ -1,18 +1,4 @@
-/* 
-Gilliane tu as mis 2 fois export default c'est pour cela que ça ne fonctionne pas 
-Concernant les const columns et rows, on peut te montrer une petite astuce pour que se soit plus simple
-Tu peux regarder dans le dossier : frontend/data, il y a 2 fichiers de créé pour gérer les tableaux d'objets. 
-le navbarData.js est ensuite importé dans components/layout/Navbar.js pour afficher les données de ce tableau 
-Plus simple, celui des titles (pageTitle.js) est importé dans components/layout/Layout.js 
-On appelle cela mapper les données. C'est assez simple et très pratique. Ca permettra d'alléger ton fichier. 
-Je t'invite également à regarder mon github : https://github.com/sarah-sbb/P5_Kasa
-Même logique avec le accordion src/components/Accordions.js qui est juste la structure
-Puis dans src/pages/About.js tu le retrouves avec ces données. Là j'ai pas fait de dossier "data" pour ce projet 
-car le fichier ne faisait que 40 lignes. 
-Si ça peut t'aider à y voir plus clair dans ton code. 
-*/ 
-
-//import * as React from 'react';
+import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
@@ -29,7 +15,7 @@ const columns = [
     headerName: 'Modify',
     width: 130,
     renderCell: (params) => (
-      <a href={`/ctp-admin/participants/modify/${params.row.id}`} style={{ color: 'blue' }}>
+      <a href={`/participants/modify/${params.row.id}`} style={{ color: 'blue' }}>
         Modify
       </a>
     ),
@@ -74,5 +60,3 @@ export default function DataTable() {
     </Paper>
   );
 }
-
-

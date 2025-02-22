@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "^0.1.18",
     "@mui/material": "^6.4.4",
     "@mui/x-data-grid": "^7.26.0",
+    "@react-native-async-storage/async-storage": "^2.1.1",
     "@reduxjs/toolkit": "^2.5.1",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
