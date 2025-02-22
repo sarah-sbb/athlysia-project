@@ -1,18 +1,17 @@
 import styles from "../../styles/adminProfile.module.css";
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import moment from 'moment';
-import 'moment/locale/fr';
+import { useSelector } from "react-redux";
+import moment from "moment";
+import "moment/locale/fr";
+import { DataGrid } from "@mui/x-data-grid";
+import Paper from "@mui/material/Paper";
 
 function AdminProfileEvents() {
-
-  moment.locale('fr');
   // Récupération du token depuis redux
   const token = useSelector((state) => state.admin.value.token);
 
   // Stockage infos events
   const [eventsData, setEventsData] = useState([]);
-  let eventsList = [];
 
   // Récupération des infos relatives aux events gérés par l'admin
   useEffect(() => {
@@ -22,43 +21,66 @@ function AdminProfileEvents() {
         if (data.result) {
           setEventsData(
             data.data.map((element) => ({
-              title: element.title,
+              id: element._id,
+              eventTitle: element.title,
+              nbParticipants: element.authorisation.length,
               place: element.place,
-              dateStart: moment(element.dateStart).format('LL'),
+              dateStart: moment(element.dateStart).format("LL"),
             }))
           );
         }
       });
   }, []);
 
-  // Transformation des données brutes des events pour affichage
-  eventsList = eventsData.map((e) => {
-    return (
-      <tr>
-        <td className={styles.td}>{e.title}</td>
-        <td className={styles.td}>{e.place}</td>
-        <td className={styles.td}>{e.dateStart}</td>
-      </tr>
-    );
-  });
+  // Initialisation du tableau pour afficher les résultats (colonnes)
+  const columns = [
+    { field: "id", headerName: "ID", width: 90 },
+    {
+      field: "eventTitle",
+      headerName: "Nom de l'événement",
+      width: 300,
+      editable: false,
+    },
+    {
+      field: "nbParticipants",
+      headerName: "Nombre de participants",
+      width: 300,
+      editable: false,
+    },
+    {
+      field: "place",
+      headerName: "Lieu de l'événément",
+      width: 300,
+      editable: false,
+    },
+    {
+      field: "dateStart",
+      headerName: "Date de l'évément",
+      width: 300,
+      editable: false,
+    },
+  ];
 
   return (
-    <div>
-      {eventsList.length === 0 ? (
-        <span>Aucun évenement</span>
-      ) : (
-        <table className={styles.table}>
-          <thead className={styles.thead}>
-            <tr>
-              <th scope="col">Evenement</th>
-              <th scope="col">Lieu</th>
-              <th scope="col">Date</th>
-            </tr>
-          </thead>
-          <tbody>{eventsList}</tbody>
-        </table>
-      )}
-    </div>
+    <Paper>
+      <DataGrid
+        columnVisibilityModel={{
+          // Cache la colonne ID
+          id: false,
+        }}
+        rows={eventsData}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
+            },
+          },
+        }}
+        pageSizeOptions={[5]}
+        disableRowSelectionOnClick
+      />
+    </Paper>
   );
 }
 
