@@ -50,27 +50,58 @@ function AddEvent() {
   };
 
   return (
-      <form className={styles.form}>      
-          <Input label="Nom de votre évènement" />
+    <form className={styles.form}>
+      {/* Champ pour entrer le nom de l’événement */}
+      <Input
+        label="Nom de votre évènement"
+        name="eventName" // Le nom du champ à gérer
+        value={form.eventName}
+        onChange={handleFormChange} // Mettre à jour le state form
+      />
 
-          {/* Dropdown pour sélectionner un groupe */}
-          <Dropdown
-            label="Choix du groupe"
-            name="groupId" // Nom du champ dans le state
-            options={groupList} // Les groupes récupérés depuis l’API
-            value={form.groupId} // Sélection actuelle
-            onChange={handleFormChange} // Gérer le changement de sélection
-          />
+      {/* Dropdown pour sélectionner un groupe */}
+      <Dropdown
+        label="Choix du groupe"
+        name="groupId" // Nom du champ dans le state
+        options={groupList} // Les groupes récupérés depuis l’API
+        value={form.groupId} // Sélection actuelle
+        onChange={handleFormChange} // Gérer le changement de sélection
+      />
 
-          <Dropdown label="Ajouter un participant">
-          </Dropdown>
+      {/* Dropdown pour ajouter un participant */}
+      <Dropdown
+        label="Ajouter un participant"
+        name="participant"
+        options={[
+          { value: "participant1", label: "Participant 1" },
+          { value: "participant2", label: "Participant 2" },
+        ]}
+        value={form.participant}
+        onChange={handleFormChange}
+      />
 
-          <DateInput />
-        
-          <DateInput />
+      {/* DateInput pour définir les dates de début et de fin */}
+      <DateInput
+        label="Date de début"
+        name="startDate"
+        value={form.startDate}
+        onChange={handleFormChange}
+      />
+      <DateInput
+        label="Date de fin"
+        name="endDate"
+        value={form.endDate}
+        onChange={handleFormChange}
+      />
 
-          <Input label="Lieu de votre évènement" />
-      </form>
+      {/* Champ pour entrer le lieu de l’événement */}
+      <Input
+        label="Lieu de votre évènement"
+        name="location"
+        value={form.location}
+        onChange={handleFormChange}
+      />
+    </form>
   );
 }
 
