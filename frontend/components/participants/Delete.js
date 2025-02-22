@@ -7,13 +7,13 @@ export default function DeleteParticipant() {
   const handleDelete = async (event) => {
     event.preventDefault();
 
-    const response = await fetch(`http://localhost:3001/participants/delete/${id}`, {
+    const response = await fetch(`http://localhost:3000/participants/delete/${id}`, {
       method: "DELETE",
     });
 
     if (response.ok) {
-      setMessage("Participant deleted successfully!");
-      setId(""); // Clear input field
+      setMessage("Participant effacé");
+      setId(""); 
     } else {
       setMessage("Participant non effacé. Veuillez réssayer.");
     }

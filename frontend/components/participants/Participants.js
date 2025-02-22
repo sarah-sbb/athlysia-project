@@ -50,14 +50,14 @@ export default function DataTable() {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3001/participants')
+    fetch('http://localhost:3000/participants')
       .then((response) => response.json())
       .then((data) => setRows(data.participants))
-      .catch((error) => console.error('Error fetching participants:', error));
+      .catch((error) => console.error('Erreur lors du fetch de participant', error));
   }, []);
 
   const deleteParticipant = async (id) => {
-    const response = await fetch(`http://localhost:3001/participants/delete/:id`, {
+    const response = await fetch(`http://localhost:3000/participants/delete/:id`, {
       method: 'DELETE',
     });
 

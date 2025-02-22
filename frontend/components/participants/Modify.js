@@ -4,7 +4,6 @@ import { Grid } from "@mui/material";
 
 
 export default function Modify() {
-  // Extract the participant ID from the URL.
   const [participantId, setParticipantId] = useState(null);
   useEffect(() => {
     const pathParts = window.location.pathname.split("/");
@@ -12,7 +11,6 @@ export default function Modify() {
     setParticipantId(idFromPath);
   }, []);
 
-  // State for participant details (pre-filled from the backend)
   const [participant, setParticipant] = useState({
     gender: "",
     firstName: "",
@@ -24,7 +22,6 @@ export default function Modify() {
     photo: null,
   });
 
-  // Fetch participant data when ID is set
   useEffect(() => {
     if (participantId) {
       fetch(`/participants/${participantId}`)
@@ -37,7 +34,7 @@ export default function Modify() {
             }));
           }
         })
-        .catch((err) => console.error("Error fetching participant:", err));
+        .catch((err) => console.error("Participants non récupérés", err));
     }
   }, [participantId]);
 
@@ -47,8 +44,7 @@ export default function Modify() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Send PUT request to update participant details
-    fetch(`/participants/update/${participantId}`, {
+    fetch(`/participants/modify/${participantId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +55,6 @@ export default function Modify() {
         email: participant.email,
         phone: participant.phone,
         birthDate: participant.birthDate,
-        // Add additional fields if necessary
       }),
     })
       .then((res) => res.json())
@@ -70,7 +65,7 @@ export default function Modify() {
           alert("Erreur lors de la mise à jour: " + data.message);
         }
       })
-      .catch((err) => console.error("Error updating participant:", err));
+      .catch((err) => console.error("Erreur lors de la mise à jour", err));
   };
 
   return (

@@ -37,7 +37,7 @@ router.get("/:id", (req, res) => {
 });
 
 // PUT route pour mettre à jour un participant
-router.put("/update/:id", (req, res) => {
+router.put("/modify/:id", (req, res) => {
   const fields = ["firstName", "lastName", "email", "phone", "birthDate"];
   if (!checkBody(req.body, fields)) {
     return res.json({ result: false, message: "Champs manquants ou vides" });
@@ -69,7 +69,6 @@ router.get("/delete/:id", (req, res) => {
       if (!deletedParticipant) {
         return res.json({ result: false, message: "Participant non trouvé" });
       }
-      // Après la suppression, redirigez vers la page de liste des participants (ajustez le chemin si nécessaire)
       res.redirect("/");
     })
 });
