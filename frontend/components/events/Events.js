@@ -2,60 +2,48 @@ import { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 
-import styles from '../../styles/Events.module.css';
-
+// Colonnes pour afficher la bonne structure des données
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'Name', headerName: "Titre de l'évènement", width: 200 },
-  { field: 'Author', headerName: 'Auteur', width: 200 },
-  { field: 'Date', headerName: 'Date de sortie', type: 'date', width: 130 },
-  { field: 'Accept', headerName: "Taux d'acceptation", width: 200 },
-  {
-    field: 'modify',
-    headerName: 'Modify',
-    width: 130,
-    renderCell: (params) => (
-      <a href={`/ctp-admin/participants/modify/${params.row.id}`} style={{ color: 'blue' }}>
-        Modify
-      </a>
-    ),
-  },
-  {
-    field: 'delete',
-    headerName: 'Delete',
-    width: 130,
-    renderCell: (params) => (
-      <button onClick={() => deleteEvent(params.row.id)} style={{ color: 'red' }}>
-        Delete
-      </button>
-    ),
-  },
+  { field: 'name', headerName: 'Nom du groupe', width: 200 },
+  { field: 'otherField', headerName: 'Autre champ', width: 200 }, // Adaptez les colonnes selon vos données
 ];
 
 function Events() {
   const [rows, setRows] = useState([]);
 
-  // Récupération des événements au chargement du composant
   useEffect(() => {
-    fetch('http://localhost:3001/events')
-      .then((response) => response.json())
-      .then((data) => setRows(data.events))
-      .catch((error) => console.error('Error fetching events:', error));
+    const etablissementId = "67a73c9ebdc534b0b477c7d9"; // Assurez-vous que cet ID est valide
+    
+    const url = `http://localhost:3001/events/groupsByEtablissement/${etablissementId}`;
+  
+    // Déboguer l'URL générée
+    console.log(`Fetching URL: ${url}`);
+  
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          // Gestion d'erreur spécifique à une réponse 404 ou autre erreur serveur
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Debug: Voir les données reçues
+        console.log("Received data:", data);
+        if (data.result) {
+          setRows(data.data); // Si succès, peupler les données
+        } else {
+          console.error("Aucun groupe trouvé.");
+          setRows([]); // Vider les données si aucun groupe
+        }
+      })
+      .catch((error) => {
+        // Gestion des erreurs génériques
+        console.error('Erreur lors de la récupération des groupes:', error);
+      });
   }, []);
-
-  // Suppression d'un événement
-  const deleteEvent = async (id) => {
-    const response = await fetch(`http://localhost:3001/events/delete/${id}`, {
-      method: 'DELETE',
-    });
-
-    if (response.ok) {
-      // Si suppression réussie, mettre à jour les lignes en supprimant celle supprimée
-      setRows(rows.filter((row) => row.id !== id));
-    } else {
-      console.error('Événement non trouvé ou erreur dans la suppression.');
-    }
-  };
+  
 
   return (
     <Paper sx={{ height: 400, width: '100%' }}>

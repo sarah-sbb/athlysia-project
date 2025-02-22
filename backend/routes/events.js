@@ -60,14 +60,14 @@ router.post("/add", (req, res) => {
     });
 });
 
-// Route pour récupérer un évènement
-router.get("/:id", (req, res) => {
-  Event.findById(req.params.id)
-    .then((event) => {
-      if (!event) {
-        return res.status(404).json({ result: false, message: "Évènement non trouvé" });
+// Route pour récupérer les events d'un établissement
+router.get("/eventsByEtablissement/:ObjectId", (req, res) => {
+  Event.find({ etablissementId: req.params.ObjectId })
+    .then((events) => {
+      if (!events || events.length === 0) {
+        return res.status(404).json({ result: false, message: "Aucun événement trouvé pour cet établissement" });
       }
-      res.status(200).json({ result: true, event });
+      res.status(200).json({ result: true, data: events });
     })
     .catch((error) => {
       res.status(500).json({ result: false, message: "Erreur serveur", error });
@@ -150,14 +150,20 @@ router.get("/eventsByAdmin/:token", (req, res) => {
     });
 });
 
-// Route pour récupérer les groupes d'un établissement
 router.get("/groupsByEtablissement/:ObjectId", (req, res) => {
   Group.find({ etablissementId: req.params.ObjectId })
     .then((groups) => {
       if (!groups || groups.length === 0) {
         return res.status(404).json({ result: false, message: "Aucun groupe trouvé pour cet établissement" });
       }
-      res.status(200).json({ result: true, data: groups });
+      // Remappez les champs pour s'assurer d'avoir un "id"
+      const formattedGroups = groups.map(group => ({
+        id: group._id, // Propriété attendue par `DataGrid`
+        name: group.name, // Nommez vos colonnes correctement dans le frontend
+        otherField: group.otherField,
+      }));
+
+      res.status(200).json({ result: true, data: formattedGroups }); // Envoyer le format compatible frontend
     })
     .catch((error) => {
       res.status(500).json({ result: false, message: "Erreur serveur", error });
