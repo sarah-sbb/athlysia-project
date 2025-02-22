@@ -136,7 +136,6 @@ function SignUp({ open, handleToggleModal }) {
       });
   };
 
-
   return (
     // Plus bas : Props sx pour styliser la modal directment dans le composant Mui
 

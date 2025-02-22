@@ -13,9 +13,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 
 function Header({ title }) {
-  const admin = useSelector((state) => state.admin.value);
+  const admin = useSelector((state) => state.admin.value.infoAdmin);
 
-  const picture = admin.infoAdmin.pictureUrl;
+  const picture = admin.pictureUrl;
 
   //selon la logique MIUI, isMenuOpen doit contenir l'objet event.target pour afficher le menu dropdown. Mais voyez le comme un boolean puisqu'en JS une valeur null = false.
   const [isMenuOpen, setIsMenuOpen] = useState(null);
@@ -62,7 +62,7 @@ function Header({ title }) {
               style={{ marginRight: "10px", borderRadius: "100%" }}
             />
           )}
-          <p>{"Bonjour " + admin.infoAdmin?.firstName || "Nom utilisateur"}</p>
+          <p>{"Bonjour " + admin?.firstName || "Nom utilisateur"}</p>
 
           <Button
             //aria = améliore l'accessibilité (importé par MUI donc autant le laisser)

@@ -10,6 +10,7 @@ function AdminProfileAuthorizations() {
   const [autorisationsData, setAutorisationsData] = useState([]);
   let autorisationsList = [];
 
+  let allAutorisations = [];
   // Récupération des infos relatives aux autorisations des events gérés par l'admin
   useEffect(() => {
     fetch(
@@ -19,7 +20,7 @@ function AdminProfileAuthorizations() {
       .then((data) => {
         if (data.result) {
           // On utilise flatmap pour récupérer tous les autorisations puis les fusionner au sein d'un même tableau
-          const allAutorisations = data.data.flatMap((event) =>
+          allAutorisations = data.data.flatMap((event) =>
             event.authorisation.map((auth) => ({
               participant: auth.participant,
               isValidated: auth.isValidated,
@@ -35,27 +36,29 @@ function AdminProfileAuthorizations() {
   autorisationsList = autorisationsData.map((e) => {
     return (
       <tr>
-      <td className={styles.td}>{e.participant}</td>
-      <td className={styles.td}>{e.title}</td>
-      <td className={styles.td}>{e.isValidated ? "Validé" : "En attente"}</td>
-    </tr>
+        <td className={styles.td}>{e.participant}</td>
+        <td className={styles.td}>{e.title}</td>
+        <td className={styles.td}>{e.isValidated ? "Validé" : "En attente"}</td>
+      </tr>
     );
   });
 
   return (
     <div>
-      {autorisationsList.length === 0 ? <span>Aucune autorisation</span> : <table className={styles.table}>
-        <thead className={styles.thead}>
-          <tr>
-            <th scope="col">Evenement</th>
-            <th scope="col">Participant</th>
-            <th scope="col">Statut</th>
-          </tr>
-        </thead>
-        <tbody>
-          {autorisationsList }
-        </tbody>
-      </table>}
+      {autorisationsList.length === 0 ? (
+        <span>Aucune autorisation</span>
+      ) : (
+        <table className={styles.table}>
+          <thead className={styles.thead}>
+            <tr>
+              <th scope="col">Evenement</th>
+              <th scope="col">Participant</th>
+              <th scope="col">Statut</th>
+            </tr>
+          </thead>
+          <tbody>{autorisationsList}</tbody>
+        </table>
+      )}
     </div>
   );
 }
