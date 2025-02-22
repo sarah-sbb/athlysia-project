@@ -33,15 +33,28 @@ function AdminProfileGroups() {
   // Transformation des données brutes des groupes pour affichage
   groupsList = groupsData.map((e) => {
     return (
-      <li className={styles.eventList}>
-        {e.title} - {e.nbParticipants} participant(s)
-      </li>
+            <tr>
+              <td className={styles.td}>{e.title}</td>
+              <td className={styles.td}>{e.nbParticipants}</td>
+            </tr>
     );
   });
 
   return (
-    <div>
-      {groupsData.length === 0 ? <span>Aucun groupe</span> : groupsList}
+<div>
+      {groupsList.length === 0 ? (
+        <span>Aucun groupe</span>
+      ) : (
+        <table className={styles.table}>
+          <thead className={styles.thead}>
+            <tr>
+              <th scope="col">Nom</th>
+              <th scope="col">Nombre de participants</th>
+            </tr>
+          </thead>
+          <tbody>{groupsList}</tbody>
+        </table>
+      )}
     </div>
   );
 }

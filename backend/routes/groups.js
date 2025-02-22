@@ -58,4 +58,33 @@ router.post("/findAllGroupsByAdminToken", (req, res) => {
     }
 });
 
+// Route pour rechercher tous les groups d'un établissement
+router.get("/findAllByEtablissement/:etablissement", (req, res) => {
+  const { etablissement } = req.params; // Extraction du paramètre depuis req.params
+
+  // Vérification de la présence des données
+  if (!etablissement) {
+    return res.json({
+      result: false,
+      message: "L'identifiant de l'établissement est manquant.",
+    });
+  }
+  
+  // Recherche des groupes dans la base MongoDB
+  Group.find({ etablissement })
+    .then((data) => {
+      if (data.length === 0) {
+        res.json({
+          result: false,
+          message: "Aucun groupe trouvé pour cet établissement.",
+        });
+      } else {
+        res.json({
+          result: true,
+          data, // Renvoie les groupes trouvés
+        });
+      }
+    });
+  });
+
 module.exports = router;

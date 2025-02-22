@@ -60,14 +60,14 @@ router.post("/add", (req, res) => {
     });
 });
 
-// Route pour récupérer les events d'un établissement
-router.get("/eventsByEtablissement/:ObjectId", (req, res) => {
-  Event.find({ etablissementId: req.params.ObjectId })
-    .then((events) => {
-      if (!events || events.length === 0) {
-        return res.status(404).json({ result: false, message: "Aucun événement trouvé pour cet établissement" });
+// Route pour récupérer un évènement
+router.get("/:id", (req, res) => {
+  Event.findById(req.params.id)
+    .then((event) => {
+      if (!event) {
+        return res.status(404).json({ result: false, message: "Évènement non trouvé" });
       }
-      res.status(200).json({ result: true, data: events });
+      res.status(200).json({ result: true, event });
     })
     .catch((error) => {
       res.status(500).json({ result: false, message: "Erreur serveur", error });
@@ -150,25 +150,19 @@ router.get("/eventsByAdmin/:token", (req, res) => {
     });
 });
 
+// Route pour récupérer les groupes d'un établissement
 router.get("/groupsByEtablissement/:ObjectId", (req, res) => {
-  console.log("[DEBUG] Route GET /groupsByEtablissement/:ObjectId triggered");
-  console.log("[DEBUG] ObjectId received:", req.params.ObjectId);
-
   Group.find({ etablissementId: req.params.ObjectId })
     .then((groups) => {
       if (!groups || groups.length === 0) {
-        console.log("[DEBUG] No groups found for ObjectId:", req.params.ObjectId);
         return res.status(404).json({ result: false, message: "Aucun groupe trouvé pour cet établissement" });
       }
-      console.log("[DEBUG] Groups found:", groups);
       res.status(200).json({ result: true, data: groups });
     })
     .catch((error) => {
-      console.error("[ERROR] Error during Group.find:", error);
       res.status(500).json({ result: false, message: "Erreur serveur", error });
     });
 });
-
 
 // Route pour récupérer les participants d'un établissement
 router.get("/participantsByEtablissement/:ObjectId", (req, res) => {

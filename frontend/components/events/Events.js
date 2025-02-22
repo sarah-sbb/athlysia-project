@@ -1,155 +1,66 @@
+import { useState, useEffect } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
+import Paper from '@mui/material/Paper';
+
 import styles from '../../styles/Events.module.css';
 
+const columns = [
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'Name', headerName: "Titre de l'évènement", width: 200 },
+  { field: 'Author', headerName: 'Auteur', width: 200 },
+  { field: 'Date', headerName: 'Date de sortie', type: 'date', width: 130 },
+  { field: 'Accept', headerName: "Taux d'acceptation", width: 200 },
+  {
+    field: 'modify',
+    headerName: 'Modify',
+    width: 130,
+    renderCell: (params) => (
+      <a href={`/ctp-admin/events/modify/${params.row.id}`} style={{ color: 'blue' }}>
+        Modify
+      </a>
+    ),
+  },
+  {
+    field: 'delete',
+    headerName: 'Delete',
+    width: 130,
+    renderCell: (params) => (
+      <button onClick={() => deleteEvent(params.row.id)} style={{ color: 'red' }}>
+        Delete
+      </button>
+    ),
+  },
+];
+
 function Events() {
+  const [rows, setRows] = useState([]);
+
+  // Récupération des événements au chargement du composant
+  useEffect(() => {
+    fetch(`http://localhost:3000/events/eventsByEtablissement/:id`)
+      .then((response) => response.json())
+      .then((data) => setRows(data.events))
+      .catch((error) => console.error('Error fetching events:', error));
+  }, []);
+
+  // Suppression d'un événement
+  const deleteEvent = async (id) => {
+    const response = await fetch(`http://localhost:3000/events/events/delete/:id`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      // Si suppression réussie, mettre à jour les lignes en supprimant celle supprimée
+      setRows(rows.filter((row) => row.id !== id));
+    } else {
+      console.error('Événement non trouvé ou erreur dans la suppression.');
+    }
+  };
+
   return (
-<div className={styles.eventContent}>
-  <div className={styles.eventGrid}> 
-    <h2>Titre</h2>
-    <div className={styles.eventGridData}>Data</div>
-  </div>
-
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Aliquam libero tortor, placerat ut nulla at, porttitor volutpat urna. 
-    Sed at orci consectetur, hendrerit tortor eget, scelerisque quam. 
-    Curabitur id lacus enim. Mauris rutrum mauris non felis ultricies blandit. 
-    Praesent ante quam, pharetra sed lectus nec, congue scelerisque tellus. 
-    Vestibulum efficitur ex sed neque dignissim pellentesque. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
-    Phasellus sit amet magna commodo quam tempus tristique. 
-    Proin pulvinar finibus ultrices. Fusce odio arcu, scelerisque tincidunt sagittis sed, volutpat non dolor. 
-    Nulla tortor est, aliquet quis velit vel, ornare rhoncus dui. 
-    Nam vitae dignissim metus. 
-    Pellentesque sit amet suscipit ex.
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Aliquam libero tortor, placerat ut nulla at, porttitor volutpat urna. 
-    Sed at orci consectetur, hendrerit tortor eget, scelerisque quam. 
-    Curabitur id lacus enim. Mauris rutrum mauris non felis ultricies blandit. 
-    Praesent ante quam, pharetra sed lectus nec, congue scelerisque tellus. 
-    Vestibulum efficitur ex sed neque dignissim pellentesque. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
-    Phasellus sit amet magna commodo quam tempus tristique. 
-    Proin pulvinar finibus ultrices. Fusce odio arcu, scelerisque tincidunt sagittis sed, volutpat non dolor. 
-    Nulla tortor est, aliquet quis velit vel, ornare rhoncus dui. 
-    Nam vitae dignissim metus. 
-    Pellentesque sit amet suscipit ex.
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Aliquam libero tortor, placerat ut nulla at, porttitor volutpat urna. 
-    Sed at orci consectetur, hendrerit tortor eget, scelerisque quam. 
-    Curabitur id lacus enim. Mauris rutrum mauris non felis ultricies blandit. 
-    Praesent ante quam, pharetra sed lectus nec, congue scelerisque tellus. 
-    Vestibulum efficitur ex sed neque dignissim pellentesque. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
-    Phasellus sit amet magna commodo quam tempus tristique. 
-    Proin pulvinar finibus ultrices. Fusce odio arcu, scelerisque tincidunt sagittis sed, volutpat non dolor. 
-    Nulla tortor est, aliquet quis velit vel, ornare rhoncus dui. 
-    Nam vitae dignissim metus. 
-    Pellentesque sit amet suscipit ex.
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Aliquam libero tortor, placerat ut nulla at, porttitor volutpat urna. 
-    Sed at orci consectetur, hendrerit tortor eget, scelerisque quam. 
-    Curabitur id lacus enim. Mauris rutrum mauris non felis ultricies blandit. 
-    Praesent ante quam, pharetra sed lectus nec, congue scelerisque tellus. 
-    Vestibulum efficitur ex sed neque dignissim pellentesque. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
-    Phasellus sit amet magna commodo quam tempus tristique. 
-    Proin pulvinar finibus ultrices. Fusce odio arcu, scelerisque tincidunt sagittis sed, volutpat non dolor. 
-    Nulla tortor est, aliquet quis velit vel, ornare rhoncus dui. 
-    Nam vitae dignissim metus. 
-    Pellentesque sit amet suscipit ex.
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Aliquam libero tortor, placerat ut nulla at, porttitor volutpat urna. 
-    Sed at orci consectetur, hendrerit tortor eget, scelerisque quam. 
-    Curabitur id lacus enim. Mauris rutrum mauris non felis ultricies blandit. 
-    Praesent ante quam, pharetra sed lectus nec, congue scelerisque tellus. 
-    Vestibulum efficitur ex sed neque dignissim pellentesque. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
-    Phasellus sit amet magna commodo quam tempus tristique. 
-    Proin pulvinar finibus ultrices. Fusce odio arcu, scelerisque tincidunt sagittis sed, volutpat non dolor. 
-    Nulla tortor est, aliquet quis velit vel, ornare rhoncus dui. 
-    Nam vitae dignissim metus. 
-    Pellentesque sit amet suscipit ex.
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Aliquam libero tortor, placerat ut nulla at, porttitor volutpat urna. 
-    Sed at orci consectetur, hendrerit tortor eget, scelerisque quam. 
-    Curabitur id lacus enim. Mauris rutrum mauris non felis ultricies blandit. 
-    Praesent ante quam, pharetra sed lectus nec, congue scelerisque tellus. 
-    Vestibulum efficitur ex sed neque dignissim pellentesque. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
-    Phasellus sit amet magna commodo quam tempus tristique. 
-    Proin pulvinar finibus ultrices. Fusce odio arcu, scelerisque tincidunt sagittis sed, volutpat non dolor. 
-    Nulla tortor est, aliquet quis velit vel, ornare rhoncus dui. 
-    Nam vitae dignissim metus. 
-    Pellentesque sit amet suscipit ex.
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Aliquam libero tortor, placerat ut nulla at, porttitor volutpat urna. 
-    Sed at orci consectetur, hendrerit tortor eget, scelerisque quam. 
-    Curabitur id lacus enim. Mauris rutrum mauris non felis ultricies blandit. 
-    Praesent ante quam, pharetra sed lectus nec, congue scelerisque tellus. 
-    Vestibulum efficitur ex sed neque dignissim pellentesque. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
-    Phasellus sit amet magna commodo quam tempus tristique. 
-    Proin pulvinar finibus ultrices. Fusce odio arcu, scelerisque tincidunt sagittis sed, volutpat non dolor. 
-    Nulla tortor est, aliquet quis velit vel, ornare rhoncus dui. 
-    Nam vitae dignissim metus. 
-    Pellentesque sit amet suscipit ex.
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Aliquam libero tortor, placerat ut nulla at, porttitor volutpat urna. 
-    Sed at orci consectetur, hendrerit tortor eget, scelerisque quam. 
-    Curabitur id lacus enim. Mauris rutrum mauris non felis ultricies blandit. 
-    Praesent ante quam, pharetra sed lectus nec, congue scelerisque tellus. 
-    Vestibulum efficitur ex sed neque dignissim pellentesque. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
-    Phasellus sit amet magna commodo quam tempus tristique. 
-    Proin pulvinar finibus ultrices. Fusce odio arcu, scelerisque tincidunt sagittis sed, volutpat non dolor. 
-    Nulla tortor est, aliquet quis velit vel, ornare rhoncus dui. 
-    Nam vitae dignissim metus. 
-    Pellentesque sit amet suscipit ex.
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Aliquam libero tortor, placerat ut nulla at, porttitor volutpat urna. 
-    Sed at orci consectetur, hendrerit tortor eget, scelerisque quam. 
-    Curabitur id lacus enim. Mauris rutrum mauris non felis ultricies blandit. 
-    Praesent ante quam, pharetra sed lectus nec, congue scelerisque tellus. 
-    Vestibulum efficitur ex sed neque dignissim pellentesque. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
-    Phasellus sit amet magna commodo quam tempus tristique. 
-    Proin pulvinar finibus ultrices. Fusce odio arcu, scelerisque tincidunt sagittis sed, volutpat non dolor. 
-    Nulla tortor est, aliquet quis velit vel, ornare rhoncus dui. 
-    Nam vitae dignissim metus. 
-    Pellentesque sit amet suscipit ex.
-  </p>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Aliquam libero tortor, placerat ut nulla at, porttitor volutpat urna. 
-    Sed at orci consectetur, hendrerit tortor eget, scelerisque quam. 
-    Curabitur id lacus enim. Mauris rutrum mauris non felis ultricies blandit. 
-    Praesent ante quam, pharetra sed lectus nec, congue scelerisque tellus. 
-    Vestibulum efficitur ex sed neque dignissim pellentesque. 
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. 
-    Phasellus sit amet magna commodo quam tempus tristique. 
-    Proin pulvinar finibus ultrices. Fusce odio arcu, scelerisque tincidunt sagittis sed, volutpat non dolor. 
-    Nulla tortor est, aliquet quis velit vel, ornare rhoncus dui. 
-    Nam vitae dignissim metus. 
-    Pellentesque sit amet suscipit ex.
-  </p>
-
-</div>
+    <Paper sx={{ height: 400, width: '100%' }}>
+      <DataGrid rows={rows} columns={columns} pageSizeOptions={[5, 10]} checkboxSelection />
+    </Paper>
   );
 }
 

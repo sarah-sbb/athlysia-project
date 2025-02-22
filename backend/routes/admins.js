@@ -7,6 +7,7 @@ const { checkBody } = require("../modules/checkBody");
 const uniqid = require("uniqid"); // ID unique pour les images
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
+const Etablissement = require('../models/etablissements');
 
 // Route pour l'ajout d'un admin en BDD (signup)
 router.post("/signup", (req, res) => {
@@ -32,6 +33,12 @@ router.post("/signup", (req, res) => {
           message: "L'adresse mail est déjà utilisée",
         });
       } else {
+        // Recherche préalable de l'établissement ID à partir du nom (string)
+        let etablissementId = "";
+        Etablissement.findOne({ name: req.body.etablissement }).then(data => {
+          etablissementId = data._id;
+        })
+
         // Enregistrement de l'admin en BDD
         const newAdmin = new Admin({
           firstName: req.body.firstName,
@@ -39,7 +46,7 @@ router.post("/signup", (req, res) => {
           position: req.body.position,
           role: req.body.role,
           pictureUrl: req.body.pictureUrl,
-          etablissement: req.body.etablissement,
+          etablissement: etablissementId,
           email: req.body.email,
           password: bcrypt.hashSync(req.body.password, 10),
           token: uid2(32),
@@ -120,24 +127,17 @@ router.post("/findByToken", (req, res) => {
 });
 
 // Route pour rechercher tous les admins d'un établissement
-router.get("/findAllByEtablissement", (req, res) => {
-  const fields = ["etablissement"];
-
-  // Vérification de la présence des données
-  if (!checkBody(req.body, fields)) {
-    res.json({ result: false, message: "Champs manquants ou vides" });
-  } else {
-    Admin.find({ etablissement: req.body.etablissement }).then((data) => {
-      if (data.length === 0) {
-        res.json({
-          result: false,
-          message: "Aucun admin sur cet établissement ou établissement inconnu",
-        });
-      } else {
-        res.json({ result: true, data });
-      }
-    });
-  }
+router.get("/findAllByEtablissement/:etablissementId", (req, res) => {
+  Admin.find({ etablissement: req.params.etablissementId }).then((data) => {
+    if (data.length === 0) {
+      res.json({
+        result: false,
+        message: "Aucun admin sur cet établissement ou établissement inconnu",
+      });
+    } else {
+      res.json({ result: true, data });
+    }
+  });
 });
 
 // Route pour supprimer un admin (via son ID)
@@ -244,6 +244,7 @@ router.post("/updatePicture/:token", async (req, res) => {
         ).then((data) => {
           if (data.modifiedCount > 0) {
             Admin.findOne({ _id: adminId }).then((data) => {
+              // On refait un findOne car on a besoin de renvoyer au frontend les infos complètes du document pour la mise à jour du reducer
               res.json({ result: true, data });
             });
           } else {

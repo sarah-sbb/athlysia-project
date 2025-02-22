@@ -7,8 +7,6 @@ import { DateInput } from '../modules/DateInput';
 function AddEvent() {
   // État pour stocker la liste des groupes récupérés
   const [groupList, setGroupList] = useState([]);
-    // État pour stocker la liste des participants récupérés
-    const [participantList, setParticipantList] = useState([]);
 
   // État pour stocker les valeurs saisies dans le formulaire (+ groupe sélectionné)
   const [form, setForm] = useState({
@@ -20,8 +18,8 @@ function AddEvent() {
     endDate: "", // Date de fin
   });
 
-  // ID fictif d’établissement pour les tests
-  const etablissementId = "67acf5cca21c77aa7ffbcf82";
+  // ID fictif d’établissement (remplace-le par une variable dynamique si nécessaire)
+  const etablissementId = "67a73c9ebdc534b0b477c7d9";
 
   // Appel API pour récupérer les groupes
   useEffect(() => {
@@ -35,27 +33,12 @@ function AddEvent() {
             label: group.name, // Nom du groupe
           }));
           setGroupList(formattedGroups); // Mise à jour dans l’état
-        } 
+        } else {
+          console.error("Erreur API :", data.message);
+        }
       })
       .catch(console.error); // Gestion des erreurs réseau
   }, [etablissementId]);
-
-    // Appel API pour récupérer les participants
-    useEffect(() => {
-      fetch(`http://localhost:3000/participants/findAllByEtablissement/${etablissementId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.result) {
-            // Formatage des groupes pour le Dropdown
-            const formattedParticipants = data.data.map((group) => ({
-              value: participant._id, // Identifiant du participant
-              label: participant.name, // Nom du participant
-            }));
-            setParticipantList(formattedParticipants); // Mise à jour dans l’état
-          } 
-        })
-        .catch(console.error); // Gestion des erreurs réseau
-    }, [etablissementId]);
 
   // Gestion des changements dans le formulaire (groupId, lieu, etc.)
   const handleFormChange = (e) => {
@@ -85,22 +68,27 @@ function AddEvent() {
         onChange={handleFormChange} // Gérer le changement de sélection
       />
 
-      {/* Dropdown pour ajouter un participant, même principe que le dropdown groupe */}
+      {/* Dropdown pour ajouter un participant */}
       <Dropdown
         label="Ajouter un participant"
-        name="participantId"
-        options={participantList} // Les groupes récupérés depuis l’API
-        value={form.participantId}
+        name="participant"
+        options={[
+          { value: "participant1", label: "Participant 1" },
+          { value: "participant2", label: "Participant 2" },
+        ]}
+        value={form.participant}
         onChange={handleFormChange}
       />
 
       {/* DateInput pour définir les dates de début et de fin */}
       <DateInput
+        label="Date de début"
         name="startDate"
         value={form.startDate}
         onChange={handleFormChange}
       />
       <DateInput
+        label="Date de fin"
         name="endDate"
         value={form.endDate}
         onChange={handleFormChange}
