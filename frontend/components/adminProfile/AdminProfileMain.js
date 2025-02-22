@@ -49,13 +49,12 @@ function AdminProfileMain() {
   };
 
   const handleChangeImage = (e) => {
-
     // Update de l'image
     const formData = new FormData();
     formData.append("newAdminPicture", e.target.files[0]);
 
     fetch(`http://localhost:3000/admins/updatePicture/${token}`, {
-      method: "POST",
+      method: "PUT",
       body: formData,
     })
       .then((response) => response.json())
@@ -63,7 +62,7 @@ function AdminProfileMain() {
         dispatch(modify(data.data)); // Mise à jour des infos reducer
       });
 
-      console.log('test')
+    console.log("test");
   };
 
   const handleSubmit = () => {
@@ -173,11 +172,13 @@ function AdminProfileMain() {
             role={undefined}
             variant="outlined"
             tabIndex={-1}
-            className={styles.updatePicLabel}
+            style={{width:"200px"}}
+            loadingIndicator="Loading…"
           >
             <VisuallyHiddenInput
               type="file"
               onChange={(event) => handleChangeImage(event)}
+              loadingIndicator="Loading..."
             />
             Modifier ma photo
           </Button>
@@ -200,21 +201,21 @@ function AdminProfileMain() {
       <div className={styles.tabBar}>
         <h3
           className={styles.tab}
-          style={{ color: showGroups ? "var(--main-bg-color)" : "" }}
+          style={{ color: showGroups ? "" : "#757575" }}
           onClick={() => handleToggleTab("groups")}
         >
           Tous mes groupes
         </h3>
         <h3
           className={styles.tab}
-          style={{ color: showEvents ? "var(--main-bg-color)" : "" }}
+          style={{ color: showEvents ? "" : "#757575" }}
           onClick={() => handleToggleTab("events")}
         >
           Toutes mes sorties
         </h3>
         <h3
           className={styles.tab}
-          style={{ color: showAuthorizations ? "var(--main-bg-color)" : "" }}
+          style={{ color: showAuthorizations ? "" : "#757575" }}
           onClick={() => handleToggleTab("authorizations")}
         >
           Toutes mes autorisations

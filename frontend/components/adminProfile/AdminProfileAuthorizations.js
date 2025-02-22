@@ -17,7 +17,7 @@ function AdminProfileAuthorizations() {
       `http://localhost:3000/events/autorisationsByEventViaAdminToken/${token}`
     )
       .then((response) => response.json())
-      .then((data) => {
+      .then((data) => { // RAF: ajouter les photos participants
         if (data.result) {
           // On utilise flatmap pour récupérer tous les autorisations puis les fusionner au sein d'un même tableau
           allAutorisations = data.data.flatMap((event) =>
