@@ -93,3 +93,10 @@
   background-color: grey;
   color:white;
 }
+
+.updatePicLabel {
+  background-color: red;
+  width: 200px;
+  text-align: center;
+  color:white;
+}
