@@ -37,7 +37,7 @@ function Events() {
 
   // Récupération des événements au chargement du composant
   useEffect(() => {
-    fetch('http://localhost:3001/events')
+    fetch(`http://localhost:3000/events/eventsByEtablissement/:id`)
       .then((response) => response.json())
       .then((data) => setRows(data.events))
       .catch((error) => console.error('Error fetching events:', error));
@@ -45,7 +45,7 @@ function Events() {
 
   // Suppression d'un événement
   const deleteEvent = async (id) => {
-    const response = await fetch(`http://localhost:3001/events/delete/${id}`, {
+    const response = await fetch(`http://localhost:3000/events/events/delete/:id`, {
       method: 'DELETE',
     });
 
