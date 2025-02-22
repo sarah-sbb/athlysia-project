@@ -38,6 +38,21 @@ router.get("/:id", (req, res) => {
     })
 });
 
+// Route pour rechercher tous les participants d'un établissement
+router.get("/:etablissement", (req, res) => {
+    Participant.find({ etablissement: req.params.etablissement }).then((data) => {
+      if (data.length === 0) {
+        res.json({
+          result: false,
+          message: "Aucun participant sur cet établissement ou établissement inconnu",
+        });
+      } else {
+        res.json({ result: true, allParticipants : data });
+      }
+    });
+});
+
+
 // PUT route pour mettre à jour un participant
 router.put("/update/:id", (req, res) => {
   const fields = ["firstName", "lastName", "email", "phone", "birthDate"];
