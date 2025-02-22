@@ -25,9 +25,6 @@ function AdminProfileMain() {
   const [showEvents, setShowEvents] = useState(false);
   const [showAuthorizations, setShowAuthorizations] = useState(false);
 
-  // Force reload (à optimiser si j'ai le temps)
-  const [forceReload, setForceReload] = useState(false);
-
   // Formulaire pour les modifications des infos admins (sauf pictureUrl qui est gérée à part)
   const [form, setForm] = useState({
     firstName: "",
@@ -51,11 +48,22 @@ function AdminProfileMain() {
     }));
   };
 
-  // Etat pour stocker temporairement la nouvelle photo admin si elle est uploadée
-  const [adminImg, setAdminImg] = useState(null);
-
   const handleChangeImage = (e) => {
-    setAdminImg(e.target.files);
+
+    // Update de l'image
+    const formData = new FormData();
+    formData.append("newAdminPicture", e.target.files[0]);
+
+    fetch(`http://localhost:3000/admins/updatePicture/${token}`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch(modify(data.data)); // Mise à jour des infos reducer
+      });
+
+      console.log('test')
   };
 
   const handleSubmit = () => {
@@ -69,22 +77,7 @@ function AdminProfileMain() {
       .then((data) => {
         if (data.result) {
           dispatch(modify(data.data)); // Mise à jour des infos reducer
-          setForceReload(!forceReload); // A optimiser si j'ai le temps
         }
-      });
-
-    // Update de l'image
-    const formData = new FormData();
-    formData.append("newAdminPicture", adminImg[0], token);
-
-    fetch(`http://localhost:3000/admins/updatePicture/${token}`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch(modify(data.data)); // Mise à jour des infos reducer
-        setForceReload(!forceReload); // A optimiser si j'ai le temps
       });
   };
 
@@ -141,18 +134,6 @@ function AdminProfileMain() {
             name="password"
             onChange={handleChangeForm}
           />
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-          >
-            <VisuallyHiddenInput
-              type="file"
-              onChange={(event) => handleChangeImage(event)}
-            />
-            Modifier ma photo
-          </Button>
         </Box>
         {/* Footer avec les deux boutons */}
 
@@ -187,16 +168,30 @@ function AdminProfileMain() {
               height={200}
             />
           )}
+          <Button
+            component="label"
+            role={undefined}
+            variant="outlined"
+            tabIndex={-1}
+            className={styles.updatePicLabel}
+          >
+            <VisuallyHiddenInput
+              type="file"
+              onChange={(event) => handleChangeImage(event)}
+            />
+            Modifier ma photo
+          </Button>
         </div>
         <div className={styles.adminInfos}>
           <div className={styles.fullName}>
-            {infoAdmin.firstName} <span className={styles.lastName}>{infoAdmin.lastName}</span>
+            {infoAdmin.firstName}{" "}
+            <span className={styles.lastName}>{infoAdmin.lastName}</span>
           </div>
           <div style={{ marginBottom: "20px" }}>
             <div>Fonction : {infoAdmin.position}</div>
             <div>Rôle : {infoAdmin.role}</div>
           </div>
-          <Button style={{border: "1px solid"}} onClick={handleToggleModal} >
+          <Button variant="contained" onClick={handleToggleModal}>
             Modifier mon profil
           </Button>
           {modificationPopin}
