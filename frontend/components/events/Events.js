@@ -39,12 +39,11 @@ function Events() {
   const etablissementId = useSelector(
     (state) => state.admin.value.etablissement 
   );
-  
 
   // Récupération des événements au chargement du composant
   useEffect(() => {
-    if (!etablissementId) return;
-    fetch(`http://localhost:3000/eventsByEtablissement/${etablissementId}`)
+    if (!etablissementId) {
+      fetch(`http://localhost:3000/eventsByEtablissement/${etablissementId}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
@@ -62,6 +61,7 @@ function Events() {
         }
       })
       .catch((error) => console.error("Erreur API :", error));
+     }
   }, [etablissementId]);
 
   // Suppression d'un événement

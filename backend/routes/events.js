@@ -204,16 +204,16 @@ router.get("/getEventByGroup", (req, res) => {
 });
 
 // Route pour récupérer tous les events d'un établissement
-router.get("/eventsByEtablissement/:etablissement", (req, res) => {
-  const { etablissement } = req.params;
+router.get("/eventsByEtablissement/:etablissementId", (req, res) => {
+  const { etablissementId } = req.params;
 
   // Vérification que l'ID de l'établissement est fourni
-  if (!etablissement) {
+  if (!etablissementId) {
     return res.status(400).json({ result: false, message: "L'identifiant de l'établissement est requis" });
   }
 
   // Recherche des participants par l'établissement
-  Event.find({ etablissement })
+  Event.find({ etablissementId })
     .then((data) => {
       if (data.length === 0) {
         return res.status(404).json({
