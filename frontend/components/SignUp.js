@@ -129,6 +129,7 @@ function SignUp({ open, handleToggleModal }) {
           );
           router.push("/ctp-admin");
         } else {
+          console.log(data.result)
           console.log(data.result, "erreur : ", data.message);
           setIsError(true);
           setErrorMsg(data.message);

@@ -38,7 +38,7 @@ router.post("/signup", (req, res) => {
     // Check si l'admin n'existe pas déjà via son email
     Admin.findOne({ email: req.body.email }).then((response) => {
       if (response) {
-        res.json({
+        return res.json({
           result: false,
           message: "L'adresse mail est déjà utilisée",
         });
@@ -57,7 +57,7 @@ router.post("/signup", (req, res) => {
         });
 
         newAdmin.save().then((response) => {
-          res.json({
+          return res.json({
             result: true,
             token: response.token,
             etablissement: response.etablissement,
@@ -80,14 +80,14 @@ router.post("/signin", (req, res) => {
 
   // Vérification de la présence des données
   if (!checkBody(req.body, fields)) {
-    res.json({ result: false, message: "Champs manquants ou vides" });
+    return res.json({ result: false, message: "Champs manquants ou vides" });
   } else {
     Admin.findOne({ email: req.body.email }).then((response) => {
       if (
         response &&
         bcrypt.compareSync(req.body.password, response.password)
       ) {
-        res.json({
+        return res.json({
           result: true,
           token: response.token,
           etablissement: response.etablissement,
@@ -99,7 +99,7 @@ router.post("/signin", (req, res) => {
           },
         });
       } else {
-        res.json({
+        return res.json({
           result: false,
           message: "Mot de passe ou email incorrect",
         });
@@ -115,16 +115,16 @@ router.post("/findByToken", (req, res) => {
 
   // Vérification de la présence des données
   if (!checkBody(req.body, fields)) {
-    res.json({ result: false, message: "Champs manquants ou vides" });
+    return res.json({ result: false, message: "Champs manquants ou vides" });
   } else {
     Admin.findOne({ token: req.body.token }).then((response) => {
       if (!response) {
-        res.json({
+        return res.json({
           result: false,
           message: "Aucun admin trouvé avec ce token",
         });
       } else {
-        res.json({ result: true, data: response });
+        return res.json({ result: true, data: response });
       }
     });
   }
@@ -134,12 +134,12 @@ router.post("/findByToken", (req, res) => {
 router.get("/findAllByEtablissement/:etablissementId", (req, res) => {
   Admin.find({ etablissement: req.params.etablissementId }).then((data) => {
     if (data.length === 0) {
-      res.json({
+      return res.json({
         result: false,
         message: "Aucun admin sur cet établissement ou établissement inconnu",
       });
     } else {
-      res.json({ result: true, data });
+      return res.json({ result: true, data });
     }
   });
 });
@@ -150,13 +150,13 @@ router.delete("/deleteById", (req, res) => {
 
   // Vérification de la présence des données
   if (!checkBody(req.body, fields)) {
-    res.json({ result: false, message: "Champs manquants ou vides" });
+    return res.json({ result: false, message: "Champs manquants ou vides" });
   } else {
     Admin.deleteOne({ _id: req.body.adminId }).then((response) => {
       if (response.deletedCount > 0) {
-        res.json({ result: true, message: "Admin supprimé" });
+        return res.json({ result: true, message: "Admin supprimé" });
       } else {
-        res.json({ result: false, message: "Aucun admin trouvé avec cet ID" });
+        return res.json({ result: false, message: "Aucun admin trouvé avec cet ID" });
       }
     });
   }
