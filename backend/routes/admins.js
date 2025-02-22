@@ -14,7 +14,7 @@ router.post("/signup", (req, res) => {
   const fields = [
     "firstName",
     "lastName",
-    "function",
+    "position",
     "role",
     "email",
     "password",
@@ -22,9 +22,19 @@ router.post("/signup", (req, res) => {
   ];
 
   // Vérification de la présence des données
+  console.log("Données reçues dans /signup:", req.body);
   if (!checkBody(req.body, fields)) {
-    res.json({ result: false, message: "Tous les champs sont requis " });
-  } else {
+    return res.json({ result: false, message: "Tous les champs sont requis backend " });
+  }
+
+
+ // Recherche préalable de l'établissement ID à partir du nom (string)
+        
+    Etablissement.findOne({ name: req.body.etablissement }).then(data => {
+      if (!data) {
+       return res.json({result: false, message: "Établissement non trouvé"})
+      } 
+     
     // Check si l'admin n'existe pas déjà via son email
     Admin.findOne({ email: req.body.email }).then((response) => {
       if (response) {
@@ -33,12 +43,6 @@ router.post("/signup", (req, res) => {
           message: "L'adresse mail est déjà utilisée",
         });
       } else {
-        // Recherche préalable de l'établissement ID à partir du nom (string)
-        let etablissementId = "";
-        Etablissement.findOne({ name: req.body.etablissement }).then(data => {
-          etablissementId = data._id;
-        })
-
         // Enregistrement de l'admin en BDD
         const newAdmin = new Admin({
           firstName: req.body.firstName,
@@ -46,7 +50,7 @@ router.post("/signup", (req, res) => {
           position: req.body.position,
           role: req.body.role,
           pictureUrl: req.body.pictureUrl,
-          etablissement: etablissementId,
+          etablissement: data._id,
           email: req.body.email,
           password: bcrypt.hashSync(req.body.password, 10),
           token: uid2(32),
@@ -67,7 +71,7 @@ router.post("/signup", (req, res) => {
         });
       }
     });
-  }
+  });
 });
 
 // Route pour la connexion de l'admin (signin)
