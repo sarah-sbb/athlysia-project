@@ -19,7 +19,7 @@ function AddEvent() {
   });
 
   // ID fictif d’établissement (remplace-le par une variable dynamique si nécessaire)
-  const etablissementId = "67a73c9ebdc534b0b477c7d9";
+  const etablissementId = "67acf5cca21c77aa7ffbcf82";
 
   // Appel API pour récupérer les groupes
   useEffect(() => {
@@ -33,9 +33,7 @@ function AddEvent() {
             label: group.name, // Nom du groupe
           }));
           setGroupList(formattedGroups); // Mise à jour dans l’état
-        } else {
-          console.error("Erreur API :", data.message);
-        }
+        } 
       })
       .catch(console.error); // Gestion des erreurs réseau
   }, [etablissementId]);
