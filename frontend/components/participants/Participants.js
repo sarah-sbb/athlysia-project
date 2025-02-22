@@ -18,14 +18,12 @@ import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 // import LargeButtonRed from '../smallComponents/LargeButtonRed';
 // import LargeButtonWhite from '../smallComponents/LargeButtonWhite';
-import axios from 'axios';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
-  { field: 'email', headerName: 'Email', width: 200 },
-  { field: 'phone', headerName: 'Phone', width: 150 },
+  { field: 'firstName', headerName: 'First Name', width: 130 },
+  { field: 'lastName', headerName: 'Last Name', width: 130 },
+  { field: 'age', headerName: 'Age', type: 'number', width: 90 },
   {
     field: 'modify',
     headerName: 'Modify',
@@ -41,7 +39,7 @@ const columns = [
     headerName: 'Delete',
     width: 130,
     renderCell: (params) => (
-      <button onClick={() => handleDelete(params.row.id)} style={{ color: 'red', border: 'none', background: 'none' }}>
+      <button onClick={() => deleteParticipant(params.row.id)} style={{ color: 'red' }}>
         Delete
       </button>
     ),
@@ -50,37 +48,31 @@ const columns = [
 
 export default function DataTable() {
   const [rows, setRows] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/participants') // Adjust URL based on your backend
-      .then((response) => {
-        setRows(response.data.participants);
-        setLoading(false);
-      })
+    fetch('http://localhost:3001/participants')
+      .then((response) => response.json())
+      .then((data) => setRows(data.participants))
       .catch((error) => console.error('Error fetching participants:', error));
   }, []);
 
-  // Function to delete participant
-  const handleDelete = (id) => {
-    axios.get(`http://localhost:3001/participants/delete/${id}`)
-      .then(() => {
-        setRows(rows.filter(row => row.id !== id));
-      })
-      .catch((error) => console.error('Error deleting participant:', error));
+  const deleteParticipant = async (id) => {
+    const response = await fetch(`http://localhost:3001/participants/delete/:id`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      setRows(rows.filter((row) => row.id !== id));
+    } else {
+      console.error('Participants non trouvés');
+    }
   };
 
   return (
     <Paper sx={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        loading={loading}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-        sx={{ border: 0 }}
-      />
+      <DataGrid rows={rows} columns={columns} pageSizeOptions={[5, 10]} checkboxSelection />
     </Paper>
   );
 }
+
 

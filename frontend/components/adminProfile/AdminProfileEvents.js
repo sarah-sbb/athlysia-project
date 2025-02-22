@@ -30,15 +30,30 @@ function AdminProfileEvents() {
   // Transformation des données brutes des events pour affichage
   eventsList = eventsData.map((e) => {
     return (
-      <li className={styles.eventList}>
-        {e.title} - Lieu : {e.place} - Date : {e.dateStart}
-      </li>
+      <tr>
+        <td className={styles.td}>{e.title}</td>
+        <td className={styles.td}>{e.place}</td>
+        <td className={styles.td}>{e.dateStart}</td>
+      </tr>
     );
   });
 
   return (
     <div>
-      {eventsData.length === 0 ? <span>Aucune sortie</span> : eventsList}
+      {eventsList.length === 0 ? (
+        <span>Aucun évenement</span>
+      ) : (
+        <table className={styles.table}>
+          <thead className={styles.thead}>
+            <tr>
+              <th scope="col">Evenement</th>
+              <th scope="col">Lieu</th>
+              <th scope="col">Date</th>
+            </tr>
+          </thead>
+          <tbody>{eventsList}</tbody>
+        </table>
+      )}
     </div>
   );
 }
