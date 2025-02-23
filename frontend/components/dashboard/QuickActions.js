@@ -1,12 +1,11 @@
-import { Modal, Box, Button, TextField } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Button } from "@mui/material";
 import EditCalendar from '@mui/icons-material/EditCalendar';
 import GroupAdd from '@mui/icons-material/GroupAdd';
 
 function QuickActions() {
   return (
     <div>
-      <h1>Actions rapide</h1>
+      <h2>Actions rapide</h2>
       <div>
         <Button variant="outlined" sx={buttonEvent} startIcon={<EditCalendar />}>Créer un événement</Button>
         <Button variant="contained" sx={buttonGroup} startIcon={<GroupAdd />}>Créer un groupe</Button>

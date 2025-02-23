@@ -1,7 +1,7 @@
 function MyLastEvents() {
   return (
     <div>
-      <h1>My last events here</h1>
+      <h2>My last events here</h2>
       <p>
         Adipisicing sint nostrud est quis aliqua tempor. Ad non laboris nulla
         ipsum ex proident aliqua duis officia consequat quis adipisicing sunt.

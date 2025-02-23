@@ -11,12 +11,12 @@ function Index() {
     <Layout>
       <QuickActions />
       <div className={styles.myEventsContainer}>
-        <h1>Mes événements</h1>
+        <h2>Mes événements</h2>
         <AdminProfileEvents />
       </div>
       <div className={styles.bottomContainer}>
         <div className={styles.myGroupsContainer}>
-          <h1>Mes groupes</h1>
+          <h2>Mes groupes</h2>
           <AdminProfileGroups />
         </div>
         <div className={styles.myAccountContainer}>
