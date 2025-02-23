@@ -4,6 +4,8 @@ const Group = require("../models/groups");
 const Admin = require("../models/admins");
 const { checkBody } = require("../modules/checkBody");
 
+//NE PAS TOUCHER AUX ROUTES
+
 // Route pour la création d'un nouveau groupe
 router.post("/add", (req, res) => {
   const fields = ["title", "adminId", "participantIds"];

@@ -10,7 +10,7 @@ export const adminSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.value.token = action.payload.token;
-      state.value.etablissement = action.payload.etablissement._id;
+      state.value.etablissement = action.payload.etablissement;
       state.value.infoAdmin = action.payload.infoAdmin;
     },
     logout: (state) => {
