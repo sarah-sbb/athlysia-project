@@ -11,8 +11,10 @@ function AdminProfileEvents() {
   // Récupération du token depuis redux
   const token = useSelector((state) => state.admin.value.token);
 
-  // Stockage infos events
+  // Stockage infos events + participants
   const [eventsData, setEventsData] = useState([]);
+  const [participantsData, setParticipantsData] = useState([]);
+
   // const [participantsData, setParticipantsData] = useState([]);
 
   // Récupération des infos relatives aux events gérés par l'admin
@@ -31,6 +33,15 @@ function AdminProfileEvents() {
               dateStart: moment(element.dateStart).format("LL"),
             }))
           );
+          // for (let element of data.data) {
+          //   for (let subelement of element.authorisation) {
+          //     fetch(`http://localhost:3000/participants/${subelement.participant}`)
+          //     .then(response => response.json())
+          //     .then(data => {
+          //       setParticipantsData([...participantsData, data])
+          //     })
+          //   }
+          // }
         }
       });
   }, []);
@@ -46,7 +57,7 @@ function AdminProfileEvents() {
   //             setEventsData(() => {
   //               for (let element of eventsData) {
   //                 element.id = data.participant._id,
-  //                 element.pictureUrl =
+  //                 element.pictureUrl = data.participant.pictureUrl
   //               }
   //             })
   //           }
@@ -83,8 +94,6 @@ function AdminProfileEvents() {
       editable: false,
     },
   ];
-
-  // console.log('finaldata', participantsData);
 
   return (
     <div>
