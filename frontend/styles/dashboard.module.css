@@ -1,0 +1,30 @@
+.bottomContainer {
+  display: flex;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.myAccountContainer {
+  width: 50%;
+}
+
+.myGroupsContainer {
+  width: 50%;
+  margin-right: 50px;
+}
+
+.myEventsContainer {
+  margin-top: 30px;
+}
+
+.list {
+  display: list-item;
+}
+
+.listItem{
+  list-style:square;
+}
+
+.myAccountButtonContainer {
+  display:flex;
+}

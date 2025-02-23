@@ -91,11 +91,12 @@ router.post("/signin", (req, res) => {
           result: true,
           token: response.token,
           etablissement: response.etablissement,
-          role: response.role,
           infoAdmin: {
             firstName: response.firstName,
             lastName: response.lastName,
             position: response.position,
+            role: response.role,
+            pictureUrl: response.pictureUrl
           },
         });
       } else {
@@ -227,7 +228,7 @@ router.put("/updateByToken", (req, res) => {
 });
 
 // Route pour gérer la mise à jour de la photo admin
-router.post("/updatePicture/:token", async (req, res) => {
+router.put("/updatePicture/:token", async (req, res) => {
   const photoPath = `./tmp/${uniqid()}.jpg`; // Génération d'un nom de fichier unique avec chemin
   const resultMove = await req.files.newAdminPicture.mv(photoPath); // Déplacement vers dossier tmp
 
