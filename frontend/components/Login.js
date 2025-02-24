@@ -68,6 +68,7 @@ function Home() {
         if (data.result) {
           router.push("/ctp-admin");
           console.log("connecté : ", data.result);
+          console.log(data.etablissement);
           dispatch(
             login({
               token: data.token,
