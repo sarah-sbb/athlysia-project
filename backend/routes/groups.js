@@ -34,16 +34,21 @@ router.post("/findAllGroupsByAdminToken", (req, res) => {
   const fields = ["token"];
   let adminId = "";
 
-    // Vérification de la présence des données
-    if (!checkBody(req.body, fields)) {
-      res.json({ result: false, message: "Champs manquants ou vides" });
-    } else {
-      Admin.findOne({ token: req.body.token }).then((data) => {
-        if(!data) {
-          res.json({ result: false, message: "Aucun admin trouvé avec ce token"})
-        } else {
-          adminId = data._id;
-          Group.find({ adminId }).then((data) => {
+  // Vérification de la présence des données
+  if (!checkBody(req.body, fields)) {
+    res.json({ result: false, message: "Champs manquants ou vides" });
+  } else {
+    Admin.findOne({ token: req.body.token }).then((data) => {
+      if (!data) {
+        res.json({
+          result: false,
+          message: "Aucun admin trouvé avec ce token",
+        });
+      } else {
+        adminId = data._id;
+        Group.find({ adminId })
+          .populate("participantIds","pictureUrl -_id")
+          .then((data) => {
             if (data.length === 0) {
               res.json({
                 result: false,
@@ -53,9 +58,9 @@ router.post("/findAllGroupsByAdminToken", (req, res) => {
               res.json({ result: true, data });
             }
           });
-        }
-      })
-    }
+      }
+    });
+  }
 });
 
 // Route pour rechercher tous les groups d'un établissement
@@ -69,22 +74,21 @@ router.get("/findAllByEtablissement/:etablissement", (req, res) => {
       message: "L'identifiant de l'établissement est manquant.",
     });
   }
-  
+
   // Recherche des groupes dans la base MongoDB
-  Group.find({ etablissement })
-    .then((data) => {
-      if (data.length === 0) {
-        res.json({
-          result: false,
-          message: "Aucun groupe trouvé pour cet établissement.",
-        });
-      } else {
-        res.json({
-          result: true,
-          data, // Renvoie les groupes trouvés
-        });
-      }
-    });
+  Group.find({ etablissement }).then((data) => {
+    if (data.length === 0) {
+      res.json({
+        result: false,
+        message: "Aucun groupe trouvé pour cet établissement.",
+      });
+    } else {
+      res.json({
+        result: true,
+        data, // Renvoie les groupes trouvés
+      });
+    }
   });
+});
 
 module.exports = router;
