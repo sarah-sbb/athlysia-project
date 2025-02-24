@@ -2,9 +2,12 @@ import styles from "../../styles/adminProfile.module.css";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
+import Avatar from '@mui/material/Avatar';
+import AvatarGroup from '@mui/material/AvatarGroup';
 import Paper from "@mui/material/Paper";
-import moment from 'moment';
-import 'moment/locale/fr';
+import moment from "moment";
+import "moment/locale/fr";
+import { alignProperty } from "@mui/material/styles/cssUtils";
 
 function AdminProfileGroups() {
   // Récupération du token depuis redux
@@ -27,8 +30,8 @@ function AdminProfileGroups() {
             data.data.map((element) => ({
               id: element._id,
               groupName: element.title,
-              nbParticipants: element.participantIds.length,
-              createdAt: moment(element.createdAt).format('LLLL')
+              participantPics: element.participantIds,
+              createdAt: moment(element.createdAt).format("LLLL"),
             }))
           );
         }
@@ -45,10 +48,15 @@ function AdminProfileGroups() {
       editable: false,
     },
     {
-      field: "nbParticipants",
-      headerName: "Nombre de participants",
+      field: "participantPics",
+      headerName: "Participants",
       width: 300,
       editable: false,
+      renderCell: (params) => (
+        <AvatarGroup max={4} style={{justifyContent:"flex-end"}}>
+        {params.value.map((e) => ( <Avatar src={e.pictureUrl} style={{borderRadius:"100%"}} />)
+       )}
+       </AvatarGroup>),
     },
     {
       field: "createdAt",
@@ -58,28 +66,31 @@ function AdminProfileGroups() {
     },
   ];
 
-console.log(groupsData.length)
   return (
-      <div>
-    { groupsData.length === 0 ? ( <span>Aucun groupe</span> ) : (<Paper>
-      <DataGrid
-        columnVisibilityModel={{
-          // Cache la colonne ID
-          id:false
-        }}
-        rows={groupsData}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        pageSizeOptions={[5]}
-        disableRowSelectionOnClick
-      />
-    </Paper>)}
+    <div>
+      {groupsData.length === 0 ? (
+        <span>Aucun groupe</span>
+      ) : (
+        <Paper>
+          <DataGrid
+            columnVisibilityModel={{
+              // Cache la colonne ID
+              id: false,
+            }}
+            rows={groupsData}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5]}
+            disableRowSelectionOnClick
+          />
+        </Paper>
+      )}
     </div>
   );
 }
