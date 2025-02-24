@@ -2,12 +2,11 @@ import styles from "../../styles/adminProfile.module.css";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
-import Avatar from '@mui/material/Avatar';
-import AvatarGroup from '@mui/material/AvatarGroup';
+import Avatar from "@mui/material/Avatar";
+import AvatarGroup from "@mui/material/AvatarGroup";
 import Paper from "@mui/material/Paper";
 import moment from "moment";
 import "moment/locale/fr";
-import { alignProperty } from "@mui/material/styles/cssUtils";
 
 function AdminProfileGroups() {
   // Récupération du token depuis redux
@@ -53,10 +52,13 @@ function AdminProfileGroups() {
       width: 300,
       editable: false,
       renderCell: (params) => (
-        <AvatarGroup max={4} style={{justifyContent:"flex-end"}}>
-        {params.value.map((e) => ( <Avatar src={e.pictureUrl} style={{borderRadius:"100%"}} />)
-       )}
-       </AvatarGroup>),
+        // Fonction pour transformer le tableau des pictureUrl participants en un groupe d'avatars capés à 4 (flex-end pour forcer l'alignement à gauche)
+        <AvatarGroup max={4} style={{ justifyContent: "flex-end" }}>
+          {params.value.map((e) => (
+            <Avatar src={e.pictureUrl} />
+          ))}
+        </AvatarGroup>
+      ),
     },
     {
       field: "createdAt",

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
+import Avatar from "@mui/material/Avatar";
 
 function AdminProfileAuthorizations() {
   // Récupération du token admin depuis redux
@@ -14,20 +15,23 @@ function AdminProfileAuthorizations() {
 
   // Récupération des infos relatives aux autorisations des events gérés par l'admin
   useEffect(() => {
-    fetch(`http://localhost:3000/events/eventsByAdmin/${token}`)
+    fetch(
+      `http://localhost:3000/events/eventsByAdminWithParticipantInfos/${token}`
+    )
       .then((response) => response.json())
       .then((data) => {
-        // RAF: ajouter les photos participants
         if (data.result) {
           // On utilise flatmap pour récupérer tous les autorisations puis les fusionner au sein d'un même tableau
           allAutorisations = data.data.flatMap((event) =>
-            event.authorisation.map((auth) => ({
-              id: auth._id,
-              participant: auth.participant,
+            event.authorisations.map((auth) => ({
+              id: `${event._id}-${auth._id}`, // Clé unique combinant événement + autorisation
+              participant: `${auth.participant.firstName} ${auth.participant.lastName}`, // Concaténation pour obtenir rapidement le nom complet
+              participantPic: auth.participant.pictureUrl,
               isValidated: auth.isValidated,
               eventTitle: event.title,
             }))
           );
+          console.log("Données autorisations formatées :", allAutorisations);
           setAutorisationsData(allAutorisations);
         }
       });
@@ -36,6 +40,16 @@ function AdminProfileAuthorizations() {
   // Initialisation du tableau pour afficher les résultats (colonnes)
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
+    {
+      field: "participantPic",
+      headerName: "",
+      width: 100,
+      editable: false,
+      renderCell: (params) => (
+        // Fonction pour transformer le tableau des pictureUrl participants en un groupe d'avatars capés à 4 (flex-end pour forcer l'alignement à gauche)
+        <Avatar src={params.value} />
+      ),
+    },
     {
       field: "participant",
       headerName: "Participant",
@@ -56,16 +70,6 @@ function AdminProfileAuthorizations() {
     },
   ];
 
-  // // Transformation des données brutes des autorisations pour affichage
-  // autorisationsList = autorisationsData.map((e) => {
-  //   return (
-  //     <tr>
-  //       <td className={styles.td}>{e.participant}</td>
-  //       <td className={styles.td}>{e.title}</td>
-  //       <td className={styles.td}>{e.isValidated ? "Validé" : "En attente"}</td>
-  //     </tr>
-  //   );
-  // });
 
   return (
     <div>

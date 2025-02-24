@@ -5,7 +5,8 @@ import moment from "moment";
 import "moment/locale/fr";
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { setRef } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import AvatarGroup from "@mui/material/AvatarGroup";
 
 function AdminProfileEvents() {
   // Récupération du token depuis redux
@@ -13,13 +14,10 @@ function AdminProfileEvents() {
 
   // Stockage infos events + participants
   const [eventsData, setEventsData] = useState([]);
-  const [participantsData, setParticipantsData] = useState([]);
-
-  // const [participantsData, setParticipantsData] = useState([]);
 
   // Récupération des infos relatives aux events gérés par l'admin
   useEffect(() => {
-    fetch(`http://localhost:3000/events/eventsByAdmin/${token}`)
+    fetch(`http://localhost:3000/events/eventsByAdminWithParticipantInfos/${token}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
@@ -27,44 +25,15 @@ function AdminProfileEvents() {
             data.data.map((element) => ({
               id: element._id,
               eventTitle: element.title,
-              participants: element.authorisation,
-              nbParticipants: element.authorisation.length,
+              participants: element.authorisations,
               place: element.place,
               dateStart: moment(element.dateStart).format("LL"),
             }))
           );
-          // for (let element of data.data) {
-          //   for (let subelement of element.authorisation) {
-          //     fetch(`http://localhost:3000/participants/${subelement.participant}`)
-          //     .then(response => response.json())
-          //     .then(data => {
-          //       setParticipantsData([...participantsData, data])
-          //     })
-          //   }
-          // }
         }
       });
   }, []);
 
-  // //TEST
-  // useEffect(() => {
-  //   for (let element of eventsData) {
-  //     for (let subelement of element.participants) {
-  //       fetch(`http://localhost:3000/participants/${subelement.participant}`)
-  //         .then((response) => response.json())
-  //         .then((data) => {
-  //           if (data.result) {
-  //             setEventsData(() => {
-  //               for (let element of eventsData) {
-  //                 element.id = data.participant._id,
-  //                 element.pictureUrl = data.participant.pictureUrl
-  //               }
-  //             })
-  //           }
-  //         });
-  //     }
-  //   }
-  // }, [eventsData]);
 
   // Initialisation du tableau pour afficher les résultats (colonnes)
   const columns = [
@@ -76,10 +45,18 @@ function AdminProfileEvents() {
       editable: false,
     },
     {
-      field: "nbParticipants",
-      headerName: "Nombre de participants",
+      field: "participants",
+      headerName: "Participants",
       width: 300,
       editable: false,
+      renderCell: (params) => (
+        // Fonction pour transformer le tableau des pictureUrl participants en un groupe d'avatars capés à 4 (flex-end pour forcer l'alignement à gauche)
+        <AvatarGroup max={4} style={{ justifyContent: "flex-end" }}>
+          {params.value.map((e) => (
+            <Avatar src={e.participant.pictureUrl} />
+          ))}
+        </AvatarGroup>
+      ),
     },
     {
       field: "place",
