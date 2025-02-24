@@ -35,7 +35,9 @@ router.post("/add", (req, res) => {
 
   // Vérification de la présence des données
   if (!checkBody(req.body, fields)) {
-    return res.status(400).json({ result: false, message: "Champs manquants ou vides" });
+    return res
+      .status(400)
+      .json({ result: false, message: "Champs manquants ou vides" });
   }
 
   const newEvent = new Event({
@@ -56,7 +58,9 @@ router.post("/add", (req, res) => {
       res.status(200).json({ response: true, message: "Évènement créé" });
     })
     .catch((error) => {
-      res.status(500).json({ result: false, message: "Erreur lors de la création", error });
+      res
+        .status(500)
+        .json({ result: false, message: "Erreur lors de la création", error });
     });
 });
 
@@ -72,7 +76,8 @@ router.get("/findAllByEtablissement", (req, res) => {
       if (data.length === 0) {
         res.json({
           result: false,
-          message: "Aucun événement sur cet établissement ou établissement inconnu",
+          message:
+            "Aucun événement sur cet établissement ou établissement inconnu",
         });
       } else {
         res.json({ result: true, data });
@@ -97,7 +102,9 @@ router.put("/update/:id", (req, res) => {
 
   // Vérification des champs
   if (!checkBody(req.body, fields)) {
-    return res.status(400).json({ result: false, message: "Champs manquants ou vides" });
+    return res
+      .status(400)
+      .json({ result: false, message: "Champs manquants ou vides" });
   }
 
   Event.findByIdAndUpdate(
@@ -117,9 +124,17 @@ router.put("/update/:id", (req, res) => {
   )
     .then((updateEvent) => {
       if (!updateEvent) {
-        return res.status(404).json({ result: false, message: "Évènement non trouvé" });
+        return res
+          .status(404)
+          .json({ result: false, message: "Évènement non trouvé" });
       }
-      res.status(200).json({ result: true, message: "Évènement mis à jour", event: updateEvent });
+      res
+        .status(200)
+        .json({
+          result: true,
+          message: "Évènement mis à jour",
+          event: updateEvent,
+        });
     })
     .catch((error) => {
       res.status(500).json({ result: false, message: "Erreur serveur", error });
@@ -138,15 +153,17 @@ router.delete("/deleteById", (req, res) => {
       if (response.deletedCount > 0) {
         res.json({ result: true, message: "Evénement supprimé" });
       } else {
-        res.json({ result: false, message: "Aucun évènement trouvé avec cet ID" });
+        res.json({
+          result: false,
+          message: "Aucun évènement trouvé avec cet ID",
+        });
       }
     });
   }
 });
 
-// Route pour récupérer les événements créés par un admin via le token de l'admin (avec populate sur authorisations)
+// Route pour récupérer les événements créés par un admin via le token de l'admin
 router.get("/eventsByAdmin/:token", (req, res) => {
-
   // Vérifie si l'admin existe via son token
   Admin.findOne({ token: req.params.token })
     .then((admin) => {
@@ -158,7 +175,44 @@ router.get("/eventsByAdmin/:token", (req, res) => {
       }
 
       // Si l'admin est trouvé, récupère les événements liés à l'admin
-      return Event.find({ adminId: admin._id }).populate('authorisations');
+      return Event.find({ adminId: admin._id });
+    })
+    .then((events) => {
+      if (!events || events.length === 0) {
+        return res.status(404).json({
+          result: false,
+          message: "Aucun événement trouvé pour cet admin",
+        });
+      }
+
+      res.status(200).json({ result: true, data: events });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        result: false,
+        message: "Erreur serveur",
+        error: error.message,
+      });
+    });
+});
+
+// Route pour récupérer les événements créés par un admin via le token de l'admin (avec populate sur authorisations pour récupérer les infos participants)
+router.get("/eventsByAdminWithParticipantInfos/:token", (req, res) => {
+  // Vérifie si l'admin existe via son token
+  Admin.findOne({ token: req.params.token })
+    .then((admin) => {
+      if (!admin) {
+        return res.json({
+          result: false,
+          message: "Aucun admin trouvé avec ce token",
+        });
+      }
+
+      // Si l'admin est trouvé, récupère les événements liés à l'admin
+      return Event.find({ adminId: admin._id }).populate(
+        "authorisations.participant",
+        "pictureUrl firstName lastName -_id"
+      );
     })
     .then((events) => {
       if (!events || events.length === 0) {
@@ -191,7 +245,10 @@ router.get("/getEventByGroup", (req, res) => {
       if (response.findCount > 0) {
         res.json({ result: true, message: "Evénement trouvé" });
       } else {
-        res.json({ result: false, message: "Aucun événement trouvé avec cet ID" });
+        res.json({
+          result: false,
+          message: "Aucun événement trouvé avec cet ID",
+        });
       }
     });
   }
@@ -203,7 +260,12 @@ router.get("/eventsByEtablissement/:etablissementId", (req, res) => {
 
   // Vérification que l'ID de l'établissement est fourni
   if (!etablissementId) {
-    return res.status(400).json({ result: false, message: "L'identifiant de l'établissement est requis" });
+    return res
+      .status(400)
+      .json({
+        result: false,
+        message: "L'identifiant de l'établissement est requis",
+      });
   }
 
   // Recherche des participants par l'établissement
@@ -212,7 +274,8 @@ router.get("/eventsByEtablissement/:etablissementId", (req, res) => {
       if (data.length === 0) {
         return res.status(404).json({
           result: false,
-          message: "Aucun évènement trouvé pour cet établissement ou établissement inconnu",
+          message:
+            "Aucun évènement trouvé pour cet établissement ou établissement inconnu",
         });
       }
 
@@ -233,7 +296,12 @@ router.get("/participantByEtablissement/:etablissement", (req, res) => {
 
   // Vérification que l'ID de l'établissement est fourni
   if (!etablissement) {
-    return res.status(400).json({ result: false, message: "L'identifiant de l'établissement est requis" });
+    return res
+      .status(400)
+      .json({
+        result: false,
+        message: "L'identifiant de l'établissement est requis",
+      });
   }
 
   // Recherche des participants par l'établissement
@@ -242,7 +310,8 @@ router.get("/participantByEtablissement/:etablissement", (req, res) => {
       if (data.length === 0) {
         return res.status(404).json({
           result: false,
-          message: "Aucun participant trouvé pour cet établissement ou établissement inconnu",
+          message:
+            "Aucun participant trouvé pour cet établissement ou établissement inconnu",
         });
       }
 
@@ -259,15 +328,17 @@ router.get("/participantByEtablissement/:etablissement", (req, res) => {
 
 // Route pour récupérer les autorisations d'un événement via son ID
 router.post("/autorisationByEvent", (req, res) => {
-  const fields = ["eventId"]; 
+  const fields = ["eventId"];
 
- // Vérification de la présence des données dans le body
- if (!checkBody(req.body, fields)) {
-  return res.status(400).json({ result: false, message: "Champs manquants ou vides" });
-}
+  // Vérification de la présence des données dans le body
+  if (!checkBody(req.body, fields)) {
+    return res
+      .status(400)
+      .json({ result: false, message: "Champs manquants ou vides" });
+  }
 
-// Extraction de l'eventId du body
-const { eventId } = req.body; 
+  // Extraction de l'eventId du body
+  const { eventId } = req.body;
 
   // Recherche de l'événement via son ID
   Event.findById(eventId)

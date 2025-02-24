@@ -49,7 +49,7 @@ router.post("/findAllGroupsByAdminToken", (req, res) => {
       } else {
         adminId = data._id;
         Group.find({ adminId })
-          .populate("participantIds","pictureUrl -_id")
+          .populate("participantIds","pictureUrl -_id") // Populate pour récupérer seulement les pictureUrl des participants
           .then((data) => {
             if (data.length === 0) {
               res.json({
