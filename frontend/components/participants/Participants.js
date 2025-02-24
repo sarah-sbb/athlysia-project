@@ -38,7 +38,14 @@ export default function DataTable() {
   useEffect(() => {
     fetch('http://localhost:3000/participants')
       .then((response) => response.json())
-      .then((data) => setRows(data.participants))
+      .then((data) => {
+setRows(data.participants.map((e) => ({
+  id: e._id,
+  firstName: e.firstName,
+  lastName: e.lastName,
+  age: e.birthDate
+})))
+      } )
       .catch((error) => console.error('Erreur lors du fetch de participant', error));
   }, []);
 
