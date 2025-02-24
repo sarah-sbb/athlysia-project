@@ -7,6 +7,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
+import { Gauge } from '@mui/x-charts/Gauge';
+import Stack from '@mui/material/Stack';
 
 function AdminProfileEvents() {
   // Récupération du token depuis redux
@@ -47,7 +49,7 @@ function AdminProfileEvents() {
     {
       field: "participants",
       headerName: "Participants",
-      width: 300,
+      width: 150,
       editable: false,
       renderCell: (params) => (
         // Fonction pour transformer le tableau des pictureUrl participants en un groupe d'avatars capés à 4 (flex-end pour forcer l'alignement à gauche)
@@ -59,17 +61,26 @@ function AdminProfileEvents() {
       ),
     },
     {
+      field: "rate",
+      headerName: "Taux de complétion",
+      width: 150,
+      editable: false,
+      renderCell: () => (
+<Gauge width={60} height={60} value={60} startAngle={-90} endAngle={90} style={{display:"flex", justifyContent:"center", alignItems:"center"}}/> // RAF: à dynamiser
+      )
+    },
+    {
       field: "place",
       headerName: "Lieu de l'événément",
-      width: 300,
+      width: 150,
       editable: false,
     },
     {
       field: "dateStart",
       headerName: "Date de l'évément",
-      width: 300,
+      width: 150,
       editable: false,
-    },
+    }
   ];
 
   return (
