@@ -74,7 +74,7 @@ function AdminProfileEvents() {
         <Gauge
           width={60}
           height={60}
-          value={params.row.validatedAuths/params.row.nbParticipants*100} // Calcul du taux de validation
+          value={Math.round(params.row.validatedAuths/params.row.nbParticipants*100)} // Calcul du taux de validation
           startAngle={-90}
           endAngle={90}
           style={{
