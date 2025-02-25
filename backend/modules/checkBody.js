@@ -3,7 +3,7 @@
 function checkBody(obj, arr) {
 
     for (let element of arr) {
-        if (!Object.keys(obj).includes(element)) {
+        if (!Object.keys(obj).includes(element) || obj[element]==="")  {
             return false
         }
     }

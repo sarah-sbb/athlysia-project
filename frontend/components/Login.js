@@ -67,7 +67,7 @@ function Home() {
       .then((data) => {
         if (data.result) {
           router.push("/ctp-admin");
-          console.log("connecté : ", data.result);
+          console.log("connecté : ", data.infoAdmin);
           console.log(data.etablissement);
           dispatch(
             login({

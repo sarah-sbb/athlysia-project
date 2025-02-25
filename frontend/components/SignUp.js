@@ -118,7 +118,7 @@ function SignUp({ open, handleToggleModal }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          console.log("user créé");
+          console.log("user créé : ", data.infoAdmin );
           dispatch(
             login({
               token: data.token,
