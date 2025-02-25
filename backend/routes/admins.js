@@ -61,11 +61,13 @@ router.post("/signup", (req, res) => {
             result: true,
             token: response.token,
             etablissement: response.etablissement,
-            role: response.role,
             infoAdmin: {
               firstName: response.firstName,
               lastName: response.lastName,
               position: response.position,
+              role: response.role,
+              pictureUrl: response.pictureUrl,
+              id: response._id
             },
           });
         });
@@ -96,7 +98,8 @@ router.post("/signin", (req, res) => {
             lastName: response.lastName,
             position: response.position,
             role: response.role,
-            pictureUrl: response.pictureUrl
+            pictureUrl: response.pictureUrl,
+            id: response._id
           },
         });
       } else {

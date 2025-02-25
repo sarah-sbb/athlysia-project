@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { buttonStyles } from "../modules/Button";
 
-function AddGroup({ participantInGroup, setParticipantInGroup }) {
+function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTitleGroup}) {
   //state
   const [participantData, setParticipantData] = useState([]);
   const [addParticipant, setAddParticipant] = useState("");
@@ -39,6 +39,7 @@ function AddGroup({ participantInGroup, setParticipantInGroup }) {
   const handleChange = (e, value) => {
     setAddParticipant(value);
   };
+
   console.log("participant en attente : ", addParticipant);
 
   const handleSubmit = () => {
@@ -57,7 +58,7 @@ function AddGroup({ participantInGroup, setParticipantInGroup }) {
 
   return (
     <div className={styles.form}>
-      <Input label="Nom du groupe" />
+      <Input onChange={(e)=>setTitleGroup(e.target.value)} value={titleGroup} label="Nom du groupe" />
       <div className={styles.formAddGroupPart}>
         <Autocomplete
           disablePortal

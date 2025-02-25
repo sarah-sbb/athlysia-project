@@ -48,6 +48,7 @@ router.post("/add/:etablissementId", (req, res) => {
   }  
 
   const etablissementId = req.params.etablissementId
+
     const newParticipant = new Participant({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -59,7 +60,11 @@ router.post("/add/:etablissementId", (req, res) => {
     });
 
     newParticipant.save().then((response) => {
+      if(!response) {
+        res.json({ result : false, message : "Impossible de créer un participant" })
+      } else {
         res.json({ result: true, message: "Participant créé" });
+      }
     })
   
 });
