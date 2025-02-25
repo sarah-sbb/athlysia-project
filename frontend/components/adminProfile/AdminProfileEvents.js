@@ -7,8 +7,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
-import { Gauge } from '@mui/x-charts/Gauge';
-import Stack from '@mui/material/Stack';
+import { Gauge } from "@mui/x-charts/Gauge";
+import Stack from "@mui/material/Stack";
 
 function AdminProfileEvents() {
   // Récupération du token depuis redux
@@ -19,7 +19,9 @@ function AdminProfileEvents() {
 
   // Récupération des infos relatives aux events gérés par l'admin
   useEffect(() => {
-    fetch(`http://localhost:3000/events/eventsByAdminWithParticipantInfos/${token}`)
+    fetch(
+      `http://localhost:3000/events/eventsByAdminWithParticipantInfos/${token}`
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
@@ -28,6 +30,10 @@ function AdminProfileEvents() {
               id: element._id,
               eventTitle: element.title,
               participants: element.authorisations,
+              nbParticipants: element.authorisations.length, // Calcul du nombre de participants
+              validatedAuths: element.authorisations.filter(
+                (e) => e.isValidated
+              ).length, // Calcul du nombre d'autorisations validées
               place: element.place,
               dateStart: moment(element.dateStart).format("LL"),
             }))
@@ -35,7 +41,6 @@ function AdminProfileEvents() {
         }
       });
   }, []);
-
 
   // Initialisation du tableau pour afficher les résultats (colonnes)
   const columns = [
@@ -62,12 +67,23 @@ function AdminProfileEvents() {
     },
     {
       field: "rate",
-      headerName: "Taux de complétion",
+      headerName: "Taux de validation",
       width: 150,
       editable: false,
-      renderCell: () => (
-<Gauge width={60} height={60} value={60} startAngle={-90} endAngle={90} style={{display:"flex", justifyContent:"center", alignItems:"center"}}/> // RAF: à dynamiser
-      )
+      renderCell: (params) => (
+        <Gauge
+          width={60}
+          height={60}
+          value={params.row.validatedAuths/params.row.nbParticipants*100} // Calcul du taux de validation
+          startAngle={-90}
+          endAngle={90}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        />
+      ),
     },
     {
       field: "place",
@@ -80,8 +96,10 @@ function AdminProfileEvents() {
       headerName: "Date de l'évément",
       width: 150,
       editable: false,
-    }
+    },
   ];
+
+  console.log(eventsData);
 
   return (
     <div>
