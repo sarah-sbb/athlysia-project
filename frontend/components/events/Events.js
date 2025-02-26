@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
+import moment from "moment";
 
 //import styles from '../../styles/Events.module.css';
 
@@ -42,44 +43,47 @@ function Events() {
 
   // Récupération des événements au chargement du composant
   useEffect(() => {
-    if (!etablissementId) {
-      fetch(`http://localhost:3000/eventsByEtablissement/${etablissementId}`)
-      .then((response) => response.json())
+    fetch(`/api/events/findEventsByEtablissement/${etablissementId}`)
+      .then((response) => {
+        console.log("Réponse du serveur : ", response);
+        if (!response.ok) {
+          throw new Error("Erreur serveur lors de la récupération des événements !");
+        }
+        return response.json(); // Transforme la réponse en JSON
+      })
       .then((data) => {
+        // Vérifiez si 'data.result' est true (succès)
         if (data.result) {
-          const formattedEvents = data.data.map((event) => ({
-            ...event,
-            acceptRate: Math.round(
-              (event.authorisations.filter((auth) => auth.accepted).length /
-                event.authorisations.length) *
-                100
-            ), // Calculer le taux d'acceptation sur base des autorisations
-          }));
-          setRows(formattedEvents);
+          if (data.data.length === 0) {
+            console.log("Aucun événement trouvé pour cet établissement.");
+          } else {
+            setEvents(data.data); // Stocke correctement les événements (non vide)
+          }
         } else {
-          console.error("Erreur : Aucune donnée disponible.");
+          throw new Error(data.message || "Erreur inconnue côté serveur.");
         }
       })
-      .catch((error) => console.error("Erreur API :", error));
-     }
-  }, [etablissementId]);
+      .catch((error) => {
+        console.error("Erreur lors de la récupération : ", error.message);
+      });
+  }, []);  
 
   // Suppression d'un événement
-  const deleteEvent = async (id) => {
-    const response = await fetch(
-      `http://localhost:3000/events/delete/${eventId}`,
-      {
-        method: "DELETE",
-      }
-    );
+  // const deleteEvent = async (id) => {
+  //   const response = await fetch(
+  //     `http://localhost:3000/events/delete/${eventId}`,
+  //     {
+  //       method: "DELETE",
+  //     }
+  //   );
 
-    if (response.ok) {
-      // Si suppression réussie, mettre à jour les lignes en supprimant celle supprimée
-      setRows(rows.filter((row) => row.id !== id));
-    } else {
-      console.error('Événement non trouvé ou erreur dans la suppression.');
-    }
-  };
+  //   if (response.ok) {
+  //     // Si suppression réussie, mettre à jour les lignes en supprimant celle supprimée
+  //     setRows(rows.filter((row) => row.id !== id));
+  //   } else {
+  //     console.error('Événement non trouvé ou erreur dans la suppression.');
+  //   }
+  // };
 
   return (
     <Paper sx={{ height: 400, width: "100%" }}>

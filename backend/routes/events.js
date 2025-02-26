@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
 
+const mongoose = require("mongoose");
+
 const Event = require("../models/events");
 const Admin = require("../models/admins");
 const Group = require("../models/groups");
@@ -62,28 +64,6 @@ router.post("/add", (req, res) => {
         .status(500)
         .json({ result: false, message: "Erreur lors de la création", error });
     });
-});
-
-// Route pour rechercher tous les events d'un établissement
-router.get("/findAllByEtablissement", (req, res) => {
-  const fields = ["etablissement"];
-
-  // Vérification de la présence des données
-  if (!checkBody(req.body, fields)) {
-    res.json({ result: false, message: "Champs manquants ou vides" });
-  } else {
-    Event.find({ etablissement: req.body.etablissement }).then((data) => {
-      if (data.length === 0) {
-        res.json({
-          result: false,
-          message:
-            "Aucun événement sur cet établissement ou établissement inconnu",
-        });
-      } else {
-        res.json({ result: true, data });
-      }
-    });
-  }
 });
 
 // Route pour modifier un évènement
@@ -255,74 +235,35 @@ router.get("/getEventByGroup", (req, res) => {
 });
 
 // Route pour récupérer tous les events d'un établissement
-router.get("/eventsByEtablissement/:etablissementId", (req, res) => {
+router.get("/findEventsByEtablissement/:etablissementId", (req, res) => {
   const { etablissementId } = req.params;
-
-  // Vérification que l'ID de l'établissement est fourni
-  if (!etablissementId) {
-    return res
-      .status(400)
-      .json({
-        result: false,
-        message: "L'identifiant de l'établissement est requis",
-      });
-  }
-
-  // Recherche des participants par l'établissement
-  Event.find({ etablissementId })
-    .then((data) => {
-      if (data.length === 0) {
-        return res.status(404).json({
-          result: false,
-          message:
-            "Aucun évènement trouvé pour cet établissement ou établissement inconnu",
-        });
-      }
-
-      res.status(200).json({ result: true, data });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        result: false,
-        message: "Erreur lors de la récupération des évènements",
-        error: error.message,
-      });
+  // Vérifiez si l'etablissementId est un ObjectId valide
+  if (!mongoose.Types.ObjectId.isValid(etablissementId)) {
+    return res.status(400).json({
+      result: false,
+      message: "L'identifiant de l'établissement est invalide.",
     });
-});
-
-// Route pour récupérer tous les participants d'un établissement
-router.get("/participantByEtablissement/:etablissement", (req, res) => {
-  const { etablissement } = req.params;
-
-  // Vérification que l'ID de l'établissement est fourni
-  if (!etablissement) {
-    return res
-      .status(400)
-      .json({
-        result: false,
-        message: "L'identifiant de l'établissement est requis",
-      });
   }
 
-  // Recherche des participants par l'établissement
-  Participant.find({ etablissement })
+  // Convertir en ObjectId
+  const objectId = new mongoose.Types.ObjectId(etablissementId);
+
+  // Chercher les événements
+  Event.find({ etablissement: objectId })
     .then((data) => {
+      console.log("Résultat MongoDB :", data);
+
       if (data.length === 0) {
         return res.status(404).json({
           result: false,
-          message:
-            "Aucun participant trouvé pour cet établissement ou établissement inconnu",
+          message: "Aucun événement trouvé pour cet établissement.",
         });
       }
-
       res.status(200).json({ result: true, data });
     })
     .catch((error) => {
-      res.status(500).json({
-        result: false,
-        message: "Erreur lors de la récupération des participants",
-        error: error.message,
-      });
+      console.error("Erreur lors de la récupération des événements :", error);
+      res.status(500).json({ result: false, message: "Erreur serveur" });
     });
 });
 
