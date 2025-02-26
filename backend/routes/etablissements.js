@@ -23,10 +23,25 @@ router.post("/add", function (req, res) {
 
 // Route pour récupérer tous les établissements
 
-router.get("/allEtablissements", (req, res ) => {
+router.get("/allEtablissements", (req, res) => {
   Etablissement.find().then((data) => {
-    res.json({ result: true, data})
-  })
-})
+    res.json({ result: true, data });
+  });
+});
+
+// Route pour récupérer les infos d'un établissement (à partir de l'ID)
+
+router.get("/find/:etablissementId", (req, res) => {
+  Etablissement.findOne({ _id: req.params.etablissementId }).then((data) => {
+    if (data) {
+      res.json({ result: true, data });
+    } else {
+      res.json({
+        result: false,
+        error: "Aucun établissement trouvé avec cet ID",
+      });
+    }
+  });
+});
 
 module.exports = router;

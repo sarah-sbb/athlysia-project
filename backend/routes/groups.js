@@ -94,7 +94,7 @@ router.get("/findAllByEtablissement/:etablissement", (req, res) => {
   }
 
   // Recherche des groupes dans la base MongoDB
-  Group.find({ etablissement }).then((data) => {
+  Group.find({ etablissementId: req.params.etablissement }).then((data) => {
     if (data.length === 0) {
       res.json({
         result: false,
