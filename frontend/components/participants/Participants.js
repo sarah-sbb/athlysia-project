@@ -2,8 +2,6 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
-// import LargeButtonRed from '../smallComponents/LargeButtonRed';
-// import LargeButtonWhite from '../smallComponents/LargeButtonWhite';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
