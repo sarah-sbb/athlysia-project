@@ -92,7 +92,7 @@ router.get("/findAllByEtablissement/:etablissement", (req, res) => {
   }
 
   // Recherche des groupes dans la base MongoDB
-  Group.find({ etablissement }).then((data) => {
+  Group.find({ etablissementId: req.params.etablissement }).then((data) => {
     if (data.length === 0) {
       res.json({
         result: false,
@@ -106,5 +106,36 @@ router.get("/findAllByEtablissement/:etablissement", (req, res) => {
     }
   });
 });
+
+// Route pour rechercher tous les groups d'un établissement (avec populate participants)
+router.get("/findAllByEtablissementWithParticipantInfos/:etablissement", (req, res) => {
+  const { etablissement } = req.params; // Extraction du paramètre depuis req.params
+
+  // Vérification de la présence des données
+  if (!etablissement) {
+    return res.json({
+      result: false,
+      message: "L'identifiant de l'établissement est manquant.",
+    });
+  }
+
+  // Recherche des groupes dans la base MongoDB
+  Group.find({ etablissementId: req.params.etablissement })
+  .populate("participantIds", "pictureUrl -_id")
+  .then((data) => {
+    if (data.length === 0) {
+      res.json({
+        result: false,
+        message: "Aucun groupe trouvé pour cet établissement.",
+      });
+    } else {
+      res.json({
+        result: true,
+        data, // Renvoie les groupes trouvés
+      });
+    }
+  });
+});
+
 
 module.exports = router;
