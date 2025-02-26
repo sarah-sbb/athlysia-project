@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
-import moment from "moment";
 
 //import styles from '../../styles/Events.module.css';
 
@@ -67,23 +66,6 @@ function Events() {
         console.error("Erreur lors de la récupération : ", error.message);
       });
   }, []);  
-
-  // Suppression d'un événement
-  // const deleteEvent = async (id) => {
-  //   const response = await fetch(
-  //     `http://localhost:3000/events/delete/${eventId}`,
-  //     {
-  //       method: "DELETE",
-  //     }
-  //   );
-
-  //   if (response.ok) {
-  //     // Si suppression réussie, mettre à jour les lignes en supprimant celle supprimée
-  //     setRows(rows.filter((row) => row.id !== id));
-  //   } else {
-  //     console.error('Événement non trouvé ou erreur dans la suppression.');
-  //   }
-  // };
 
   return (
     <Paper sx={{ height: 400, width: "100%" }}>

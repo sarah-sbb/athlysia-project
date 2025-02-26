@@ -42,8 +42,6 @@ const participantIds = Array.isArray(req.body.participantIds) ? req.body.partici
   });
   }
 })
-
-
 });
 
 // Route pour récupérer les groupes d'un admin en particulier (à partir de l'ID via le token)

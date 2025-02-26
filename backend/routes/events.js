@@ -236,35 +236,16 @@ router.get("/getEventByGroup", (req, res) => {
 
 // Route pour récupérer tous les events d'un établissement
 router.get("/findEventsByEtablissement/:etablissementId", (req, res) => {
-  const { etablissementId } = req.params;
-  // Vérifiez si l'etablissementId est un ObjectId valide
-  if (!mongoose.Types.ObjectId.isValid(etablissementId)) {
-    return res.status(400).json({
-      result: false,
-      message: "L'identifiant de l'établissement est invalide.",
-    });
-  }
-
-  // Convertir en ObjectId
-  const objectId = new mongoose.Types.ObjectId(etablissementId);
-
-  // Chercher les événements
-  Event.find({ etablissement: objectId })
-    .then((data) => {
-      console.log("Résultat MongoDB :", data);
-
-      if (data.length === 0) {
-        return res.status(404).json({
-          result: false,
-          message: "Aucun événement trouvé pour cet établissement.",
-        });
-      }
-      res.status(200).json({ result: true, data });
-    })
-    .catch((error) => {
-      console.error("Erreur lors de la récupération des événements :", error);
-      res.status(500).json({ result: false, message: "Erreur serveur" });
-    });
+  Event.find({ etablissement: req.params.etablissementId}).then((data) => {
+    if (data.length === 0) {
+      return res.json ({
+        result: false,
+        message: "Aucun événement pour cet établissement", 
+      });
+    } else {
+      return res.json({ result: true, data});
+    }
+  })
 });
 
 // Route pour récupérer les autorisations d'un événement via son ID
