@@ -6,14 +6,16 @@ import AllEvents from "../../components/dashboard/AllEvents";
 import AllGroups from "../../components/dashboard/AllGroups";
 import MyAccountWidget from "../../components/dashboard/MyAccount";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Index() {
 
   const etablissementId = useSelector((state) => state.admin.value.etablissement);
   const [etablissement, setEtablissement] = useState(null);
 
-  // Othman - a-t-on besoin d'un useeffect?
+  console.log(etablissementId)
+
+useEffect(() => {
   fetch(`http://localhost:3000/etablissements/find/${etablissementId}`)
   .then(response => response.json())
   .then(data => {
@@ -21,6 +23,7 @@ function Index() {
       setEtablissement(data.data.name)
     }
   })
+},[]);
 
   return (
     <Layout>
