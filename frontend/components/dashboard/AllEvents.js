@@ -8,7 +8,6 @@ import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
-import Stack from "@mui/material/Stack";
 
 function AllEvents() { // A remplacer par les events établissement
   // Récupération de l'ID établissement
@@ -119,8 +118,6 @@ function AllEvents() { // A remplacer par les events établissement
       editable: false,
     },
   ];
-
-  console.log(eventsData);
 
   return (
     <div>
