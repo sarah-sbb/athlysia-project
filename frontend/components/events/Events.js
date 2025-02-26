@@ -38,12 +38,12 @@ export default function EventsTable() {
   const [rows, setRows] = useState([]);
 
 // Récupère l'ID de l'établissement depuis le state Redux
-  const etablissementId = useSelector(
-    (state) => state.admin.value.etablissement 
-  );
+const etablissementId = useSelector(
+(state) => state.admin.value.etablissement 
+);
 
   useEffect(() => {
-    fetch(`/api/events/findEventsByEtablissement/${etablissementId}`)
+    fetch("http://localhost:3000/events/findEventsByEtablissement/${etablissementId}")
       .then((response) => response.json())
       .then((data) => {
         setRows(data.participants.map((e) => ({
