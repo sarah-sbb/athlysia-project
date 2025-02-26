@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
 import { DataGrid } from '@mui/x-data-grid';
@@ -33,55 +34,44 @@ const columns = [
   },
 ];
 
-function Events() {
+export default function EventsTable() {
   const [rows, setRows] = useState([]);
-  // Récupère l'ID de l'établissement depuis le state Redux
-  const etablissementId = useSelector(
-    (state) => state.admin.value.etablissement 
-  );
 
-  // Récupération des événements au chargement du composant
-  useEffect(() => {
-    if (!etablissementId) {
-      fetch(`http://localhost:3000/eventsByEtablissement/${etablissementId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          const formattedEvents = data.data.map((event) => ({
-            ...event,
-            acceptRate: Math.round(
-              (event.authorisations.filter((auth) => auth.accepted).length /
-                event.authorisations.length) *
-                100
-            ), // Calculer le taux d'acceptation sur base des autorisations
-          }));
-          setRows(formattedEvents);
-        } else {
-          console.error("Erreur : Aucune donnée disponible.");
-        }
-      })
-      .catch((error) => console.error("Erreur API :", error));
-     }
-  }, [etablissementId]);
+// Récupère l'ID de l'établissement depuis le state Redux
+const etablissementId = useSelector(
+(state) => state.admin.value.etablissement 
+);
 
-  // Suppression d'un événement
-  const deleteEvent = async (id) => {
-    const response = await fetch(
-      `http://localhost:3000/events/delete/${eventId}`,
-      {
-        method: "DELETE",
+useEffect(() => {
+  if (!etablissementId) {
+    console.error("Erreur : etablissementId est requis.");
+    return;
+  }
+
+  fetch(`http://localhost:3000/events/findEventsByEtablissement/${etablissementId}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP : ${response.status}`);
       }
-    );
+      return response.json();
+    })
+    .then(data => {
+      if (data && Array.isArray(data.events)) {
+        setRows(data.events.map(e => ({
+          id: e._id,
+          Name: e.Name,
+          Author: e.Author,
+          Date: e.Date,
+          Accept: e.Accept,
+        })));
+      } else {
+        console.error("Format des données incorrect :", data);
+      }
+    })
+    .catch(error => console.error("Erreur lors du fetch :", error));
+}, [etablissementId]);
 
-    if (response.ok) {
-      // Si suppression réussie, mettre à jour les lignes en supprimant celle supprimée
-      setRows(rows.filter((row) => row.id !== id));
-    } else {
-      console.error('Événement non trouvé ou erreur dans la suppression.');
-    }
-  };
-
-  return (
+    return (
     <Paper sx={{ height: 400, width: "100%" }}>
       <DataGrid
         rows={rows}
@@ -93,5 +83,3 @@ function Events() {
     </Paper>
   );
 }
-
-export default Events;

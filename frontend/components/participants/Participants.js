@@ -2,8 +2,6 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
-// import LargeButtonRed from '../smallComponents/LargeButtonRed';
-// import LargeButtonWhite from '../smallComponents/LargeButtonWhite';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -39,13 +37,13 @@ export default function DataTable() {
     fetch('http://localhost:3000/participants')
       .then((response) => response.json())
       .then((data) => {
-setRows(data.participants.map((e) => ({
-  id: e._id,
-  firstName: e.firstName,
-  lastName: e.lastName,
-  age: e.birthDate
-})))
-      } )
+        setRows(data.participants.map((e) => ({
+          id: e._id,
+          firstName: e.firstName,
+          lastName: e.lastName,
+          age: e.birthDate
+        })))
+      })
       .catch((error) => console.error('Erreur lors du fetch de participant', error));
   }, []);
 
@@ -63,7 +61,11 @@ setRows(data.participants.map((e) => ({
 
   return (
     <Paper sx={{ height: 400, width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} pageSizeOptions={[5, 10]} checkboxSelection />
+      <DataGrid 
+      rows={rows} 
+      columns={columns} 
+      pageSizeOptions={[5, 10]} 
+      checkboxSelection />
     </Paper>
   );
 }

@@ -18,7 +18,7 @@
     "dotenv": "^16.4.7",
     "express": "~4.16.1",
     "express-fileupload": "^1.5.1",
-    "mongoose": "^8.10.1",
+    "mongoose": "^8.10.2",
     "morgan": "~1.9.1",
     "uid2": "^1.0.0",
     "uniqid": "^5.4.0"
