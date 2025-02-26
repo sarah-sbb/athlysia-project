@@ -213,6 +213,43 @@ router.get("/eventsByAdminWithParticipantInfos/:token", (req, res) => {
     });
 });
 
+// Route pour récupérer les événements d'un établissement via l'ID (avec populate sur authorisations pour récupérer les infos participants)
+router.get("/eventsByEtablissementWithParticipantInfos/:etablissementId", (req, res) => {
+  // Vérifie si l'admin existe via son token
+  Etablissement.findOne({ _id: req.params.etablissementId })
+    .then((admin) => {
+      if (!admin) {
+        return res.json({
+          result: false,
+          message: "Aucun admin trouvé avec ce token",
+        });
+      }
+
+      // Si l'établissement est trouvé, récupère les événements liés à l'établissement
+      return Event.find({ etablissement: req.params.etablissementId }).populate(
+        "authorisations.participant",
+        "pictureUrl firstName lastName -_id"
+      );
+    })
+    .then((events) => {
+      if (!events || events.length === 0) {
+        return res.status(404).json({
+          result: false,
+          message: "Aucun événement trouvé pour cet admin",
+        });
+      }
+
+      res.status(200).json({ result: true, data: events });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        result: false,
+        message: "Erreur serveur",
+        error: error.message,
+      });
+    });
+});
+
 // Route pour récupérer les événements d'un groupe
 router.get("/getEventByGroup", (req, res) => {
   const fields = ["groupId"];
@@ -247,6 +284,7 @@ router.get("/findEventsByEtablissement/:etablissementId", (req, res) => {
     }
   })
 });
+
 
 // Route pour récupérer les autorisations d'un événement via son ID
 router.post("/autorisationByEvent", (req, res) => {
