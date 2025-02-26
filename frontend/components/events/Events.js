@@ -42,20 +42,34 @@ const etablissementId = useSelector(
 (state) => state.admin.value.etablissement 
 );
 
-  useEffect(() => {
-    fetch("http://localhost:3000/events/findEventsByEtablissement/${etablissementId}")
-      .then((response) => response.json())
-      .then((data) => {
-        setRows(data.participants.map((e) => ({
+useEffect(() => {
+  if (!etablissementId) {
+    console.error("Erreur : etablissementId est requis.");
+    return;
+  }
+
+  fetch(`http://localhost:3000/events/findEventsByEtablissement/${etablissementId}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP : ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data && Array.isArray(data.events)) {
+        setRows(data.events.map(e => ({
           id: e._id,
           Name: e.Name,
           Author: e.Author,
           Date: e.Date,
-          Accept: e.Accept
-        })))
-      })
-      .catch((error) => console.error('Erreur lors du fetch de participant', error));
-  }, []);
+          Accept: e.Accept,
+        })));
+      } else {
+        console.error("Format des données incorrect :", data);
+      }
+    })
+    .catch(error => console.error("Erreur lors du fetch :", error));
+}, [etablissementId]);
 
     return (
     <Paper sx={{ height: 400, width: "100%" }}>
@@ -69,52 +83,3 @@ const etablissementId = useSelector(
     </Paper>
   );
 }
-
-// function Events() {
-//   const [rows, setRows] = useState([]);
-//   // Récupère l'ID de l'établissement depuis le state Redux
-//   const etablissementId = useSelector(
-//     (state) => state.admin.value.etablissement 
-//   );
-
-//   // Récupération des événements au chargement du composant
-//   useEffect(() => {
-//     fetch(`/api/events/findEventsByEtablissement/${etablissementId}`)
-//       .then((response) => {
-//         console.log("Réponse du serveur : ", response);
-//         if (!response.ok) {
-//           throw new Error("Erreur serveur lors de la récupération des événements !");
-//         }
-//         return response.json(); // Transforme la réponse en JSON
-//       })
-//       .then((data) => {
-//         // Vérifiez si 'data.result' est true (succès)
-//         if (data.result) {
-//           if (data.data.length === 0) {
-//             console.log("Aucun événement trouvé pour cet établissement.");
-//           } else {
-//             setEvents(data.data); // Stocke correctement les événements (non vide)
-//           }
-//         } else {
-//           throw new Error(data.message || "Erreur inconnue côté serveur.");
-//         }
-//       })
-//       .catch((error) => {
-//         console.error("Erreur lors de la récupération : ", error.message);
-//       });
-//   }, []);  
-
-//   return (
-//     <Paper sx={{ height: 400, width: "100%" }}>
-//       <DataGrid
-//         rows={rows}
-//         columns={columns}
-//         getRowId={(row) => row._id} // Utilisation de l'ID MongoDB comme identifiant unique
-//         pageSizeOptions={[5, 10]}
-//         checkboxSelection
-//       />
-//     </Paper>
-//   );
-// }
-
-//export default Events;

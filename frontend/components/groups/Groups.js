@@ -32,42 +32,44 @@ const columns = [
   },
 ];
 
-function Groups() {
-    const [rows, setRows] = useState([]);
-  // Récupère l'ID du groupe depuis le state Redux
-  const etablissementId = useSelector(
-    (state) => state.admin.value.etablissement 
-  );
+export default function GroupsTable() {
+  const [rows, setRows] = useState([]);
 
-  // Récupération des groupes au chargement du composant
-  useEffect(() => {
-    fetch(`/api/groups/findAllByEtablissement/${etablissementId}`)
-      .then((response) => {
-        console.log("Réponse du serveur : ", response);
-        if (!response.ok) {
-          throw new Error("Erreur serveur lors de la récupération des groupes !");
-        }
-        return response.json(); // Transforme la réponse en JSON
-      })
-      .then((data) => {
-        // Vérifiez si 'data.result' est true (succès)
-        if (data.result) {
-          if (data.data.length === 0) {
-            console.log("Aucun groupe trouvé pour cet établissement.");
-          } else {
-            setGroups(data.data); // Stocke correctement les groupes (non vide)
-          }
-        } else {
-          throw new Error(data.message || "Erreur inconnue côté serveur.");
-        }
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la récupération : ", error.message);
-      });
-  }, []);
+// Récupère l'ID de l'établissement depuis le state Redux
+const etablissementId = useSelector(
+(state) => state.admin.value.etablissement 
+);
 
+useEffect(() => {
+  if (!etablissementId) {
+    console.error("Erreur : etablissementId est requis.");
+    return;
+  }
 
-  return (
+  fetch(`http://localhost:3000/groups/findAllByEtablissement/${etablissementId}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP : ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data && Array.isArray(data.groups)) {
+        setRows(data.groups.map(e => ({
+          id: e._id,
+          Name: e.Name,
+          Author: e.Author,
+          Date: e.Date,
+          Participants: e.Participants,
+        })));
+      } else {
+        console.error("Format des données incorrect :", data);
+      }
+    })
+    .catch(error => console.error("Erreur lors du fetch :", error));
+}, [etablissementId]);
+
+    return (
     <Paper sx={{ height: 400, width: "100%" }}>
       <DataGrid
         rows={rows}
@@ -79,5 +81,3 @@ function Groups() {
     </Paper>
   );
 }
-
-export default Groups;
