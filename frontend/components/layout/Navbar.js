@@ -28,16 +28,20 @@ function Navbar() {
         {navbarData.map((menu) => (
           <div key={menu.id} className={styles.accordionItem}>
             {/* En-tête de l'accordéon */}
-            <div
-              className={styles.accordionHeader}
-              onClick={() => toggleAccordion(menu.id)}
-            >
-              {menu.href ? (
-                <Link href={menu.href}>{menu.title}</Link>
-              ) : (
-                menu.title
-              )}
-            </div>
+            {menu.href ? (
+              <Link href={menu.href}>
+                <div className={styles.accordionHeader}>
+                  {menu.title}
+                </div>
+              </Link>
+            ) : (
+              <div
+                className={styles.accordionHeader}
+                onClick={() => toggleAccordion(menu.id)}
+              >
+                {menu.title}
+              </div>
+            )}
 
             {/* Contenu de l'accordéon (sous-menus) */}
             {menu.children && (
@@ -46,18 +50,21 @@ function Navbar() {
                   activeAccordion === menu.id ? styles.active : ""
                 }`}
                 style={{
-                  maxHeight: activeAccordion === menu.id ? "200px" : "0",// Permet de gérer la hauteur
+                  maxHeight: activeAccordion === menu.id ? "200px" : "0", // Permet de gérer la hauteur
                 }}
               >
                 {menu.children.map((child, index) => (
-                  <div
-                    key={index}
-                    className={`${styles.subItem} ${
-                      activeSubItem === child.href ? styles.activeSubItem : ""
-                    }`}
-                    onClick={() => handleSubItemClick(child.href)}
-                  >
-                    <Link href={child.href}>{child.title}</Link>
+                  <div key={index} className={styles.subItem}>
+                    <Link href={child.href}>
+                      <div
+                        className={`${styles.subItemContent} ${
+                          activeSubItem === child.href ? styles.activeSubItem : ""
+                        }`}
+                        onClick={() => handleSubItemClick(child.href)}
+                      >
+                        {child.title}
+                      </div>
+                    </Link>
                   </div>
                 ))}
               </div>
