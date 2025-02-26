@@ -13,8 +13,6 @@ function Index() {
   const etablissementId = useSelector((state) => state.admin.value.etablissement);
   const [etablissement, setEtablissement] = useState(null);
 
-  console.log(etablissementId)
-
 useEffect(() => {
   fetch(`http://localhost:3000/etablissements/find/${etablissementId}`)
   .then(response => response.json())
