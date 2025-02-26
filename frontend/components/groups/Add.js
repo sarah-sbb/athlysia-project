@@ -9,6 +9,8 @@ import AddGroup from "./AddGroup";
 function Add() {
   const [participantInGroup, setParticipantInGroup] = useState([]);
   const [titleGroup, setTitleGroup] = useState("");
+  const [msgCreationGroup, setMsgCreationGroup] = useState("")
+  const [isCreated, setIsCreated]= useState(false)
   const admin = useSelector((state) => state.admin.value);
 
   // supprimer le participant du groupe en fonction de son ID
@@ -17,6 +19,12 @@ function Add() {
   };
 
   const handleSubmit = () => {
+    if (participantInGroup.length ===0) {
+      console.log("aucun participant")
+      setIsCreated(false)
+     return setMsgCreationGroup("Veuillez - ajouter des participants au groupe")
+    }
+  
     const newParticipantIds = participantInGroup.map((e) => e.id);
 
     fetch(
@@ -34,7 +42,9 @@ function Add() {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.result, data.message);
+       setMsgCreationGroup(data.message)
+       setIsCreated(data.result)
+        
       });
   };
 
@@ -42,6 +52,7 @@ function Add() {
     <div className={styles.groupContainer}>
       <div className={styles.groupHeader}>
         <p>Compléter les informations du groupe</p>
+      
         <div className={styles.formButton}>
           <button
             onClick={handleSubmit}
@@ -53,12 +64,16 @@ function Add() {
       </div>
 
       <div className={styles.groupInfos}>
+        <div >
         <AddGroup
           participantInGroup={participantInGroup}
           setParticipantInGroup={setParticipantInGroup}
           titleGroup={titleGroup}
           setTitleGroup={setTitleGroup}
+          msgCreationGroup = {msgCreationGroup}
+          isCreated={isCreated}
         />
+        </div>
         <div>
           <h3>Box de participant</h3>
 

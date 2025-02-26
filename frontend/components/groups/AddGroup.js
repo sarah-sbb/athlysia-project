@@ -5,8 +5,9 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { buttonStyles } from "../modules/Button";
+import { green } from "@mui/material/colors";
 
-function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTitleGroup}) {
+function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTitleGroup, msgCreationGroup, isCreated}) {
   //state
   const [participantData, setParticipantData] = useState([]);
   const [addParticipant, setAddParticipant] = useState("");
@@ -43,12 +44,16 @@ function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTi
   console.log("participant en attente : ", addParticipant);
 
   const handleSubmit = () => {
+ if (!addParticipant) {
+  return  setErrorMsg("Veuillez - sélectionner un participant");
+ }
+
     if (
-      addParticipant &&
       !participantInGroup.some((e) => e.id === addParticipant.id)
     ) {
       setParticipantInGroup((prevGroup) => [...prevGroup, addParticipant]);
       setAddParticipant("");
+      setErrorMsg("")
     } else {
       setErrorMsg("Participant déjà ajouté");
       console.log("participant déjà existant");
@@ -57,20 +62,22 @@ function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTi
   console.log("participant dans un groupe: ", participantInGroup);
 
   return (
-    <div className={styles.form}>
+    <div>
       <Input onChange={(e)=>setTitleGroup(e.target.value)} value={titleGroup} label="Nom du groupe" />
-      <div className={styles.formAddGroupPart}>
+      <div >
         <Autocomplete
           disablePortal
           options={filtredData}
-          sx={{ width: 400 }}
+          sx={{ width: 300}}
           renderInput={(params) => (
-            <TextField {...params} label="Ajouter un participant" />
+            <TextField {...params} label="Rechercher les participants" />
           )}
           value={addParticipant}
           onChange={handleChange}
+  
         />
-        <p>{errorMsg}</p>
+        <p className={styles.errorMsg}>{errorMsg}</p>
+    
         {/* Button à revoir, réaliser les button carré spécial icon */}
       </div>
       <button
@@ -79,6 +86,8 @@ function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTi
       >
         Ajouter un participant
       </button>
+      <p style={{color : isCreated ? "green" : "red", fontWeight: "bold", fontSize: "12" 
+      }}>{msgCreationGroup}</p>
     </div>
   );
 }
