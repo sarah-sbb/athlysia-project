@@ -11,8 +11,8 @@ import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
 import Stack from "@mui/material/Stack";
 
 function AllEvents() { // A remplacer par les events établissement
-  // Récupération du token depuis redux
-  const token = useSelector((state) => state.admin.value.token);
+  // Récupération de l'ID établissement
+  const etablissementId = useSelector((state) => state.admin.value.etablissement);
 
   // Stockage infos events + participants
   const [eventsData, setEventsData] = useState([]);
@@ -20,7 +20,7 @@ function AllEvents() { // A remplacer par les events établissement
   // Récupération des infos relatives aux events gérés par l'admin
   useEffect(() => {
     fetch(
-      `http://localhost:3000/events/eventsByAdminWithParticipantInfos/${token}`
+      `http://localhost:3000/events/eventsByEtablissementWithParticipantInfos/${etablissementId}`
     )
       .then((response) => response.json())
       .then((data) => {
