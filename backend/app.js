@@ -1,5 +1,3 @@
-import "leaflet/dist/leaflet.css";
-
 require('dotenv').config();
 require('./models/connection');
 var express = require('express');
@@ -13,7 +11,6 @@ var groupsRouter = require('./routes/groups');
 var participantsRouter = require('./routes/participants');
 var eventsRouter= require('./routes/events');
 var etablissementsRouter = require('./routes/etablissements');
-
 
 var app = express();
 const cors = require('cors');
