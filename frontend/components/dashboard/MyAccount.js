@@ -12,11 +12,11 @@ function MyAccountWidget() {
   const [admins, setAdmins] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/admins/findAllByEtablissement/${etablissementId}`)
+    fetch(`http://localhost:3000/admins/findAllGroupsByEtablissement/${etablissementId}`)
     .then(response => response.json())
     .then(data => {
       if (data) {
-        setAdmins(data.data.map((e) => ({
+        setAdmins(data.allGroups.map((e) => ({
           id: e._id,
           role: e.role
         })))

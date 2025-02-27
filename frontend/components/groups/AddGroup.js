@@ -5,7 +5,6 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { buttonStyles } from "../modules/Button";
-import { green } from "@mui/material/colors";
 
 function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTitleGroup, msgCreationGroup, isCreated}) {
   //state

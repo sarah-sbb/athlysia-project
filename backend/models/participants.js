@@ -7,9 +7,9 @@ const participantSchema = mongoose.Schema ({
     phone: String,
     pictureUrl: String,
     birthDate: Date,
-    etablissementId: { type: mongoose.Schema.Types.ObjectId, ref: 'etablissements' },
+    etablissementId: { type: mongoose.Schema.Types.ObjectId, ref: 'etablissement' },
 });
 
-const Participant = mongoose.model('participants', participantSchema);
+const Participant = mongoose.model('participant', participantSchema);
 
 module.exports = Participant
