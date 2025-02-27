@@ -69,11 +69,6 @@ router.post("/add/:etablissementId", (req, res) => {
   
 });
 
-
-
-
-
-
 // GET route pour récupérer un participant
 router.get("/:id", (req, res) => {
   Participant.findById(req.params.id)
@@ -98,7 +93,6 @@ router.get("/findAllByEtablissement/:etablissementId", (req, res) => {
       }
     });
 });
-
 
 // PUT route pour mettre à jour un participant
 router.put("/modify/:id", (req, res) => {

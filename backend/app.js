@@ -12,7 +12,6 @@ var participantsRouter = require('./routes/participants');
 var eventsRouter= require('./routes/events');
 var etablissementsRouter = require('./routes/etablissements');
 
-
 var app = express();
 const cors = require('cors');
 app.use(cors());

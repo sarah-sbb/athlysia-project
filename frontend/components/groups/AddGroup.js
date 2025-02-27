@@ -13,7 +13,10 @@ function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTi
   const [addParticipant, setAddParticipant] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  // on crée un nouveau tableau avec map, il contient des objets : l'id du participant (pour l'ajouter au groupe) + le nom du participant (pour afficher côté front) avec la clé "label" (connue par Autocomplete de MUI ). Il va itérer sur toutes les clés label et ignorer id.
+  // on crée un nouveau tableau avec map, il contient des objets : 
+  // l'id du participant (pour l'ajouter au groupe) + le nom du participant 
+  // (pour afficher côté front) avec la clé "label" (connue par Autocomplete de MUI ). 
+  // Il va itérer sur toutes les clés label et ignorer id.
   const filtredData = participantData.map((participant) => ({
     label: `${participant.firstName} ${participant.lastName}`,
     id: participant._id,
@@ -36,7 +39,8 @@ function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTi
       });
   }, []);
 
-  //ici je viens récupérer la value directement et non e.target.value car ce composant Mui AutoComplete ne le reconnaît pas (voir documentation)
+  //ici je viens récupérer la value directement et non e.target.value 
+  // car ce composant Mui AutoComplete ne le reconnaît pas (voir documentation)
   const handleChange = (e, value) => {
     setAddParticipant(value);
   };
