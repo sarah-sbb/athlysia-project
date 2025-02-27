@@ -51,13 +51,7 @@ router.post("/add/:adminId/:etablissementId", (req, res) => {
 // Route pour rechercher tous les groups d'un établissement
 router.get("/findAllGroupsByEtablissement/:etablissementId", (req, res) => {
   const etablissementId = req.params.etablissementId;
-  if (!etablissementId) {
-    return res.json({
-      result: false,
-      message: "L'identifiant de l'établissement est manquant.",
-    });
-  }
-
+  
   Group.find({ etablissementId }).populate("adminId", "firstName lastName").then((data) => {
     if (data.length === 0) {
       res.json({
@@ -72,6 +66,21 @@ router.get("/findAllGroupsByEtablissement/:etablissementId", (req, res) => {
     }
   });
 });
+
+router.delete("/:groupId", (req, res) => {
+
+    Group.deleteOne({ _id : req.params.groupId }).then((response) => {
+      if (response.deletedCount > 0) {
+        return res.json({ result: true, message: "Groupe supprimé", response });
+      } else {
+        return res.json({ result: false, message: "Aucun groupe trouvé avec cet ID" });
+      }
+    });
+  
+});
+
+
+
 
 
 
