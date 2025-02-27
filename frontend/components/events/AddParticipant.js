@@ -1,57 +1,82 @@
-import { useEffect, useState } from 'react';
 import styles from '../../styles/Events.module.css';
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { Dropdown } from '../modules/Dropdown';
+import { buttonStyles } from '../modules/Button';
 
-function AddParticipant({ etablissementId, form, handleFormChange }) {
+function AddParticipant({ participantInGroup, setParticipantInGroup, titleGroup, setTitleGroup}) {
   // État local pour stocker les participants
-  const [participantList, setParticipantList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [participantData, setParticipantData] = useState([]);
+  const [addParticipant, setAddParticipant] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  // Fonction pour charger les participants depuis l'API
-  const fetchParticipants = async () => {
-    try {
-      const response = await fetch(
-        `/api/participants/findAllByEtablissement/${etablissementId}`
-      ); // Fetch les participants liés à l'établissement
-      const result = await response.json();
+  // on crée un nouveau tableau avec map, il contient des objets : 
+  // l'id du participant (pour l'ajouter au groupe) + le nom du participant 
+  // (pour afficher côté front) avec la clé "label" (connue par Autocomplete de MUI ). 
+  // Il va itérer sur toutes les clés label et ignorer id.
+  const filtredData = participantData.map((participant) => ({
+    label: `${participant.firstName} ${participant.lastName}`,
+    id: participant._id,
+  }));
 
-      if (result.result) {
-        setParticipantList(result.allParticipants); // Mettre à jour les participants
-      } else {
-        setError(result.message); // Affichage d'un message d'erreur si la réponse contient une erreur
-      }
-    } catch (err) {
-      setError("Erreur lors du chargement des participants."); // Gestion d'erreur réseau
-    } finally {
-      setLoading(false); // Fin du chargement
-    }
+  console.log("participant group", participantInGroup);
+  const admin = useSelector((state) => state.admin.value);
+  console.log(participantData);
+  console.log("date filtré : ", filtredData);
+  //on récupère tous les participants liés à l'établissement de l'admin
+  useEffect(() => {
+    fetch(
+      `http://localhost:3000/participants/findAllByEtablissement/${admin.etablissement}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          setParticipantData(data.allParticipants);
+        }
+      });
+  }, []);
+
+  //ici je viens récupérer la value directement et non e.target.value 
+  // car ce composant Mui AutoComplete ne le reconnaît pas (voir documentation)
+  const handleChange = (e, value) => {
+    setAddParticipant(value);
   };
 
-  // Appel de fetchParticipants au montage ou lorsque l'ID de l'établissement change
-  useEffect(() => {
-    if (etablissementId) {
-      fetchParticipants();
+  console.log("participant en attente : ", addParticipant);
+
+  const handleSubmit = () => {
+    if (
+      addParticipant &&
+      !participantInGroup.some((e) => e.id === addParticipant.id)
+    ) {
+      setParticipantInGroup((prevGroup) => [...prevGroup, addParticipant]);
+      setAddParticipant("");
+    } else {
+      setErrorMsg("Participant déjà ajouté");
+      console.log("participant déjà existant");
     }
-  }, [etablissementId]); // Se met à jour lorsque etablissementId change
+  };
+  console.log("participant dans un groupe: ", participantInGroup);
 
   return (
-    <form className={styles.form}>
-      {loading && <p>Chargement des participants...</p>}
-      {error && <p className={styles.error}>{error}</p>}
-      {!loading && !error && (
+    <div>
+      <form className={styles.form}>
         <Dropdown
-          label="Ajouter un participant"
-          name="participantId" // Équivaut à la clé de l'état correspondant
-          options={participantList.map((participant) => ({
-            value: participant._id, // ID du participant
-            label: `${participant.firstName} ${participant.lastName}`, // Nom du participant
-          }))}
-          value={form.participantId} // valeur actuelle liée au state global
-          onChange={handleFormChange} // Fonction de modification de l'état
+          disablePortal
+          options={filtredData}
+          sx={{ width: 400 }}
+          label="Choisissez un participant"
+          value={addParticipant}
+          onChange={handleChange}
         />
-      )}
-    </form>
+      </form>
+        <button
+          onClick={handleSubmit}
+          className={buttonStyles({ color: "primary" })}
+        >
+          Ajouter un participant
+        </button>
+    </div>
   );
 }
 

@@ -31,6 +31,7 @@ function EventPage() {
   return (
     <div className={styles.formContainer}>
       <div className={styles.formHeader}>
+
         <h2>Votre évènement</h2>
         <div className={styles.formButton}>
           <button className={buttonStyles(
@@ -42,9 +43,11 @@ function EventPage() {
               Générer les autorisations
           </button>
         </div>
+      </div>
 
-        <div className={styles.formInfos}>
-          <div className={styles.blocFirst}>
+      <div className={styles.formInfos}>
+        <div className={styles.formAddInfos}>
+          <div className={styles.firstBloc}>
             {/* Champ pour entrer le nom de l’événement */}
             <label htmlFor="eventName">Nom de votre évènement</label>
             <input
@@ -56,7 +59,6 @@ function EventPage() {
               placeholder="Entrez le nom de l'évènement"
               className={styles.inputField} // Ajout d'une classe CSS si nécessaire
             />
-
             <div className={styles.formAddGroup}>
               <AddGroup />
             </div>
@@ -66,15 +68,16 @@ function EventPage() {
             <div className={styles.formAddDate}>
             <AddDate form={form} handleFormChange={handleFormChange} />
             </div>
-            <div className={styles.formAddLocation}>
+            {/* <div className={styles.formAddLocation}>
               <AddLocation />
-            </div>
+            </div> */}
           </div>
-          <div className={styles.blocSecond}>
-            <div className={styles.formAddCom}>
-              <AddCom />
-            </div>
+          <div className={styles.secondBloc}> 
+              ajout des participants
           </div>
+        </div>
+        <div className={styles.formAddCom}>
+          <AddCom />
         </div>
       </div>
     </div>
