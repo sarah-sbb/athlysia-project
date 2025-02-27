@@ -1,60 +1,46 @@
-import { useState, useEffect } from "react";
-import { DataGrid } from '@mui/x-data-grid';
-import moment from "moment";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { useState } from "react";
+import styles from "../../styles/Events.module.css";
 
-const columns = [
-  { field: '_id', headerName: 'ID', width: 70 },
-  { field: 'title', headerName: "Titre de l'évènement", width: 200 },
-  { field: 'author', headerName: 'Auteur', width: 200 },
-  { field: 'createdAt', headerName: 'Date de sortie', width: 130 },
-  { field: 'acceptRate', headerName: "Taux d'acceptation", width: 200 },
-];
+function AddLocation({ form, handleFormChange }) {
+  // Centre initial de la carte (exemple : Paris)
+  const [position, setPosition] = useState([48.8566, 2.3522]); // Paris coords
 
-const Events = () => {
-  const [rows, setRows] = useState([]);
+  // Fonction déclenchée lors du "drag" du marqueur
+  const handleMarkerDrag = (event) => {
+    const { lat, lng } = event.target.getLatLng();
+    setPosition([lat, lng]);
 
-  useEffect(() => {
-    const etablissementId = "12345"; // Exemple d'ID
-
-    fetch(`http://localhost:3000/findAllByEtablissement/${etablissementId}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Erreur serveur lors de la récupération des événements !");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.result) {
-          setRows(
-            data.data.map((element) => ({
-              _id: element._id,
-              title: element.title,
-              author: element.author,
-              createdAt: moment(element.createdAt).format("LLLL"),
-              acceptRate: Math.round(
-                (element.authorisations.filter((auth) => auth.accepted).length /
-                  element.authorisations.length) *
-                  100
-              ),
-            }))
-          );
-        } else {
-          console.error(data.message);
-        }
-      })
-      .catch((error) => {
-        console.error("Erreur API :", error);
-      });
-  }, []); // Notez l'utilisation de [] pour ne pas boucler à l'infini.
+    // Mettre à jour le formulaire parent avec les nouvelles coordonnées
+    handleFormChange({
+      target: {
+        name: "location",
+        value: { lat, lng }, // Ex: {lat: 48.8566, lng: 2.3522}
+      },
+    });
+  };
 
   return (
-    <div>
-      <h1>Liste des événements</h1>
-      <Paper elevation={3} style={{ height: 400, width: "100%" }}>
-        <DataGrid rows={rows} columns={columns} pageSize={5} />
-      </Paper>
+    <div className={styles.form}>
+      {/* Carte Leaflet */}
+      <div className={styles.mapContainer} style={{ height: "400px" }}>
+        <MapContainer center={position} zoom={13} style={{ height: "100%", width: "100%" }}>
+          {/* Couche des tuiles OpenStreetMap */}
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          
+          {/* Marqueur draggable */}
+          <Marker position={position} draggable eventHandlers={{ dragend: handleMarkerDrag }}>
+            <Popup>
+              Coordonnées sélectionnées : {position[0].toFixed(4)}, {position[1].toFixed(4)}
+            </Popup>
+          </Marker>
+        </MapContainer>
+      </div>
     </div>
   );
-};
+}
 
-export default Events;
+export default AddLocation;
