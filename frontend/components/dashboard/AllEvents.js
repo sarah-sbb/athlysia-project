@@ -167,7 +167,7 @@ function AllEvents() {
                 <TableCell></TableCell>
                 <TableCell style={{ fontWeight: "bold" }}>Prénom</TableCell>
                 <TableCell style={{ fontWeight: "bold" }}>Nom</TableCell>
-                <TableCell style={{ fontWeight: "bold" }}>Statut</TableCell>
+                <TableCell style={{ fontWeight: "bold" }}>Autorisation</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
