@@ -33,11 +33,7 @@ function AllEvents() {
   // Stockage infos events
   const [eventsData, setEventsData] = useState([]);
 
-  // Fonction et état pour créer des lignes dans le tableau de la modal
-  const createData = (avatar, firstName, lastName, status) => {
-    return { avatar, firstName, lastName, status };
-  };
-
+  // Etat pour les lignes dans le tableau de la modal
   const [rows, setRows] = useState([]);
 
   const handleRowClick = (e) => {
