@@ -1,27 +1,18 @@
-.formContainer {
+.formHeader {
   display: flex;
-  flex-direction: column;
-  gap: 30px;
+  justify-content: space-between;
 }
 
-.form {
-  box-sizing: border-box;
+.formButton > button {
+  margin-right: 20px;
+}
+.formButton > button:last-child {
+  margin-right: 0;
 }
 
-.formInfos {
+.formAddInfos {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 100px;
-
-}
-
-.formHeader {
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-
-.formButton {
-  display: flex;
-  gap: 20px;
+  grid-gap: 100px;
+  
 }

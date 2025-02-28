@@ -24,7 +24,7 @@ function Dashboard({children}) {
         </div> 
         </div> 
       <Footer/>
-  </div>
+    </div>
   );
 }
 

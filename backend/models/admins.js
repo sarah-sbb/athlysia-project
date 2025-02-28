@@ -7,7 +7,7 @@ const adminSchema = mongoose.Schema ({
     role: String,
     pictureUrl:String,
     email: String,
-    etablissement: { type: mongoose.Schema.Types.ObjectId, ref: 'etablissements' },
+    etablissement: { type: mongoose.Schema.Types.ObjectId, ref: 'etablissement' },
     token: String,
     password: String
 })

@@ -8,7 +8,7 @@ const navbarData = [
       id: 2,
       title: "Groupes",
       children: [
-        { title: "Tous les groupes", href: "/ctp-admin/groups/groups" },
+        { title: "Tous les groupes", href: "/ctp-admin/groups" },
         { title: "Créer un groupe", href: "/ctp-admin/groups/add" },
       ],
     },
