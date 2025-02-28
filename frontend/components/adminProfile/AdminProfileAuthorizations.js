@@ -49,7 +49,6 @@ function AdminProfileAuthorizations() {
       width: 100,
       editable: false,
       renderCell: (params) => (
-        // Fonction pour transformer le tableau des pictureUrl participants en un groupe d'avatars capés à 4 (flex-end pour forcer l'alignement à gauche)
         <Avatar src={params.value} />
       ),
     },
