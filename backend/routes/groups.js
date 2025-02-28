@@ -6,6 +6,12 @@ const Participant = require("../models/participants");
 const { checkBody } = require("../modules/checkBody");
 const Etablissement = require("../models/etablissements");
 
+// if (!mongoose.isValidObjectId(adminId) || !mongoose.isValidObjectId(etablissementId)) {
+//   return res.status(400).json({
+//     result: false,
+//     message: "adminId ou etablissementId invalide.",
+//   });
+// }
 // HASSEN
 
 // Ajout d'un nouveau groupe avec etablisement et admin en params = à améliorer sur la sécurité
@@ -69,9 +75,9 @@ router.get("/findAllGroupsByEtablissement/:etablissementId", (req, res) => {
 
 router.delete("/:groupId", (req, res) => {
 
-    Group.deleteOne({ _id : req.params.groupId }).then((response) => {
-      if (response.deletedCount > 0) {
-        return res.json({ result: true, message: "Groupe supprimé", response });
+    Group.deleteOne({ _id : req.params.groupId }).then((data) => {
+      if (data.deletedCount > 0) {
+        return res.json({ result: true, message: "Groupe supprimé" });
       } else {
         return res.json({ result: false, message: "Aucun groupe trouvé avec cet ID" });
       }
@@ -79,6 +85,20 @@ router.delete("/:groupId", (req, res) => {
   
 });
 
+
+router.get("/findOneGroup/:groupId", (req,res) =>{
+
+Group.findOne({_id: req.params.groupId}).then((data)=> {
+if (!data) {
+  return res.json({result: false, message: 'Aucun groupe trouvé'
+  })} else {
+    return res.json({result : true, group: data, message : `Groupe :  ${data.title} trouvé`})
+  }
+
+  
+})
+
+})
 
 
 
