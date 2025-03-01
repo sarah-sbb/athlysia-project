@@ -88,7 +88,7 @@ router.delete("/:groupId", (req, res) => {
 
 router.get("/findOneGroup/:groupId", (req,res) =>{
 
-Group.findOne({_id: req.params.groupId}).then((data)=> {
+Group.findOne({_id: req.params.groupId}).populate({path: "participantIds", select: "firstName lastName"}).then((data)=> {
 if (!data) {
   return res.json({result: false, message: 'Aucun groupe trouvé'
   })} else {

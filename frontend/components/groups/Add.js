@@ -9,8 +9,8 @@ import AddGroup from "./AddGroup";
 function Add() {
   const [participantInGroup, setParticipantInGroup] = useState([]);
   const [titleGroup, setTitleGroup] = useState("");
-  const [msgCreationGroup, setMsgCreationGroup] = useState("")
-  const [isCreated, setIsCreated]= useState(false)
+  const [msgCreationGroup, setMsgCreationGroup] = useState("");
+  const [isCreated, setIsCreated] = useState(false);
   const admin = useSelector((state) => state.admin.value);
 
   // supprimer le participant du groupe en fonction de son ID
@@ -19,12 +19,14 @@ function Add() {
   };
 
   const handleSubmit = () => {
-    if (participantInGroup.length ===0) {
-      console.log("aucun participant")
-      setIsCreated(false)
-     return setMsgCreationGroup("Veuillez - ajouter des participants au groupe")
+    if (participantInGroup.length === 0) {
+      console.log("aucun participant");
+      setIsCreated(false);
+      return setMsgCreationGroup(
+        "Veuillez - ajouter des participants au groupe"
+      );
     }
-  
+
     const newParticipantIds = participantInGroup.map((e) => e.id);
 
     fetch(
@@ -42,50 +44,47 @@ function Add() {
     )
       .then((response) => response.json())
       .then((data) => {
-       setMsgCreationGroup(data.message)
-       setIsCreated(data.result)
-        
+        setMsgCreationGroup(data.message);
+        setIsCreated(data.result);
       });
   };
 
   return (
     <div className={styles.groupContainer}>
       <div className={styles.groupHeader}>
-        <p>Compléter les informations du groupe</p>
-      
-        <div className={styles.formButton}>
-          <button
-            onClick={handleSubmit}
-            className={buttonStyles({ color: "primary" })}
-          >
-            Enregistrer
-          </button>
-        </div>
+        <button
+          onClick={handleSubmit}
+          className={buttonStyles({ color: "secondary" })}
+        >
+          Enregistrer
+        </button>
       </div>
 
       <div className={styles.groupInfos}>
-        <div >
-        <AddGroup
-          participantInGroup={participantInGroup}
-          setParticipantInGroup={setParticipantInGroup}
-          titleGroup={titleGroup}
-          setTitleGroup={setTitleGroup}
-          msgCreationGroup = {msgCreationGroup}
-          isCreated={isCreated}
-        />
+        <div>
+          <AddGroup
+            participantInGroup={participantInGroup}
+            setParticipantInGroup={setParticipantInGroup}
+            titleGroup={titleGroup}
+            setTitleGroup={setTitleGroup}
+            msgCreationGroup={msgCreationGroup}
+            isCreated={isCreated}
+          />
         </div>
         <div>
-          <h3>Box de participant</h3>
-
-          {participantInGroup.map((participant, index) => (
-            <p key={index}>
-              {participant.label}{" "}
-              <FontAwesomeIcon
-                icon={faXmark}
+          <h3>Box de participants</h3>
+          <div className={styles.boxContainer}>
+            {participantInGroup.map((participant, index) => (
+              <p
                 onClick={() => handleRemoveParticipant(participant.id)}
-              />
-            </p>
-          ))}
+                style={{ cursor: "pointer" }}
+                key={index}
+              >
+                {participant.label}
+                <FontAwesomeIcon icon={faXmark} />
+              </p>
+            ))}
+          </div>
         </div>
       </div>
     </div>

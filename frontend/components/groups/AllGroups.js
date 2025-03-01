@@ -96,17 +96,15 @@ function AllGroups() {
         <div>
           <Button
             variant="contained"
-            color="primary"
-            style={{ marginRight: "10px", fontSize: "11px" }}
+            style={{ marginRight: "10px", fontSize: "11px", backgroundColor: "#2E35B3" }}
             onClick={() => handleToggleModal(params.row.id)}
           >
             Modifier
           </Button>
           <Button
             variant="contained"
-            color="error"
             onClick={() => handleDeleteGroup(params.row.id)}
-            style={{ fontSize: "11px" }}
+            style={{ fontSize: "11px", backgroundColor: "#DC1C4D" }}
           >
             Supprimer
           </Button>

@@ -1,10 +1,10 @@
 import styles from "../../styles/Groups.module.css";
-import { Input } from "../modules/Input";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { buttonStyles } from "../modules/Button";
+import { Typography } from "@mui/material";
 
 function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTitleGroup, msgCreationGroup, isCreated}) {
   //state
@@ -66,12 +66,13 @@ function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTi
 
   return (
     <div>
-      <Input onChange={(e)=>setTitleGroup(e.target.value)} value={titleGroup} label="Nom du groupe" />
+      <p> Compléter les informations du groupe </p>
+      <TextField   sx={{ width: 400, marginBottom: 2, marginTop: 1}} onChange={(e)=>setTitleGroup(e.target.value)} value={titleGroup} label="Nom du groupe" />
       <div >
         <Autocomplete
           disablePortal
           options={filtredData}
-          sx={{ width: 300}}
+          sx={{ width: 400, marginBottom: 5}}
           renderInput={(params) => (
             <TextField {...params} label="Rechercher les participants" />
           )}
@@ -85,7 +86,7 @@ function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTi
       </div>
       <button
         onClick={handleSubmit}
-        className={buttonStyles({ color: "primary" })}
+        className={buttonStyles({ color: "secondary" })}
       >
         Ajouter un participant
       </button>
