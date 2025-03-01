@@ -61,8 +61,6 @@ function AdminProfileMain() {
       .then((data) => {
         dispatch(modify(data.data)); // Mise à jour des infos reducer
       });
-
-    console.log("test");
   };
 
   const handleSubmit = () => {

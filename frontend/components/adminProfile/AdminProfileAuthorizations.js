@@ -4,6 +4,9 @@ import { useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import Tooltip from '@mui/material/Tooltip';
 
 function AdminProfileAuthorizations() {
   // Récupération du token admin depuis redux
@@ -46,7 +49,6 @@ function AdminProfileAuthorizations() {
       width: 100,
       editable: false,
       renderCell: (params) => (
-        // Fonction pour transformer le tableau des pictureUrl participants en un groupe d'avatars capés à 4 (flex-end pour forcer l'alignement à gauche)
         <Avatar src={params.value} />
       ),
     },
@@ -67,6 +69,17 @@ function AdminProfileAuthorizations() {
       headerName: "Statut de l'autorisation",
       width: 300,
       editable: false,
+      renderCell: (params) => {
+        if (params.value) {
+          return <span style={{color:"green"}}>Validé</span>
+        } else {
+          return <div><span style={{color:"red"}}>En attente</span><Tooltip title="Relancer">
+          <IconButton>
+            <NotificationsNoneIcon />
+          </IconButton>
+          </Tooltip></div>
+        }
+      }
     },
   ];
 
