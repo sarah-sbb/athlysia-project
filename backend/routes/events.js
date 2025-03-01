@@ -250,7 +250,7 @@ router.get("/eventsByEtablissementWithParticipantInfos/:etablissementId", (req, 
     });
 });
 
-// Route pour récupérer les événements d'un groupe
+// Route pour récupérer les events d'un groupe
 router.get("/getEventByGroup", (req, res) => {
   const fields = ["groupId"];
 
@@ -286,7 +286,7 @@ router.get("/findEventsByEtablissement/:etablissementId", (req, res) => {
 });
 
 
-// Route pour récupérer les autorisations d'un événement via son ID
+// Route pour récupérer les autorisations d'un events via son ID
 router.post("/autorisationByEvent", (req, res) => {
   const fields = ["eventId"];
 
@@ -300,7 +300,7 @@ router.post("/autorisationByEvent", (req, res) => {
   // Extraction de l'eventId du body
   const { eventId } = req.body;
 
-  // Recherche de l'événement via son ID
+  // Recherche de l'event via son ID
   Event.findById(eventId)
     .then((event) => {
       if (!event) {
@@ -310,7 +310,7 @@ router.post("/autorisationByEvent", (req, res) => {
         });
       }
 
-      // Si l'événement est trouvé, renvoyer les autorisations
+      // Si l'event est trouvé, renvoyer les autorisations
       res.status(200).json({
         result: true,
         data: event.authorisations, // Supposons que les autorisations sont stockées dans ce champ
