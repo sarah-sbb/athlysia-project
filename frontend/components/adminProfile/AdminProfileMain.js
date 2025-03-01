@@ -209,7 +209,7 @@ function AdminProfileMain() {
           style={{ color: showEvents ? "" : "#757575" }}
           onClick={() => handleToggleTab("events")}
         >
-          Toutes mes sorties
+          Tous mes événements
         </h3>
         <h3
           className={styles.tab}
