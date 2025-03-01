@@ -1,7 +1,5 @@
 import styles from "../../styles/adminProfile.module.css";
 import Image from "next/image";
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';       <FontAwesomeIcon icon={faBookmark} />
-//import { faBookmark, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { modify } from "../../reducers/admin";
@@ -49,7 +47,7 @@ function AdminProfileMain() {
   };
 
   const handleChangeImage = (e) => {
-    // Update de l'image
+    // Mise à jour de la photo admin
     const formData = new FormData();
     formData.append("newAdminPicture", e.target.files[0]);
 
@@ -170,7 +168,7 @@ function AdminProfileMain() {
             role={undefined}
             variant="outlined"
             tabIndex={-1}
-            style={{width:"200px"}}
+            style={{ width: "200px" }}
             loadingIndicator="Loading…"
           >
             <VisuallyHiddenInput
@@ -239,18 +237,6 @@ const styleModal = {
   p: 10,
 };
 
-const styleButtonOpenModal = {
-  bgcolor: "white",
-  fontSize: "0.75rem",
-  color: "#031EAD",
-};
-
-const styleHeader = {
-  textAlign: "center",
-  pb: 5,
-  fontSize: "1.1rem",
-};
-
 const styleContainer = {
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
@@ -275,18 +261,6 @@ const buttonSignUpStyle = {
   color: "white",
   fontSize: "0.90rem",
   width: 100,
-};
-
-const styleErrorSignUp = {
-  display: "flex",
-  justifyContent: "center",
-  color: "red",
-};
-
-const styleSuccesSignUp = {
-  display: "flex",
-  justifyContent: "center",
-  color: "green",
 };
 
 const VisuallyHiddenInput = styled("input")({

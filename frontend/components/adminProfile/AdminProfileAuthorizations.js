@@ -1,4 +1,3 @@
-import styles from "../../styles/adminProfile.module.css";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
@@ -34,7 +33,6 @@ function AdminProfileAuthorizations() {
               eventTitle: event.title,
             }))
           );
-          console.log("Données autorisations formatées :", allAutorisations);
           setAutorisationsData(allAutorisations);
         }
       });

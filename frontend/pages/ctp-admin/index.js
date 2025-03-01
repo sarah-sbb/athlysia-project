@@ -1,7 +1,6 @@
 import styles from "../../styles/dashboard.module.css";
 import Layout from "../../components/layout/Layout";
 import QuickActions from "../../components/dashboard/QuickActions";
-// import MyLastEvents from "../../components/dashboard/MyLastEvents";
 import AllEvents from "../../components/dashboard/AllEvents";
 import AllGroups from "../../components/dashboard/AllGroups";
 import MyAccountWidget from "../../components/dashboard/MyAccount";
