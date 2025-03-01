@@ -1,4 +1,3 @@
-import styles from "../../styles/adminProfile.module.css";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
@@ -11,7 +10,7 @@ import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
 import { Modal, Box, Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 
 // Import table pour modal
 import Table from "@mui/material/Table";
@@ -27,11 +26,11 @@ function AllEvents() {
     (state) => state.admin.value.etablissement
   );
 
-  // Toggle pour modal
-  const [open, setOpen] = useState(false);
-
   // Stockage infos events
   const [eventsData, setEventsData] = useState([]);
+
+  // Toggle pour modal
+  const [open, setOpen] = useState(false);
 
   // Etat pour les lignes dans le tableau de la modal
   const [rows, setRows] = useState([]);
@@ -163,7 +162,9 @@ function AllEvents() {
                 <TableCell></TableCell>
                 <TableCell style={{ fontWeight: "bold" }}>Prénom</TableCell>
                 <TableCell style={{ fontWeight: "bold" }}>Nom</TableCell>
-                <TableCell style={{ fontWeight: "bold" }}>Autorisation</TableCell>
+                <TableCell style={{ fontWeight: "bold" }}>
+                  Autorisation
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -180,9 +181,9 @@ function AllEvents() {
                     <TableCell style={{ color: "red" }}>
                       En attente
                       <Tooltip title="Relancer">
-                      <IconButton>
-                        <NotificationsNoneIcon />
-                      </IconButton>
+                        <IconButton>
+                          <NotificationsNoneIcon />
+                        </IconButton>
                       </Tooltip>
                     </TableCell>
                   )}

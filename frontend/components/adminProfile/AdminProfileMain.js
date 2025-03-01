@@ -8,6 +8,7 @@ import { styled } from "@mui/material/styles";
 import AdminProfileAuthorizations from "./AdminProfileAuthorizations";
 import AdminProfileGroups from "./AdminProfileGroups";
 import AdminProfileEvents from "./AdminProfileEvents";
+import Avatar from "@mui/material/Avatar";
 
 function AdminProfileMain() {
   // Initialisation redux
@@ -148,21 +149,7 @@ function AdminProfileMain() {
     <div className={styles.mainContent}>
       <div className={styles.upperInfos}>
         <div className={styles.picContainer}>
-          {infoAdmin.pictureUrl ? (
-            <Image
-              src={infoAdmin.pictureUrl}
-              alt="Ma photo de profil"
-              width={200}
-              height={200}
-            />
-          ) : (
-            <Image
-              src="/profil.webp"
-              alt="Ma photo de profil"
-              width={200}
-              height={200}
-            />
-          )}
+          <Avatar src={infoAdmin.pictureUrl} sx={{ width: 180, height: 180, marginBottom: "20px" }} />
           <Button
             component="label"
             role={undefined}
