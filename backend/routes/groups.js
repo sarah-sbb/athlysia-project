@@ -75,6 +75,7 @@ router.get("/findAllGroupsByEtablissement/:etablissementId", (req, res) => {
 
 router.delete("/:groupId", (req, res) => {
 
+
     Group.deleteOne({ _id : req.params.groupId }).then((data) => {
       if (data.deletedCount > 0) {
         return res.json({ result: true, message: "Groupe supprimé" });
@@ -84,6 +85,7 @@ router.delete("/:groupId", (req, res) => {
     });
   
 });
+
 
 
 router.get("/findOneGroup/:groupId", (req,res) =>{
@@ -102,7 +104,27 @@ if (!data) {
 
 
 
+router.put("/modify/:groupId",(req,res)=>{
 
+  const fields = ["title","participantIds" ];
+  
+
+  console.log("CheckBody result:", req.body);
+  if (!checkBody(req.body, fields)) {
+    return res.json({ result: false, message: "Champs manquants ou vides" });
+  }
+
+  Group.findOneAndUpdate({_id: req.params.groupId}, req.body,   { new: true }).then((data)=> {
+    if (data) {
+      return res.json({result: true, message : "Votre groupe a été modifié", data})
+    } else {
+      return res.json ({result: false, message : "Aucun groupe trouvé"})
+    }
+
+  })
+
+
+})
 
 
 // TRIER LES ROUTES CI - DESSOUS

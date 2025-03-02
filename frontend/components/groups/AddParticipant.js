@@ -4,27 +4,21 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { buttonStyles } from "../modules/Button";
-import { Typography } from "@mui/material";
 
-function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTitleGroup, msgCreationGroup, isCreated}) {
-  //state
+
+function AddParticipant({ participantInGroup, setParticipantInGroup, titleGroup, setTitleGroup, msgCreationGroup, isCreated}) {
+  //A. Redux
+  const admin = useSelector((state) => state.admin.value);
+
+ //B. States
+
   const [participantData, setParticipantData] = useState([]);
   const [addParticipant, setAddParticipant] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  // on crée un nouveau tableau avec map, il contient des objets : 
-  // l'id du participant (pour l'ajouter au groupe) + le nom du participant 
-  // (pour afficher côté front) avec la clé "label" (connue par Autocomplete de MUI ). 
-  // Il va itérer sur toutes les clés label et ignorer id.
-  const filtredData = participantData.map((participant) => ({
-    label: `${participant.firstName} ${participant.lastName}`,
-    id: participant._id,
-  }));
+ 
+//C. Logique
 
-  console.log("participant group", participantInGroup);
-  const admin = useSelector((state) => state.admin.value);
-  console.log(participantData);
-  console.log("date filtré : ", filtredData);
   //on récupère tous les participants liés à l'établissement de l'admin
   useEffect(() => {
     fetch(
@@ -38,13 +32,22 @@ function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTi
       });
   }, []);
 
-  //ici je viens récupérer la value directement et non e.target.value 
-  // car ce composant Mui AutoComplete ne le reconnaît pas (voir documentation)
+   // on crée un nouveau tableau avec map, il contient les objets : 
+  // l'id du participant (pour l'ajouter au groupe) + le nom du participant 
+  // (pour afficher côté front) avec la clé "label" (connue par Autocomplete de MUI ). 
+  // UI va ainsi itérer sur toutes les clés label et ignorer id.
+  const filtredData = participantData.map((participant) => ({
+    label: `${participant.firstName} ${participant.lastName}`,
+    id: participant._id,
+  }));
+
+
+  //ici on vient récupérer la value directement et non e.target.value 
+  // car le composant Mui AutoComplete ne le reconnaît pas (voir documentation)
   const handleChange = (e, value) => {
     setAddParticipant(value);
   };
 
-  console.log("participant en attente : ", addParticipant);
 
   const handleSubmit = () => {
  if (!addParticipant) {
@@ -59,10 +62,10 @@ function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTi
       setErrorMsg("")
     } else {
       setErrorMsg("Participant déjà ajouté");
-      console.log("participant déjà existant");
+   
     }
   };
-  console.log("participant dans un groupe: ", participantInGroup);
+  
 
   return (
     <div>
@@ -96,4 +99,4 @@ function AddGroup({ participantInGroup, setParticipantInGroup, titleGroup, setTi
   );
 }
 
-export default AddGroup;
+export default AddParticipant;

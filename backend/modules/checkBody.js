@@ -1,9 +1,10 @@
 // Deuxième version de CheckBody utilisée pour la route "updateByToken"
+// ajout d'obj[element].length===0 car sans, un tableau vide de participants/ groups peut être envoyé en bdd
 
 function checkBody(obj, arr) {
 
     for (let element of arr) {
-        if (!Object.keys(obj).includes(element) || obj[element]==="")  {
+        if (!Object.keys(obj).includes(element) || obj[element].length===0)  {
             return false
         }
     }

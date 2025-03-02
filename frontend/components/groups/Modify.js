@@ -6,23 +6,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Modal, Box, Button, TextField, Typography } from "@mui/material";
 
 function Modify({ open, handleToggleModal, idGroup }) {
-  //state
-  const [participantData, setParticipantData] = useState([]);
-  const [addParticipant, setAddParticipant] = useState("");
-  const [titleGroup, setTitleGroup] = useState("");
-  const [participantsInGroup, setparticipantsInGroup] = useState([]);
-  const [errorMsg, setErrorMsg] = useState("");
-
-  // supprimer le participant du groupe en fonction de son ID
-  const handleRemoveParticipant = (id) => {
-    setparticipantsInGroup(participantsInGroup.filter((e) => e._id !== id));
-  };
-  const filtredData = participantData.map((participant) => ({
-    label: `${participant.firstName} ${participant.lastName}`,
-    _id: participant._id,
-  }));
+  //A. Redux
   const admin = useSelector((state) => state.admin.value);
 
+  //B. States
+  const [participantData, setParticipantData] = useState([]);
+  const [participantsInGroup, setparticipantsInGroup] = useState([]);
+  const [addParticipant, setAddParticipant] = useState("");
+  const [titleGroup, setTitleGroup] = useState("");
+  const [msgModifGroup, setMsgModifGroup] = useState("");
+  const [isModified, setIsModified] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  //C/ Logique
+  // supprimer le participant du groupe en fonction de son ID
+  // on récupère tous les participants de l'établissement
   useEffect(() => {
     fetch(
       `http://localhost:3000/participants/findAllByEtablissement/${admin.etablissement}`
@@ -35,8 +33,19 @@ function Modify({ open, handleToggleModal, idGroup }) {
       });
   }, []);
 
-  console.log("partcipant du group :", participantsInGroup);
+  // supprimer le participant du groupe en fonction de son ID
+  const handleRemoveParticipant = (id) => {
+    setparticipantsInGroup(participantsInGroup.filter((e) => e._id !== id));
+  };
 
+  // voir explication dans addParticipant
+  const filtredData = participantData.map((participant) => ({
+    label: `${participant.firstName} ${participant.lastName}`,
+    _id: participant._id,
+  }));
+
+
+  //on récupère les informations du groupe en fonction de l'id
   useEffect(() => {
     if (!idGroup) {
       return console.log("erreur:", idGroup);
@@ -49,13 +58,12 @@ function Modify({ open, handleToggleModal, idGroup }) {
       });
   }, []);
 
+  //Input participant
   const handleChange = (e, value) => {
     setAddParticipant(value);
   };
-  console.log("group", participantsInGroup);
 
-  console.log("add participant : ", addParticipant);
-  const handleSubmit = () => {
+  const handleSubmitNewParticipant = () => {
     if (!addParticipant) {
       return setErrorMsg("Veuillez - sélectionner un participant");
     }
@@ -66,10 +74,36 @@ function Modify({ open, handleToggleModal, idGroup }) {
       setErrorMsg("");
     } else {
       setErrorMsg("Participant déjà ajouté");
-      console.log("participant déjà existant");
+      
     }
   };
-  console.log("participant dans un groupe: ", participantsInGroup);
+
+  const handleSubmitChange = () => {
+    const newParticipantIds = participantsInGroup.map((e) => e._id);
+
+    fetch(`http://localhost:3000/groups/modify/${idGroup}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: titleGroup,
+        participantIds: newParticipantIds,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          setMsgModifGroup(data.message);
+          setIsModified(data.result);
+          //ajout d'une fonction de rechargement de la page pour mettre à jour les informations au niveau du parent (allgroups), temps de rechargement d'une 1 s pour afficher le message "groupe crée" si true
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        } else {
+          setMsgModifGroup(data.message);
+          setIsModified(data.result);
+        }
+      });
+  };
 
   return (
     <Modal open={open} onClose={handleToggleModal}>
@@ -103,7 +137,7 @@ function Modify({ open, handleToggleModal, idGroup }) {
               value={addParticipant}
               onChange={handleChange}
             />
-            <Button onClick={handleSubmit} sx={butttonAddParticipantStyle}>
+            <Button onClick={handleSubmitNewParticipant} sx={butttonAddParticipantStyle}>
               Ajouter un participant
             </Button>
             {errorMsg && <Typography color="error">{errorMsg}</Typography>}
@@ -130,8 +164,21 @@ function Modify({ open, handleToggleModal, idGroup }) {
           <Button onClick={handleToggleModal} sx={buttonCloseStyle}>
             Fermer
           </Button>
-          <Button sx={buttonModifyStyle}>Modifier</Button>
+          <Button onClick={handleSubmitChange} sx={buttonModifyStyle}>
+            Modifier
+          </Button>
         </Box>
+        <Typography
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            color: isModified ? "green" : "red",
+            fontWeight: "bold",
+            fontSize: "12",
+          }}
+        >
+          {msgModifGroup}
+        </Typography>
       </Box>
     </Modal>
   );

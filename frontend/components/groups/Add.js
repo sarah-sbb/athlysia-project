@@ -4,23 +4,31 @@ import { useSelector } from "react-redux";
 import { buttonStyles } from "../modules/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import AddGroup from "./AddGroup";
+
+import AddParticipant from "./AddParticipant";
 
 function Add() {
+  //A. Redux
+  const admin = useSelector((state) => state.admin.value);
+
+
+  //B. States
   const [participantInGroup, setParticipantInGroup] = useState([]);
   const [titleGroup, setTitleGroup] = useState("");
   const [msgCreationGroup, setMsgCreationGroup] = useState("");
   const [isCreated, setIsCreated] = useState(false);
-  const admin = useSelector((state) => state.admin.value);
+ 
+
+  //C/ Logique
 
   // supprimer le participant du groupe en fonction de son ID
   const handleRemoveParticipant = (id) => {
     setParticipantInGroup(participantInGroup.filter((e) => e.id !== id));
   };
 
-  const handleSubmit = () => {
+// ajouter un groupe
+  const handleSubmitGroup = () => {
     if (participantInGroup.length === 0) {
-      console.log("aucun participant");
       setIsCreated(false);
       return setMsgCreationGroup(
         "Veuillez - ajouter des participants au groupe"
@@ -53,7 +61,7 @@ function Add() {
     <div className={styles.groupContainer}>
       <div className={styles.groupHeader}>
         <button
-          onClick={handleSubmit}
+          onClick={handleSubmitGroup}
           className={buttonStyles({ color: "secondary" })}
         >
           Enregistrer
@@ -62,14 +70,14 @@ function Add() {
 
       <div className={styles.groupInfos}>
         <div>
-          <AddGroup
+          <AddParticipant
             participantInGroup={participantInGroup}
             setParticipantInGroup={setParticipantInGroup}
             titleGroup={titleGroup}
             setTitleGroup={setTitleGroup}
             msgCreationGroup={msgCreationGroup}
             isCreated={isCreated}
-          />
+          /> 
         </div>
         <div>
           <h3>Box de participants</h3>

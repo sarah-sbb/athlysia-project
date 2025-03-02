@@ -10,13 +10,15 @@ import moment from "moment";
 import "moment/locale/fr";
 
 function AllGroups() {
+  //A. Redux
   const admin = useSelector((state) => state.admin.value);
+
+  //B. States
   const [open, setOpen] = useState(false);
   const [idGroup, setIdGroup] = useState("");
-
   const [groupsData, setGroupsData] = useState([]);
 
-
+  //C/ Logique
   useEffect(() => {
     fetch(
       `http://localhost:3000/groups/findAllGroupsByEtablissement/${admin.etablissement}`
@@ -48,11 +50,11 @@ function AllGroups() {
   };
 
   const handleToggleModal = (id) => {
-    console.log("client :", id)
     setIdGroup(id);
     setOpen(!open);
   };
 
+  //D. Configuration du tableau
   const columns = [
     {
       field: "groupName",
@@ -96,7 +98,11 @@ function AllGroups() {
         <div>
           <Button
             variant="contained"
-            style={{ marginRight: "10px", fontSize: "11px", backgroundColor: "#2E35B3" }}
+            style={{
+              marginRight: "10px",
+              fontSize: "11px",
+              backgroundColor: "#2E35B3",
+            }}
             onClick={() => handleToggleModal(params.row.id)}
           >
             Modifier
@@ -136,9 +142,14 @@ function AllGroups() {
           />
         </Paper>
       )}
-      {open && idGroup ? (<Modify open={open} handleToggleModal={handleToggleModal} setIdGroup={setIdGroup} idGroup={idGroup} />) : null
-      }
-      
+      {open && idGroup ? (
+        <Modify
+          open={open}
+          handleToggleModal={handleToggleModal}
+          setIdGroup={setIdGroup}
+          idGroup={idGroup}
+        />
+      ) : null}
     </div>
   );
 }
