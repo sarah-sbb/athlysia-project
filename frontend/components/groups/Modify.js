@@ -19,7 +19,6 @@ function Modify({ open, handleToggleModal, idGroup }) {
   const [errorMsg, setErrorMsg] = useState("");
 
   //C/ Logique
-  // supprimer le participant du groupe en fonction de son ID
   // on récupère tous les participants de l'établissement
   useEffect(() => {
     fetch(
