@@ -1,4 +1,3 @@
-import styles from "../../styles/adminProfile.module.css";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
@@ -8,7 +7,18 @@ import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
-import Stack from "@mui/material/Stack";
+import { Modal, Box, Button } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import Tooltip from "@mui/material/Tooltip";
+
+// Import table pour modal
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 
 function AdminProfileEvents() {
   // Récupération du token depuis redux
@@ -16,6 +26,26 @@ function AdminProfileEvents() {
 
   // Stockage infos events + participants
   const [eventsData, setEventsData] = useState([]);
+
+  // Toggle pour modal
+  const [open, setOpen] = useState(false);
+
+  // Etat pour les lignes dans le tableau de la modal
+  const [rows, setRows] = useState([]);
+
+  const handleRowClick = (e) => {
+    setOpen(!open); // Ouverture de la modal
+
+    let allParticipants = e.row.participants.map((e) => ({
+      authId: e._id,
+      avatar: e.participant.pictureUrl,
+      firstName: e.participant.firstName,
+      lastName: e.participant.lastName,
+      status: e.isValidated,
+    }));
+
+    setRows(allParticipants);
+  };
 
   // Récupération des infos relatives aux events gérés par l'admin
   useEffect(() => {
@@ -120,15 +150,64 @@ function AdminProfileEvents() {
     },
   ];
 
-  console.log(eventsData);
+  let eventModal = (
+    <Modal open={open} onClose={() => setOpen(!open)}>
+      <Box sx={styleModal}>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 600 }} size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell style={{ fontWeight: "bold" }}>Prénom</TableCell>
+                <TableCell style={{ fontWeight: "bold" }}>Nom</TableCell>
+                <TableCell style={{ fontWeight: "bold" }}>
+                  Autorisation
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={row.authId}>
+                  <TableCell>
+                    <Avatar src={row.avatar} />
+                  </TableCell>
+                  <TableCell>{row.firstName}</TableCell>
+                  <TableCell>{row.lastName}</TableCell>
+                  {row.status ? (
+                    <TableCell style={{ color: "green" }}>Validé</TableCell>
+                  ) : (
+                    <TableCell style={{ color: "red" }}>
+                      En attente
+                      <Tooltip title="Relancer">
+                        <IconButton>
+                          <NotificationsNoneIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Box sx={styleFooter}>
+          <Button sx={buttonCloseStyle} onClick={() => setOpen(!open)}>
+            Fermer
+          </Button>
+        </Box>
+      </Box>
+    </Modal>
+  );
 
   return (
     <div>
+      {eventModal}
       {eventsData.length === 0 ? (
         <span>Aucun événement</span>
       ) : (
         <Paper>
           <DataGrid
+            onRowClick={(e) => handleRowClick(e)} // On gère le clic sur la ligne et on envoie les données à la fonction handleRowClick pour affichage en modal
             rowHeight={70}
             columnVisibilityModel={{
               // Cache la colonne ID
@@ -151,5 +230,31 @@ function AdminProfileEvents() {
     </div>
   );
 }
+
+const styleModal = {
+  display: "grid",
+  gridTemplateRows: "auto 1fr auto",
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 600,
+  bgcolor: "background.paper",
+  borderRadius: 2,
+  p: 10,
+};
+
+const styleFooter = {
+  display: "flex",
+  justifyContent: "center",
+  pt: 5,
+  gap: 2,
+};
+
+const buttonCloseStyle = {
+  color: "#031EAD",
+  fontSize: "0.90rem",
+  width: 100,
+};
 
 export default AdminProfileEvents;

@@ -30,7 +30,6 @@ router.get("/allEtablissements", (req, res) => {
 });
 
 // Route pour récupérer les infos d'un établissement (à partir de l'ID)
-
 router.get("/find/:etablissementId", (req, res) => {
   Etablissement.findOne({ _id: req.params.etablissementId }).then((data) => {
     if (data) {

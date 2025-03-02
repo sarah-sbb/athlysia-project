@@ -1,6 +1,6 @@
 import styles from "../../styles/Header.module.css";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,7 @@ import Link from "next/link";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
+import Avatar from "@mui/material/Avatar";
 
 function Header({ title }) {
   const admin = useSelector((state) => state.admin.value.infoAdmin);
@@ -45,23 +46,7 @@ function Header({ title }) {
       </div>
       <div className={styles.headerNav}>
         <div className={styles.containerMenu}>
-          {picture ? (
-            <Image
-              src={picture}
-              alt="Ma photo de profil"
-              width={50}
-              height={50}
-              style={{ marginRight: "10px", borderRadius: "100%" }}
-            />
-          ) : (
-            <Image
-              src="/profil.webp"
-              alt="Ma photo de profil"
-              width={50}
-              height={50}
-              style={{ marginRight: "10px", borderRadius: "100%" }}
-            />
-          )}
+        <Avatar src={picture} sx={{ width: 50, height: 50, marginRight: "10px" }} />
           <p>{"Bonjour " + admin?.firstName || "Nom utilisateur"}</p>
 
           <Button
