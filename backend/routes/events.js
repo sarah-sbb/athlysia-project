@@ -22,13 +22,13 @@ const verifyAdminToken = (token) => {
 };
 
 // Route pour la création d'un nouvel event
-router.post("/add", (req, res) => {
+router.post("/add/:adminId/:etablissementId", (req, res) => {
   const fields = [
     "title",
-    "adminId",
+    //"adminId",
     "authorisations",
     "groupId",
-    "participantID",
+    //"participantID",
     "dateStart",
     "dateEnd",
     "place",
@@ -44,14 +44,15 @@ router.post("/add", (req, res) => {
 
   const newEvent = new Event({
     title: req.body.title,
-    adminId: req.body.adminId,
+    adminId: req.params.adminId,
     authorisations: req.body.authorisation,
     groupId: req.body.groupId,
-    participantId: req.body.participantId,
+    //participantId: req.body.participantId,
     dateStart: req.body.dateStart,
     dateEnd: req.body.dateEnd,
     place: req.body.place,
     supportsCom: req.body.supportsCom,
+    etablissementId: req.params.etablissementId,
   });
 
   newEvent
@@ -167,13 +168,6 @@ router.get("/eventsByAdmin/:token", (req, res) => {
 
       res.status(200).json({ result: true, data: events });
     })
-    .catch((error) => {
-      res.status(500).json({
-        result: false,
-        message: "Erreur serveur",
-        error: error.message,
-      });
-    });
 });
 
 // Route pour récupérer les événements créés par un admin via le token de l'admin (avec populate sur authorisations pour récupérer les infos participants)
@@ -204,13 +198,6 @@ router.get("/eventsByAdminWithParticipantInfos/:token", (req, res) => {
 
       res.status(200).json({ result: true, data: events });
     })
-    .catch((error) => {
-      res.status(500).json({
-        result: false,
-        message: "Erreur serveur",
-        error: error.message,
-      });
-    });
 });
 
 // Route pour récupérer les événements d'un établissement via l'ID (avec populate sur authorisations pour récupérer les infos participants)
@@ -241,13 +228,6 @@ router.get("/eventsByEtablissementWithParticipantInfos/:etablissementId", (req, 
 
       res.status(200).json({ result: true, data: events });
     })
-    .catch((error) => {
-      res.status(500).json({
-        result: false,
-        message: "Erreur serveur",
-        error: error.message,
-      });
-    });
 });
 
 // Route pour récupérer les events d'un groupe
@@ -316,14 +296,6 @@ router.post("/autorisationByEvent", (req, res) => {
         data: event.authorisations, // Supposons que les autorisations sont stockées dans ce champ
       });
     })
-
-    .catch((error) => {
-      res.status(500).json({
-        result: false,
-        message: "Erreur serveur",
-        error: error.message,
-      });
-    });
 });
 
 module.exports = router;

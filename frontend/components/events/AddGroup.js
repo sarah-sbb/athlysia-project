@@ -1,8 +1,8 @@
 import styles from "../../styles/Events.module.css";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { Dropdown } from "../modules/Dropdown";
-import { buttonStyles } from "../modules/Button";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 function AddGroup({ groupInEtablissement, setGroupInEtablissement }) {
   // Initialise l'état groupData comme tableau vide
@@ -10,11 +10,15 @@ function AddGroup({ groupInEtablissement, setGroupInEtablissement }) {
   const [addGroup, setAddGroup] = useState(""); // Groupe à ajouter au formulaire
   const [errorMsg, setErrorMsg] = useState("");
 
+console.log(groupData);
+
   // Crée un tableau filtré pour le menu déroulant
   const filtredData = groupData.map((group) => ({
     label: `${group.title}`, // Nom affiché dans le menu déroulant
     id: group._id, // Identifiant unique du groupe
   }));
+
+console.log(filtredData);
 
   // Récupére les données de l'administrateur connecté via Redux
   const admin = useSelector((state) => state.admin.value);
@@ -35,8 +39,12 @@ function AddGroup({ groupInEtablissement, setGroupInEtablissement }) {
 
   // Met à jour l'état addGroup lorsque l'utilisateur sélectionne un groupe dans le Dropdown
   const handleChange = (event, value) => {
+    console.log("value", value);
     setAddGroup(value); // Met à jour le groupe sélectionné
   };
+  // le handleChange est censé stocké le groupe que je vais sélectionner dans le dropdown
+
+  console.log(addGroup);
 
   // Ajoute le groupe sélectionné lorsque l'utilisateur clique sur "Ajouter un groupe"
   const handleSubmit = () => {
@@ -56,23 +64,16 @@ function AddGroup({ groupInEtablissement, setGroupInEtablissement }) {
   return (
     <div>
         {/* Dropdown pour sélectionner un groupe */}
-        <Dropdown
-          disablePortal
-          options={filtredData} // Groupes formatés pour le Dropdown
-          sx={{ width: 400 }}
-          label="Choisissez un groupe"
-          value={addGroup} // Groupe sélectionné
-          onChange={handleChange} // Gestion de la sélection
-        />
-
-      {/* Bouton pour valider l'ajout du groupe */}
-      <button
-        type="button" // Empêcher le rechargement de la page
-        onClick={handleSubmit} // Ajouter le groupe sélectionné
-        className={buttonStyles({ color: "primary" })}
-      >
-        Ajouter un groupe
-      </button>
+          <Autocomplete
+            disablePortal
+            options={filtredData}
+            sx={{ width: 400, marginBottom: 5}}
+            renderInput={(params) => (
+              <TextField {...params} label="ajouter un groupe" />
+            )}
+            value={addGroup}
+            onChange={handleChange}
+          />
     </div>
   );
 }

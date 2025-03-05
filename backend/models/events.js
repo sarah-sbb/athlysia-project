@@ -12,7 +12,7 @@ const eventSchema = mongoose.Schema({
   adminId: { type: mongoose.Schema.Types.ObjectId, ref: "admin" },
   authorisations: [autorisationSchema],
   groupId: { type: mongoose.Schema.Types.ObjectId, ref: "group" },
-  participantId: [{ type: mongoose.Schema.Types.ObjectId, ref: "participant" }],
+  //participantId: [{ type: mongoose.Schema.Types.ObjectId, ref: "participant" }],
   dateStart: Date,
   dateEnd: Date,
   place: String,

@@ -4,15 +4,17 @@ import { useSelector } from "react-redux";
 import { buttonStyles } from '../modules/Button';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import TextField from "@mui/material/TextField";
 
 import AddGroup from "./AddGroup";
-import AddParticipant from "./AddParticipant";
+//import AddParticipant from "./AddParticipant";
 import AddDate from "./AddDate";
 //import AddLocation from "./AddLocation";
 import AddCom from "./AddCom";
 
 function EventPage() {
   const [participantInGroup, setParticipantInGroup] = useState([]);
+  const [titleEvent, setTitleEvent] = useState("");
 
     // supprimer le participant du groupe en fonction de son ID
     const handleRemoveParticipant = (id) => {
@@ -59,25 +61,16 @@ function EventPage() {
         <div className={styles.formAddInfos}>
           <div className={styles.firstBloc}>
             {/* Champ pour entrer le nom de l’événement */}
-            <label htmlFor="eventName">Nom de votre évènement</label>
-            <input
-              id="eventName"
-              type="text"
-              name="eventName"        // Correspond à la clé de l’état
-              value={form.eventName}  // Liaison avec le state `form`
-              onChange={handleFormChange} // Mettre à jour l’état form
-              placeholder="Entrez le nom de l'évènement"
-              className={styles.inputField} // Ajout d'une classe CSS si nécessaire
-            />
+              <TextField   sx={{ width: 400, marginBottom: 2, marginTop: 1}} onChange={(e)=>setTitleEvent(e.target.value)} value={titleEvent} label="Nom de l'événement" />
             <div className={styles.formAddGroup}>
               <AddGroup />
             </div>
-            <div className={styles.formAddParticipants}>
+            {/* <div className={styles.formAddParticipants}>
               <AddParticipant 
               participantInGroup={participantInGroup}
               setParticipantInGroup={setParticipantInGroup}
               />
-            </div>
+            </div> */}
             <div className={styles.formAddDate}>
             <AddDate form={form} handleFormChange={handleFormChange} />
             </div>
