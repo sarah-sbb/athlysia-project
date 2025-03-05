@@ -6,6 +6,7 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import Tooltip from '@mui/material/Tooltip';
+import { frFR } from "@mui/x-data-grid/locales";
 
 function AdminProfileAuthorizations() {
   // Récupération du token admin depuis redux
@@ -104,6 +105,7 @@ function AdminProfileAuthorizations() {
             }}
             pageSizeOptions={[5]}
             disableRowSelectionOnClick
+            localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
           />
         </Paper>
       )}

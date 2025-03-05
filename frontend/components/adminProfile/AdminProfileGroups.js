@@ -6,6 +6,7 @@ import AvatarGroup from "@mui/material/AvatarGroup";
 import Paper from "@mui/material/Paper";
 import moment from "moment";
 import "moment/locale/fr";
+import { frFR } from "@mui/x-data-grid/locales";
 
 function AdminProfileGroups() {
   // Récupération du token depuis redux
@@ -89,6 +90,7 @@ function AdminProfileGroups() {
             }}
             pageSizeOptions={[5]}
             disableRowSelectionOnClick
+            localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
           />
         </Paper>
       )}
