@@ -26,7 +26,6 @@ function AllGroups() {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          console.log(data);
           setGroupsData(
             data.allGroups.map((e) => ({
               id: e._id,

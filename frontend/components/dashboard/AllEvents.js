@@ -10,6 +10,7 @@ import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
 import { Modal, Box, Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import Tooltip from "@mui/material/Tooltip";
 
 // Import table pour modal
@@ -21,6 +22,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 function AllEvents() {
+
   // Récupération de l'ID établissement
   const etablissementId = useSelector(
     (state) => state.admin.value.etablissement
@@ -34,6 +36,13 @@ function AllEvents() {
 
   // Etat pour les lignes dans le tableau de la modal
   const [rows, setRows] = useState([]);
+
+    // Etat pour l'autorisation (validée ou non)
+    const [isAuthValidated, setIsAuthValidated] = useState(false);
+
+  // Toggle pour l'icône validée ou non (dans la modal)
+  const [checkIcon, setCheckIcon] = useState(false);
+
 
   const handleRowClick = (e) => {
     setOpen(!open); // Ouverture de la modal
@@ -73,6 +82,20 @@ function AllEvents() {
         }
       });
   }, []);
+
+  // Fonction pour gérer la validation d'une autorisation par l'admin
+  const handleValidateAuth = (row) => {
+    fetch(`http://localhost:3000/events/validateAuth/${row.authId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          window.location.reload() // 🔴 A améliorer (via un state je pense) car pour le moment je rafraîchis simplement la page pour forcer la mise à jour
+        }
+      });
+  };
 
   // Initialisation du tableau pour afficher les résultats (colonnes)
   const columns = [
@@ -180,6 +203,11 @@ function AllEvents() {
                   ) : (
                     <TableCell style={{ color: "red" }}>
                       En attente
+                      <Tooltip title="Valider" onClick={() => handleValidateAuth(row)}>
+                        <IconButton>
+                        {checkIcon ?  <CheckBoxIcon />: <CheckBoxOutlineBlankIcon />}
+                        </IconButton>
+                      </Tooltip>
                       <Tooltip title="Relancer">
                         <IconButton>
                           <NotificationsNoneIcon />
