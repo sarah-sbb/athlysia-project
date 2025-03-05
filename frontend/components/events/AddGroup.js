@@ -12,7 +12,7 @@ function AddGroup({ groupInEtablissement, setGroupInEtablissement }) {
 
   // Crée un tableau filtré pour le menu déroulant
   const filtredData = groupData.map((group) => ({
-    label: `${group.name}`, // Nom affiché dans le menu déroulant
+    label: `${group.title}`, // Nom affiché dans le menu déroulant
     id: group._id, // Identifiant unique du groupe
   }));
 
@@ -22,12 +22,13 @@ function AddGroup({ groupInEtablissement, setGroupInEtablissement }) {
   // Récupére les groupes liés à l'établissement de l'administrateur
   useEffect(() => {
     fetch(
-      `http://localhost:3000/groups/findAllByEtablissement/${admin.etablissement}`
+      `http://localhost:3000/groups/findAllGroupsByEtablissement/${admin.etablissement}`
     )
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          setGroupData(data.data); // Stocke les groupes récupérés
+          console.log(data.allGroups);
+          setGroupData(data.allGroups); // Stocke les groupes récupérés
         }
       });
   }, []);
@@ -47,8 +48,8 @@ function AddGroup({ groupInEtablissement, setGroupInEtablissement }) {
       setGroupInEtablissement((prevGroup) => [...prevGroup, addGroup]); // Ajoute le groupe
       setAddGroup(""); // Réinitialise le champ après ajout
     } else {
-      setErrorMsg("Participant déjà ajouté");
-      console.log("participant déjà existant");
+      setErrorMsg("Groupe déjà ajouté");
+      console.log("Groupe déjà existant");
     }
   };
 

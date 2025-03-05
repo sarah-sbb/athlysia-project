@@ -1,14 +1,24 @@
 import styles from '../../styles/Events.module.css';
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { buttonStyles } from '../modules/Button';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import AddGroup from "./AddGroup";
 import AddParticipant from "./AddParticipant";
 import AddDate from "./AddDate";
-import AddLocation from "./AddLocation";
+//import AddLocation from "./AddLocation";
 import AddCom from "./AddCom";
 
 function EventPage() {
+  const [participantInGroup, setParticipantInGroup] = useState([]);
+
+    // supprimer le participant du groupe en fonction de son ID
+    const handleRemoveParticipant = (id) => {
+      setParticipantInGroup(participantInGroup.filter((e) => e.id !== id));
+    };
+    
   // État pour stocker les valeurs saisies dans le formulaire (+ groupe sélectionné)
     const [form, setForm] = useState({
       groupId: "", // L’ID du groupe sélectionné
@@ -63,7 +73,10 @@ function EventPage() {
               <AddGroup />
             </div>
             <div className={styles.formAddParticipants}>
-              <AddParticipant />
+              <AddParticipant 
+              participantInGroup={participantInGroup}
+              setParticipantInGroup={setParticipantInGroup}
+              />
             </div>
             <div className={styles.formAddDate}>
             <AddDate form={form} handleFormChange={handleFormChange} />
@@ -73,7 +86,15 @@ function EventPage() {
             </div> */}
           </div>
           <div className={styles.secondBloc}> 
-              ajout des participants
+            {participantInGroup.map((participant, index) => (
+              <p key={index}>
+                {participant.label}{" "}
+                <FontAwesomeIcon
+                  icon={faXmark}
+                  onClick={() => handleRemoveParticipant(participant.id)}
+                />
+              </p>
+            ))}
           </div>
         </div>
         <div className={styles.formAddCom}>

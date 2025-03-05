@@ -1,4 +1,6 @@
 import styles from '../../styles/Events.module.css';
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Dropdown } from '../modules/Dropdown';
@@ -61,14 +63,22 @@ function AddParticipant({ participantInGroup, setParticipantInGroup, titleGroup,
   return (
     <div>
       <form className={styles.form}>
-        <Dropdown
+      <div >
+        <Autocomplete
           disablePortal
           options={filtredData}
-          sx={{ width: 400 }}
-          label="Choisissez un participant"
+          sx={{ width: 300}}
+          renderInput={(params) => (
+            <TextField {...params} label="Rechercher les participants" />
+          )}
           value={addParticipant}
           onChange={handleChange}
+  
         />
+        <p className={styles.errorMsg}>{errorMsg}</p>
+    
+        {/* Button à revoir, réaliser les button carré spécial icon */}
+      </div>
       </form>
         <button
           onClick={handleSubmit}
