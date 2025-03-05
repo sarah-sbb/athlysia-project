@@ -6,6 +6,12 @@ const Participant = require("../models/participants");
 const { checkBody } = require("../modules/checkBody");
 const Etablissement = require("../models/etablissements");
 
+// if (!mongoose.isValidObjectId(adminId) || !mongoose.isValidObjectId(etablissementId)) {
+//   return res.status(400).json({
+//     result: false,
+//     message: "adminId ou etablissementId invalide.",
+//   });
+// }
 // HASSEN
 
 // Ajout d'un nouveau groupe avec etablisement et admin en params = à améliorer sur la sécurité
@@ -51,13 +57,7 @@ router.post("/add/:adminId/:etablissementId", (req, res) => {
 // Route pour rechercher tous les groups d'un établissement
 router.get("/findAllGroupsByEtablissement/:etablissementId", (req, res) => {
   const etablissementId = req.params.etablissementId;
-  if (!etablissementId) {
-    return res.json({
-      result: false,
-      message: "L'identifiant de l'établissement est manquant.",
-    });
-  }
-
+  
   Group.find({ etablissementId }).populate("adminId", "firstName lastName").then((data) => {
     if (data.length === 0) {
       res.json({
@@ -73,7 +73,58 @@ router.get("/findAllGroupsByEtablissement/:etablissementId", (req, res) => {
   });
 });
 
+router.delete("/:groupId", (req, res) => {
 
+
+    Group.deleteOne({ _id : req.params.groupId }).then((data) => {
+      if (data.deletedCount > 0) {
+        return res.json({ result: true, message: "Groupe supprimé" });
+      } else {
+        return res.json({ result: false, message: "Aucun groupe trouvé avec cet ID" });
+      }
+    });
+  
+});
+
+
+
+router.get("/findOneGroup/:groupId", (req,res) =>{
+
+Group.findOne({_id: req.params.groupId}).populate({path: "participantIds", select: "firstName lastName"}).then((data)=> {
+if (!data) {
+  return res.json({result: false, message: 'Aucun groupe trouvé'
+  })} else {
+    return res.json({result : true, group: data, message : `Groupe :  ${data.title} trouvé`})
+  }
+
+  
+})
+
+})
+
+
+
+router.put("/modify/:groupId",(req,res)=>{
+
+  const fields = ["title","participantIds" ];
+  
+
+  console.log("CheckBody result:", req.body);
+  if (!checkBody(req.body, fields)) {
+    return res.json({ result: false, message: "Champs manquants ou vides" });
+  }
+
+  Group.findOneAndUpdate({_id: req.params.groupId}, req.body,   { new: true }).then((data)=> {
+    if (data) {
+      return res.json({result: true, message : "Votre groupe a été modifié", data})
+    } else {
+      return res.json ({result: false, message : "Aucun groupe trouvé"})
+    }
+
+  })
+
+
+})
 
 
 // TRIER LES ROUTES CI - DESSOUS

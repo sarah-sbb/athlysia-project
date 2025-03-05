@@ -1,13 +1,17 @@
 var express = require("express");
 var router = express.Router();
+
 const Admin = require("../models/admins");
+const Etablissement = require("../models/etablissements");
+
 const uid2 = require("uid2"); // Token
 const bcrypt = require("bcrypt"); // Mot de passe
-const { checkBody } = require("../modules/checkBody");
 const uniqid = require("uniqid"); // ID unique pour les images
+
+const { checkBody } = require("../modules/checkBody");
+
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
-const Etablissement = require('../models/etablissements');
 
 // Route pour l'ajout d'un admin en BDD (signup)
 router.post("/signup", (req, res) => {
@@ -22,19 +26,20 @@ router.post("/signup", (req, res) => {
   ];
 
   // Vérification de la présence des données
-  console.log("Données reçues dans /signup:", req.body);
   if (!checkBody(req.body, fields)) {
-    return res.json({ result: false, message: "Tous les champs sont requis backend " });
+    return res.json({
+      result: false,
+      message: "Tous les champs sont requis backend ",
+    });
   }
 
+  // Recherche préalable de l'établissement ID à partir du nom (string)
 
- // Recherche préalable de l'établissement ID à partir du nom (string)
-        
-    Etablissement.findOne({ name: req.body.etablissement }).then(data => {
-      if (!data) {
-       return res.json({result: false, message: "Établissement non trouvé"})
-      } 
-     
+  Etablissement.findOne({ name: req.body.etablissement }).then((data) => {
+    if (!data) {
+      return res.json({ result: false, message: "Établissement non trouvé" });
+    }
+
     // Check si l'admin n'existe pas déjà via son email
     Admin.findOne({ email: req.body.email }).then((response) => {
       if (response) {
@@ -67,7 +72,7 @@ router.post("/signup", (req, res) => {
               position: response.position,
               role: response.role,
               pictureUrl: response.pictureUrl,
-              id: response._id
+              id: response._id,
             },
           });
         });
@@ -99,7 +104,7 @@ router.post("/signin", (req, res) => {
             position: response.position,
             role: response.role,
             pictureUrl: response.pictureUrl,
-            id: response._id
+            id: response._id,
           },
         });
       } else {
@@ -160,7 +165,10 @@ router.delete("/deleteById", (req, res) => {
       if (response.deletedCount > 0) {
         return res.json({ result: true, message: "Admin supprimé" });
       } else {
-        return res.json({ result: false, message: "Aucun admin trouvé avec cet ID" });
+        return res.json({
+          result: false,
+          message: "Aucun admin trouvé avec cet ID",
+        });
       }
     });
   }

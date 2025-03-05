@@ -6,8 +6,8 @@
 
 .groupHeader {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+ justify-content: flex-end;
+  
 }
 
 .groupInfos {
@@ -19,4 +19,14 @@
 .errorMsg {
     color: red;
     font-size: 14px;
+}
+
+.boxContainer {
+  display: flex;
+  gap: 20px;
+  border: 1px solid black;
+  height: 200px;
+  border-radius: 10px;
+  padding: 20px;
+  overflow-y: auto;
 }

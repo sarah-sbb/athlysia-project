@@ -1,8 +1,5 @@
 import styles from "../../styles/adminProfile.module.css";
-import Image from "next/image";
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';       <FontAwesomeIcon icon={faBookmark} />
-//import { faBookmark, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { modify } from "../../reducers/admin";
 import { Modal, Box, Button, TextField } from "@mui/material";
@@ -10,6 +7,7 @@ import { styled } from "@mui/material/styles";
 import AdminProfileAuthorizations from "./AdminProfileAuthorizations";
 import AdminProfileGroups from "./AdminProfileGroups";
 import AdminProfileEvents from "./AdminProfileEvents";
+import Avatar from "@mui/material/Avatar";
 
 function AdminProfileMain() {
   // Initialisation redux
@@ -49,7 +47,7 @@ function AdminProfileMain() {
   };
 
   const handleChangeImage = (e) => {
-    // Update de l'image
+    // Mise à jour de la photo admin
     const formData = new FormData();
     formData.append("newAdminPicture", e.target.files[0]);
 
@@ -150,27 +148,13 @@ function AdminProfileMain() {
     <div className={styles.mainContent}>
       <div className={styles.upperInfos}>
         <div className={styles.picContainer}>
-          {infoAdmin.pictureUrl ? (
-            <Image
-              src={infoAdmin.pictureUrl}
-              alt="Ma photo de profil"
-              width={200}
-              height={200}
-            />
-          ) : (
-            <Image
-              src="/profil.webp"
-              alt="Ma photo de profil"
-              width={200}
-              height={200}
-            />
-          )}
+          <Avatar src={infoAdmin.pictureUrl} sx={{ width: 180, height: 180, marginBottom: "20px" }} />
           <Button
             component="label"
             role={undefined}
             variant="outlined"
             tabIndex={-1}
-            style={{width:"200px"}}
+            style={{ width: "200px" }}
             loadingIndicator="Loading…"
           >
             <VisuallyHiddenInput
@@ -209,7 +193,7 @@ function AdminProfileMain() {
           style={{ color: showEvents ? "" : "#757575" }}
           onClick={() => handleToggleTab("events")}
         >
-          Toutes mes sorties
+          Tous mes événements
         </h3>
         <h3
           className={styles.tab}
@@ -239,18 +223,6 @@ const styleModal = {
   p: 10,
 };
 
-const styleButtonOpenModal = {
-  bgcolor: "white",
-  fontSize: "0.75rem",
-  color: "#031EAD",
-};
-
-const styleHeader = {
-  textAlign: "center",
-  pb: 5,
-  fontSize: "1.1rem",
-};
-
 const styleContainer = {
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
@@ -275,18 +247,6 @@ const buttonSignUpStyle = {
   color: "white",
   fontSize: "0.90rem",
   width: 100,
-};
-
-const styleErrorSignUp = {
-  display: "flex",
-  justifyContent: "center",
-  color: "red",
-};
-
-const styleSuccesSignUp = {
-  display: "flex",
-  justifyContent: "center",
-  color: "green",
 };
 
 const VisuallyHiddenInput = styled("input")({
