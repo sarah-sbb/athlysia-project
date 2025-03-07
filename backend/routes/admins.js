@@ -54,7 +54,7 @@ router.post("/signup", (req, res) => {
           lastName: req.body.lastName,
           position: req.body.position,
           role: req.body.role,
-          pictureUrl: req.body.pictureUrl,
+          pictureUrl: "",
           etablissement: data._id,
           email: req.body.email,
           password: bcrypt.hashSync(req.body.password, 10),

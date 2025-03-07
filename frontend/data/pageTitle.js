@@ -2,9 +2,9 @@ export const getPageTitle = (pathname) => {
 
   const titles = {
     "/ctp-admin": "Tableau de bord",
-    "/ctp-admin/groups/groups": "Groupes",
+    "/ctp-admin/groups": "Groupes",
     "/ctp-admin/groups/add": "Créer un groupe",
-    "/ctp-admin/participants/participants": "Participants",
+    "/ctp-admin/participants": "Participants",
     "/ctp-admin/participants/add": "Ajouter un participant",
     "/ctp-admin/events/events": "Événements",
     "/ctp-admin/events/add": "Créer un événement",

@@ -124,6 +124,8 @@ function AllGroups() {
       {groupsData.length === 0 ? (
         <p>Aucun groupe</p>
       ) : (
+        <div>
+          <h2 style={{marginBottom: "50px"}} >Tous les groupes  </h2>
         <Paper>
           <DataGrid
             rows={groupsData}
@@ -141,6 +143,7 @@ function AllGroups() {
             localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
           />
         </Paper>
+        </div>
       )}
       {open && idGroup ? (
         <Modify
@@ -149,7 +152,7 @@ function AllGroups() {
           setIdGroup={setIdGroup}
           idGroup={idGroup}
         />
-      ) : null}
+     ) : null}
     </div>
   );
 }

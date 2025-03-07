@@ -1,10 +1,10 @@
 import Layout from "../../../components/layout/Layout";
-import Participants from "../../../components/participants/Participants";
+import AllParticipants from "../../../components/participants/AllParticipants";
 
 function ParticipantPage () {
   return (
     <Layout>
-      <Participants />
+      <AllParticipants />
     </Layout>
   );
 }

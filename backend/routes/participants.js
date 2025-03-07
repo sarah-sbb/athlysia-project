@@ -3,44 +3,10 @@ var router = express.Router();
 const Participant = require("../models/participants");
 const { checkBody } = require("../modules/checkBody");
 
-// Route pour récupérer tous les participants
-router.get("/", async (req, res) => {
-  try {
-    const participants = await Participant.find();
-    res.json({ result: true, participants });
-  } catch (error) {
-    res.json({ result: false, message: "Erreur serveur" });
-  }
-});
 
-// Route pour la création d'un nouveau participant
-router.post("/add", (req, res) => {
-  const fields = ["firstName", "lastName", "email", "phone", "birthDate"];
-
-  // Vérification de la présence des données
-  if (!checkBody(req.body, fields)) {
-    res.json({ result: false, message: "Champs manquants ou vides" });
-  } else {
-    const newParticipant = new Participant({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        phone: req.body.phone,
-        birthDate: req.body.birthDate,
-        etablissementId: req.body.etablissementId,
-
-    });
-
-    newParticipant.save().then((response) => {
-      res.json({ result: true, message: "Participant créé" });
-    });
-  }
-});
-
-
-// Route pour la création d'un nouveau participant avec établissement ID = Hassen
-router.post("/add/:etablissementId", (req, res) => {
-  const fields = ["firstName", "lastName", "email", "phone", "birthDate"];
+// Route pour la création d'un nouveau participant 
+router.post("/add/", (req, res) => {
+  const fields = ["firstName", "lastName", "birthDate", "legalGuardian"];
 
   // Vérification de la présence des données
   if (!checkBody(req.body, fields)) {
@@ -52,18 +18,18 @@ router.post("/add/:etablissementId", (req, res) => {
     const newParticipant = new Participant({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        email: req.body.email,
-        phone: req.body.phone,
+        pictureUrl: req.body.pictureUrl,
         birthDate: req.body.birthDate,
-        etablissementId: etablissementId,
+        etablissementId: req.body.etablissementId,
+        legalGuardian : req.body.legalGuardian
 
     });
 
     newParticipant.save().then((response) => {
       if(!response) {
-        res.json({ result : false, message : "Impossible de créer un participant" })
+        res.json({ result : false, message : "Impossible de créer un participant"})
       } else {
-        res.json({ result: true, message: "Participant créé" });
+        res.json({ result: true, message: "Participant créé", participant: response });
       }
     })
   
@@ -80,7 +46,7 @@ router.get("/:id", (req, res) => {
     })
 });
 
-// Route pour rechercher tous les participants d'un établissement
+// GET Route pour rechercher tous les participants d'un établissement
 router.get("/findAllByEtablissement/:etablissementId", (req, res) => {
     Participant.find({ etablissementId: req.params.etablissementId }).then((data) => {
       if (data.length === 0) {
@@ -123,13 +89,15 @@ router.put("/modify/:id", (req, res) => {
   });
 });
 
-// GET route pour supprimer un participant
-router.get("/delete/:id", (req, res) => {
-  Participant.findByIdAndDelete(req.params.id).then((deletedParticipant) => {
-    if (!deletedParticipant) {
-      return res.json({ result: false, message: "Participant non trouvé" });
+// DELETE route pour supprimer un participant
+router.delete("/delete/:participantId", (req, res) => {
+  Participant.deleteOne({ _id : req.params.participantId }).then((data) => {
+    if (data.deletedCount > 0) {
+      return res.json({ result: true, message: "Participant supprimé" });
+    } else {
+      return res.json({ result: false, message: "Aucun participant trouvé avec cet ID" });
     }
-    res.redirect("/");
+    
   });
 });
 

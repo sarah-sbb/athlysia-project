@@ -1,5 +1,5 @@
 import styles from '../../styles/Footer.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logout } from '../../reducers/admin';
 import { useRouter } from 'next/router';
 
@@ -8,8 +8,8 @@ function Footer() {
   const dispatch = useDispatch();
 
 	const handleLogout = () => {
-		dispatch(logout());
-    router.push("/");
+		router.push("/");
+    dispatch(logout());
 	};
 
   return (

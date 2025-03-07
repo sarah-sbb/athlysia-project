@@ -1,19 +1,23 @@
 .groupContainer {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+
 }
 
 .groupHeader {
   display: flex;
- justify-content: flex-end;
+ justify-content: space-between;
+ align-items: center;
   
 }
 
 .groupInfos {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 100px;
+ 
+}
+.inputContainers {
+  margin-top: 55px;
 }
 
 .errorMsg {
@@ -29,4 +33,11 @@
   border-radius: 10px;
   padding: 20px;
   overflow-y: auto;
+}
+
+.buttonMsgContainer {
+display: flex;
+width: fit-content;
+flex-direction: column;
+gap: 20px;
 }

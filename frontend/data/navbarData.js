@@ -16,7 +16,7 @@ const navbarData = [
       id: 3,
       title: "Participants",
       children: [
-        { title: "Tous les participants", href: "/ctp-admin/participants/participants" },
+        { title: "Tous les participants", href: "/ctp-admin/participants" },
         { title: "Ajouter un participant", href: "/ctp-admin/participants/add" },
       ],
     },

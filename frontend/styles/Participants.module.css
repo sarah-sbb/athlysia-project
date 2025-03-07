@@ -1,28 +1,38 @@
-.participantContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.mainContainer {
+  display: flex;
+  flex-direction: column;
 }
 
-.partHeader {
+.headerContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  }
+  margin-bottom: 30px;
+}
+
+.formContainer {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
   
-  .formAddParticipant {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 100px;
-  }
+}
 
-  .partGrid {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
-  }
 
-  .partTitle {
-    font-size: 18px;
-  }
+.titleSections {
+  flex-basis: 100%;
+  
+}
+
+.inputField {
+  width: 300px;
+}
+
+.inputGroup {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+}
+
+.legalGuardian {
+margin-top: 50px;
+
+}

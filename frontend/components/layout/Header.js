@@ -17,6 +17,7 @@ function Header({ title }) {
   const admin = useSelector((state) => state.admin.value.infoAdmin);
 
   const picture = admin.pictureUrl;
+  console.log("admin picture:",picture)
 
   //selon la logique MIUI, isMenuOpen doit contenir l'objet event.target pour afficher le menu dropdown. Mais voyez le comme un boolean puisqu'en JS une valeur null = false.
   const [isMenuOpen, setIsMenuOpen] = useState(null);

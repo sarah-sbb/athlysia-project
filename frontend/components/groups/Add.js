@@ -60,6 +60,7 @@ function Add() {
   return (
     <div className={styles.groupContainer}>
       <div className={styles.groupHeader}>
+          <h2> Compléter les informations du groupe </h2>
         <button
           onClick={handleSubmitGroup}
           className={buttonStyles({ color: "secondary" })}
@@ -69,7 +70,7 @@ function Add() {
       </div>
 
       <div className={styles.groupInfos}>
-        <div>
+        <div className={styles.inputContainers}>
           <AddParticipant
             participantInGroup={participantInGroup}
             setParticipantInGroup={setParticipantInGroup}
