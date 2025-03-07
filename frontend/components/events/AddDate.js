@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import moment from "moment"; // Importation de la bibliothèque moment.js
+import { useState } from 'react';
+import moment from "moment"; 
 import styles from '../../styles/Events.module.css';
 import { DateInput } from '../modules/DateInput';
 
@@ -8,56 +8,81 @@ function AddDate({ form, handleFormChange }) {
     const [error, setError] = useState(null);
 
     // Validation des dates
-    const validateDates = (startDate, endDate) => {
-      if (!moment.isMoment(startDate)) startDate = moment(startDate);
-      if (!moment.isMoment(endDate)) endDate = moment(endDate);
+    const validateDates = (dateStart, dateEnd) => {
+      if (!moment.isMoment(dateStart)) dateStart = moment(dateStart);
+      if (!moment.isMoment(dateEnd)) dateEnd = moment(dateEnd);
   
-      if (startDate.isAfter(endDate)) {
+      if (dateStart.isAfter(dateEnd)) {
         setError("La date de début ne peut pas être après la date de fin.");
       } else {
         setError(null);
       }
     };
 
-    const handleDateChange = (e) => {
-      const { name, value } = e.target;
-  
-      if (form) {
-        // Valider les dates
-        if (name === "startDate") {
-          validateDates(value, form.endDate);
-        } else if (name === "endDate") {
-          validateDates(form.startDate, value);
-        }
-      }
-  
-      // Propager les changements au parent
-      handleFormChange(e);
+    // Mapping des noms de champs backend vers les noms utilisés par l'interface DateInput
+    const getUIFieldName = (backendField) => {
+      const mapping = {
+        'dateStart': 'startDate',
+        'dateEnd': 'endDate'
+      };
+      return mapping[backendField] || backendField;
     };
 
-  return (
-    <form className={styles.form}>
-      {/* DateInput pour définir les dates de début et de fin */}
-      <DateInput
-        id="startDate"
-        name="startDate"
-        type="date"
-        value={form?.startDate || ""} // Tolère les undefined
-        onChange={handleDateChange} // On passe notre propre handler pour inclure la validation
-      />
+    // Mapping inverse des noms d'interface vers les noms backend
+    const getBackendFieldName = (uiField) => {
+      const mapping = {
+        'startDate': 'dateStart',
+        'endDate': 'dateEnd'
+      };
+      return mapping[uiField] || uiField;
+    };
 
-      <DateInput
-        id="endDate"
-        name="endDate"
-        type="date"
-        value={form?.endDate || ""} // Tolère les undefined
-        onChange={handleDateChange} // Même logique que startDate
-      />
+    const handleDateChange = (e) => {
+      const { name, value } = e.target;
+      const backendFieldName = getBackendFieldName(name);
+      
+      // Créer un nouvel événement avec le nom de champ mappé pour le backend
+      const mappedEvent = {
+        target: {
+          name: backendFieldName,
+          value: value
+        }
+      };
+  
+      // Validation des dates (en utilisant les noms d'interface)
+      if (name === "startDate") {
+        validateDates(value, form.dateEnd);
+      } else if (name === "endDate") {
+        validateDates(form.dateStart, value);
+      }
+  
+      // Propager les changements au parent avec les noms de champs mappés
+      handleFormChange(mappedEvent);
+    };
 
-      {/* Affichage de l'erreur si la validation échoue */}
-      {error && <p className={styles.error}>{error}</p>}
-    </form>
-  );
+    return (
+      <form className={styles.form}>
+        {/* DateInput continue d'utiliser startDate/endDate pour l'interface */}
+        <DateInput
+          id="startDate"
+          name="startDate"
+          type="date"
+          value={form?.dateStart || ""} // Utilisez dateStart du formulaire parent
+          onChange={handleDateChange}
+        />
+
+        <DateInput
+          id="endDate"
+          name="endDate"
+          type="date"
+          value={form?.dateEnd || ""} // Utilisez dateEnd du formulaire parent
+          onChange={handleDateChange}
+        />
+
+        {/* Affichage de l'erreur si la validation échoue */}
+        {error && <p className={styles.error}>{error}</p>}
+      </form>
+    );
 }
 
 export default AddDate;

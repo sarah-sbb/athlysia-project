@@ -23,6 +23,7 @@ const verifyAdminToken = (token) => {
 
 // Route pour la création d'un nouvel event
 router.post("/add/:adminId/:etablissementId", (req, res) => {
+  
   const fields = [
     "title",
     //"adminId",
@@ -35,8 +36,14 @@ router.post("/add/:adminId/:etablissementId", (req, res) => {
     "supportsCom",
   ];
 
+  const optionalFields = ["authorisations", "supportsCom"];
+
+  console.log("Body reçu:", req.body);
+  console.log("Champs attendus:", fields);
+  console.log("Champs optionnels:", optionalFields);
+
   // Vérification de la présence des données
-  if (!checkBody(req.body, fields)) {
+  if (!checkBody(req.body, fields, optionalFields)) { 
     return res
       .status(400)
       .json({ result: false, message: "Champs manquants ou vides" });
@@ -45,7 +52,7 @@ router.post("/add/:adminId/:etablissementId", (req, res) => {
   const newEvent = new Event({
     title: req.body.title,
     adminId: req.params.adminId,
-    authorisations: req.body.authorisation,
+    authorisations: req.body.authorisations,
     groupId: req.body.groupId,
     //participantId: req.body.participantId,
     dateStart: req.body.dateStart,
