@@ -20,6 +20,7 @@ function AllEvents() {
   const [open, setOpen] = useState(false);
   const [idEvent, setIdEvent] = useState("");
   const [eventsData, setEventsData] = useState([]);
+  console.log(eventsData)
 
   //C/ Logique
   useEffect(() => {
@@ -33,28 +34,29 @@ function AllEvents() {
             data.data.map((e) => ({
               id: e._id,
               eventName: e.title,
-              auteurName: `${e.adminId.firstName + " " + e.adminId.lastName}`,
-              participantNumber: e.participantIds.length,
-              createdAt: moment(e.createdAt).format("LLLL"),
+              placeName: e.place,
+              participantNumber: e.groupId.participantIds.length,
+              tripDate: moment(e.dateStart).format("LLLL"),
+              tripDateReturn: moment(e.dateEnd).format("LLLL"),
             }))
           );
         }
       });
   }, []);
 
-  const handleDeleteGroup = (id) => {
-    fetch(`http://localhost:3000/groups/${id}`, { method: "DELETE" })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data.message);
-        setGroupsData(groupsData.filter((e) => e.id !== id));
-      });
-  };
+  // const handleDeleteGroup = (id) => {
+  //   fetch(`http://localhost:3000/groups/${id}`, { method: "DELETE" })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data.message);
+  //       setGroupsData(groupsData.filter((e) => e.id !== id));
+  //     });
+  // };
 
-  const handleToggleModal = (id) => {
-    setIdGroup(id);
-    setOpen(!open);
-  };
+  // const handleToggleModal = (id) => {
+  //   setIdGroup(id);
+  //   setOpen(!open);
+  // };
 
   //D. Configuration du tableau
   const columns = [
@@ -65,11 +67,10 @@ function AllEvents() {
       editable: false,
       headerAlign: "center",
       align: "center",
-    },
-    {
-      field: "eventName",
-      headerName: "Evénement",
-      width: 200,
+    },{
+      field: "placeName",
+      headerName: "Lieu",
+      width: 150,
       editable: false,
       headerAlign: "center",
       align: "center",
@@ -83,8 +84,16 @@ function AllEvents() {
       headerAlign: "center",
     },
     {
-      field: "createdAt",
-      headerName: "Date de création",
+      field: "tripDate",
+      headerName: "Date de début",
+      width: 200,
+      editable: false,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "tripDateReturn",
+      headerName: "Date de fin",
       width: 200,
       editable: false,
       align: "center",
@@ -144,14 +153,14 @@ function AllEvents() {
           />
         </Paper>
       )}
-      {open && idEvent ? (
+      {/* {open && idEvent ? (
         <Modify
           open={open}
           handleToggleModal={handleToggleModal}
           setIdEvent={setIdEvent}
           idGroup={idEvent}
         />
-      ) : null}
+      ) : null} */}
     </div>
   );
 }

@@ -22,7 +22,7 @@ const verifyAdminToken = (token) => {
 };
 
 // Route pour la création d'un nouvel event
-router.post("/add/:adminId/:etablissementId", (req, res) => {
+router.post("/add/:adminId", (req, res) => {
   
   const fields = [
     "title",
@@ -34,6 +34,7 @@ router.post("/add/:adminId/:etablissementId", (req, res) => {
     "dateEnd",
     "place",
     "supportsCom",
+    "etablissement",
   ];
 
   const optionalFields = ["authorisations", "supportsCom"];
@@ -43,11 +44,11 @@ router.post("/add/:adminId/:etablissementId", (req, res) => {
   console.log("Champs optionnels:", optionalFields);
 
   // Vérification de la présence des données
-  if (!checkBody(req.body, fields, optionalFields)) { 
-    return res
-      .status(400)
-      .json({ result: false, message: "Champs manquants ou vides" });
-  }
+  // if (!checkBody(req.body, fields, optionalFields)) { 
+  //   return res
+  //     .status(400)
+  //     .json({ result: false, message: "Champs manquants ou vides" });
+  // }
 
   const newEvent = new Event({
     title: req.body.title,
@@ -59,7 +60,7 @@ router.post("/add/:adminId/:etablissementId", (req, res) => {
     dateEnd: req.body.dateEnd,
     place: req.body.place,
     supportsCom: req.body.supportsCom,
-    etablissementId: req.params.etablissementId,
+    etablissement: req.body.etablissementId,
   });
 
   newEvent
@@ -263,7 +264,7 @@ router.get("/getEventByGroup", (req, res) => {
 
 // Route pour récupérer tous les events d'un établissement
 router.get("/findEventsByEtablissement/:etablissementId", (req, res) => {
-  Event.find({ etablissement: req.params.etablissementId }).then((data) => {
+  Event.find({ etablissement: req.params.etablissementId }).populate({path: "groupId", select: "participantIds"}).then((data) => {
     if (data.length === 0) {
       return res.json({
         result: false,
