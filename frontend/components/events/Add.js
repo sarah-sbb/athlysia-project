@@ -11,17 +11,17 @@ import AddDate from "./AddDate";
 import AddCom from "./AddCom";
 
 function AddEvent() {
-  // Récupérer les info admin depuis Redux
+  // Récupérer les infos admin depuis Redux
   const admin = useSelector((state) => state.admin.value);
 
   // États centralisés adaptés au modèle du backend
   const [form, setForm] = useState({
-    title: "",         // Au lieu de eventName
-    place: "",         // Au lieu de location
-    dateStart: "",     // Au lieu de startDate
-    dateEnd: "",       // Au lieu de endDate
-    supportsCom: [],   // Nouveau champ requis par le backend
-    authorisations: [] // Nouveau champ requis par le backend
+    title: "",         
+    place: "",         
+    dateStart: "",    
+    dateEnd: "",       
+    supportsCom: [],   
+    authorisations: [] 
   });
   
   const [groupInEtablissement, setGroupInEtablissement] = useState([]);
