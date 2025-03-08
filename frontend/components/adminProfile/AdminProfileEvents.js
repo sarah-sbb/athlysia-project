@@ -11,6 +11,7 @@ import { Modal, Box, Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import Tooltip from "@mui/material/Tooltip";
+import { frFR } from "@mui/x-data-grid/locales";
 
 // Import table pour modal
 import Table from "@mui/material/Table";
@@ -224,6 +225,7 @@ function AdminProfileEvents() {
             }}
             pageSizeOptions={[5]}
             disableRowSelectionOnClick
+            localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
           />
         </Paper>
       )}

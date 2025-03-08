@@ -22,21 +22,28 @@ const verifyAdminToken = (token) => {
 };
 
 // Route pour la création d'un nouvel event
-router.post("/add", (req, res) => {
+router.post("/add/:adminId/:etablissementId", (req, res) => {
+  
   const fields = [
     "title",
-    "adminId",
+    //"adminId",
     "authorisations",
     "groupId",
-    "participantID",
+    //"participantID",
     "dateStart",
     "dateEnd",
     "place",
     "supportsCom",
   ];
 
+  const optionalFields = ["authorisations", "supportsCom"];
+
+  console.log("Body reçu:", req.body);
+  console.log("Champs attendus:", fields);
+  console.log("Champs optionnels:", optionalFields);
+
   // Vérification de la présence des données
-  if (!checkBody(req.body, fields)) {
+  if (!checkBody(req.body, fields, optionalFields)) { 
     return res
       .status(400)
       .json({ result: false, message: "Champs manquants ou vides" });
@@ -44,14 +51,15 @@ router.post("/add", (req, res) => {
 
   const newEvent = new Event({
     title: req.body.title,
-    adminId: req.body.adminId,
-    authorisations: req.body.authorisation,
+    adminId: req.params.adminId,
+    authorisations: req.body.authorisations,
     groupId: req.body.groupId,
-    participantId: req.body.participantId,
+    //participantId: req.body.participantId,
     dateStart: req.body.dateStart,
     dateEnd: req.body.dateEnd,
     place: req.body.place,
     supportsCom: req.body.supportsCom,
+    etablissementId: req.params.etablissementId,
   });
 
   newEvent
@@ -108,13 +116,11 @@ router.put("/update/:id", (req, res) => {
           .status(404)
           .json({ result: false, message: "Évènement non trouvé" });
       }
-      res
-        .status(200)
-        .json({
-          result: true,
-          message: "Évènement mis à jour",
-          event: updateEvent,
-        });
+      res.status(200).json({
+        result: true,
+        message: "Évènement mis à jour",
+        event: updateEvent,
+      });
     })
     .catch((error) => {
       res.status(500).json({ result: false, message: "Erreur serveur", error });
@@ -166,13 +172,6 @@ router.get("/eventsByAdmin/:token", (req, res) => {
       }
 
       res.status(200).json({ result: true, data: events });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        result: false,
-        message: "Erreur serveur",
-        error: error.message,
-      });
     });
 });
 
@@ -203,52 +202,43 @@ router.get("/eventsByAdminWithParticipantInfos/:token", (req, res) => {
       }
 
       res.status(200).json({ result: true, data: events });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        result: false,
-        message: "Erreur serveur",
-        error: error.message,
-      });
     });
 });
 
 // Route pour récupérer les événements d'un établissement via l'ID (avec populate sur authorisations pour récupérer les infos participants)
-router.get("/eventsByEtablissementWithParticipantInfos/:etablissementId", (req, res) => {
-  // Vérifie si l'admin existe via son token
-  Etablissement.findOne({ _id: req.params.etablissementId })
-    .then((admin) => {
-      if (!admin) {
-        return res.json({
-          result: false,
-          message: "Aucun admin trouvé avec ce token",
-        });
-      }
+router.get(
+  "/eventsByEtablissementWithParticipantInfos/:etablissementId",
+  (req, res) => {
+    // Vérifie si l'admin existe via son token
+    Etablissement.findOne({ _id: req.params.etablissementId })
+      .then((admin) => {
+        if (!admin) {
+          return res.json({
+            result: false,
+            message: "Aucun admin trouvé avec ce token",
+          });
+        }
 
-      // Si l'établissement est trouvé, récupère les événements liés à l'établissement
-      return Event.find({ etablissement: req.params.etablissementId }).populate(
-        "authorisations.participant",
-        "pictureUrl firstName lastName -_id"
-      );
-    })
-    .then((events) => {
-      if (!events || events.length === 0) {
-        return res.status(404).json({
-          result: false,
-          message: "Aucun événement trouvé pour cet admin",
-        });
-      }
+        // Si l'établissement est trouvé, récupère les événements liés à l'établissement
+        return Event.find({
+          etablissement: req.params.etablissementId,
+        }).populate(
+          "authorisations.participant",
+          "pictureUrl firstName lastName -_id"
+        );
+      })
+      .then((events) => {
+        if (!events || events.length === 0) {
+          return res.status(404).json({
+            result: false,
+            message: "Aucun événement trouvé pour cet admin",
+          });
+        }
 
-      res.status(200).json({ result: true, data: events });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        result: false,
-        message: "Erreur serveur",
-        error: error.message,
+        res.status(200).json({ result: true, data: events });
       });
-    });
-});
+  }
+);
 
 // Route pour récupérer les events d'un groupe
 router.get("/getEventByGroup", (req, res) => {
@@ -273,18 +263,17 @@ router.get("/getEventByGroup", (req, res) => {
 
 // Route pour récupérer tous les events d'un établissement
 router.get("/findEventsByEtablissement/:etablissementId", (req, res) => {
-  Event.find({ etablissement: req.params.etablissementId}).then((data) => {
+  Event.find({ etablissement: req.params.etablissementId }).then((data) => {
     if (data.length === 0) {
-      return res.json ({
+      return res.json({
         result: false,
-        message: "Aucun événement pour cet établissement", 
+        message: "Aucun événement pour cet établissement",
       });
     } else {
-      return res.json({ result: true, data});
+      return res.json({ result: true, data });
     }
-  })
+  });
 });
-
 
 // Route pour récupérer les autorisations d'un events via son ID
 router.post("/autorisationByEvent", (req, res) => {
@@ -301,29 +290,40 @@ router.post("/autorisationByEvent", (req, res) => {
   const { eventId } = req.body;
 
   // Recherche de l'event via son ID
-  Event.findById(eventId)
-    .then((event) => {
-      if (!event) {
-        return res.status(404).json({
-          result: false,
-          message: "Aucun événement trouvé avec cet ID",
-        });
-      }
-
-      // Si l'event est trouvé, renvoyer les autorisations
-      res.status(200).json({
-        result: true,
-        data: event.authorisations, // Supposons que les autorisations sont stockées dans ce champ
-      });
-    })
-
-    .catch((error) => {
-      res.status(500).json({
+  Event.findById(eventId).then((event) => {
+    if (!event) {
+      return res.status(404).json({
         result: false,
-        message: "Erreur serveur",
-        error: error.message,
+        message: "Aucun événement trouvé avec cet ID",
       });
+    }
+
+    // Si l'event est trouvé, renvoyer les autorisations
+    res.status(200).json({
+      result: true,
+      data: event.authorisations, // Supposons que les autorisations sont stockées dans ce champ
     });
+  });
+});
+
+// Route pour valider une autorisation dans un event (par l'admin)
+router.put("/validateAuth/:authId", (req, res) => {
+  Event.findOne({ "authorisations._id": req.params.authId }).then((data) => {
+    if (!data) {
+      res.json({ result: false, message: "Autorisation introuvable" });
+    } else {
+      Event.updateMany(
+        { "authorisations._id": req.params.authId },
+        { $set: { "authorisations.$.isValidated": true } } // $set et $ permettent de cibler l'autorisation à modifier
+      ).then((data) => {
+        if (data.modifiedCount = 0) {
+          res.json({result: false, error: "Impossible de modifier cette autorisation"})
+        } else {
+          res.json({result: true, message: "Autorisation validée par l'admin"})
+        }
+      });
+    }
+  });
 });
 
 module.exports = router;

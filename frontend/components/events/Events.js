@@ -1,85 +1,159 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
+//import styles from '../../styles/Groups.module.css';
+import { useState, useEffect } from "react";
+import { Button } from "@mui/material";
 import { useSelector } from "react-redux";
-import { DataGrid } from '@mui/x-data-grid';
-import Paper from '@mui/material/Paper';
+import { DataGrid } from "@mui/x-data-grid";
+import { frFR } from "@mui/x-data-grid/locales";
+import Modify from "./Modify";
+import Paper from "@mui/material/Paper";
+import moment from "moment";
+import "moment/locale/fr";
 
-//import styles from '../../styles/Events.module.css';
+function AllEvents() {
+  //A. Redux
+  // Récupère l'ID de l'établissement depuis le state Redux
+  const etablissementId = useSelector(
+  (state) => state.admin.value.etablissement 
+  );
 
-const columns = [
-  { field: '_id', headerName: 'ID', width: 70 },
-  { field: 'Name', headerName: "Titre de l'évènement", width: 200 },
-  { field: 'Author', headerName: 'Auteur', width: 200 },
-  { field: 'Date', headerName: 'Date de sortie', type: 'date', width: 130 },
-  { field: 'Accept', headerName: "Taux d'acceptation", width: 200 },
-  {
-    field: 'modify',
-    headerName: 'Modify',
-    width: 130,
-    renderCell: (params) => (
-      <a href={`/ctp-admin/events/modify/${params.row.id}`} style={{ color: 'blue' }}>
-        Modify
-      </a>
-    ),
-  },
-  {
-    field: 'delete',
-    headerName: 'Delete',
-    width: 130,
-    renderCell: (params) => (
-      <button onClick={() => deleteEvent(params.row.id)} style={{ color: 'red' }}>
-        Delete
-      </button>
-    ),
-  },
-];
+  //B. States
+  const [open, setOpen] = useState(false);
+  const [idEvent, setIdEvent] = useState("");
+  const [eventsData, setEventsData] = useState([]);
 
-export default function EventsTable() {
-  const [rows, setRows] = useState([]);
+  //C/ Logique
+  useEffect(() => {
+    fetch(
+      `http://localhost:3000/events/findEventsByEtablissement/${etablissementId}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          setEventsData(
+            data.data.map((e) => ({
+              id: e._id,
+              eventName: e.title,
+              auteurName: `${e.adminId.firstName + " " + e.adminId.lastName}`,
+              participantNumber: e.participantIds.length,
+              createdAt: moment(e.createdAt).format("LLLL"),
+            }))
+          );
+        }
+      });
+  }, []);
 
-// Récupère l'ID de l'établissement depuis le state Redux
-const etablissementId = useSelector(
-(state) => state.admin.value.etablissement 
-);
+  const handleDeleteGroup = (id) => {
+    fetch(`http://localhost:3000/groups/${id}`, { method: "DELETE" })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message);
+        setGroupsData(groupsData.filter((e) => e.id !== id));
+      });
+  };
 
-useEffect(() => {
-  if (!etablissementId) {
-    console.error("Erreur : etablissementId est requis.");
-    return;
-  }
+  const handleToggleModal = (id) => {
+    setIdGroup(id);
+    setOpen(!open);
+  };
 
-  fetch(`http://localhost:3000/events/findEventsByEtablissement/${etablissementId}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Erreur HTTP : ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data && Array.isArray(data.events)) {
-        setRows(data.events.map(e => ({
-          id: e._id,
-          Name: e.Name,
-          Author: e.Author,
-          Date: e.Date,
-          Accept: e.Accept,
-        })));
-      } else {
-        console.error("Format des données incorrect :", data);
-      }
-    })
-    .catch(error => console.error("Erreur lors du fetch :", error));
-}, [etablissementId]);
+  //D. Configuration du tableau
+  const columns = [
+    {
+      field: "eventName",
+      headerName: "Nom de l'évènement",
+      width: 150,
+      editable: false,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "eventName",
+      headerName: "Evénement",
+      width: 200,
+      editable: false,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "participantNumber",
+      headerName: "Nbre de participants",
+      width: 200,
+      editable: false,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "createdAt",
+      headerName: "Date de création",
+      width: 200,
+      editable: false,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 300,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => (
+        <div>
+          <Button
+            variant="contained"
+            style={{
+              marginRight: "10px",
+              fontSize: "11px",
+              backgroundColor: "#2E35B3",
+            }}
+            onClick={() => handleToggleModal(params.row.id)}
+          >
+            Modifier
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => handleDeleteGroup(params.row.id)}
+            style={{ fontSize: "11px", backgroundColor: "#DC1C4D" }}
+          >
+            Supprimer
+          </Button>
+        </div>
+      ),
+    },
+  ];
 
-    return (
-    <Paper sx={{ height: 400, width: "100%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        getRowId={(row) => row._id} // Utilisation de l'ID MongoDB comme identifiant unique
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-      />
-    </Paper>
+  return (
+    <div>
+      {eventsData.length === 0 ? (
+        <p>Aucun évènement</p>
+      ) : (
+        <Paper>
+          <DataGrid
+            rows={eventsData}
+            columns={columns}
+            loading={eventsData.length === 0}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5]}
+            disableRowSelectionOnClick
+            localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
+          />
+        </Paper>
+      )}
+      {open && idEvent ? (
+        <Modify
+          open={open}
+          handleToggleModal={handleToggleModal}
+          setIdEvent={setIdEvent}
+          idGroup={idEvent}
+        />
+      ) : null}
+    </div>
   );
 }
+
+export default AllEvents;
